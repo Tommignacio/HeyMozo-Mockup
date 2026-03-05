@@ -6,3 +6,10 @@
   align-items: center;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
 }
+
+@media (max-width: 480px) {
+  .app-container {
+    align-items: flex-start;
+    background: #1c1c1e;
+  }
+}

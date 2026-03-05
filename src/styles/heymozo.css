@@ -15,6 +15,26 @@
   position: relative;
 }
 
+@media (max-width: 480px) {
+  .phone {
+    width: 100%;
+    min-height: 100svh;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .alerts-list {
+    flex: 1;
+  }
+
+  .bottom-nav {
+    margin-top: auto;
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
+}
+
 /* STATUS BAR */
 .status-bar {
   background: #1c1c1e;

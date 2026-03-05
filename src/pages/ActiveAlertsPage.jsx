@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Phone from '../components/Phone';
-import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import AlertCard from '../components/AlertCard';
 import BottomNav from '../components/BottomNav';
@@ -57,7 +56,6 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
 
   return (
     <Phone>
-      <StatusBar />
       <Header />
       <div className="page-title">Active Alerts</div>
 
