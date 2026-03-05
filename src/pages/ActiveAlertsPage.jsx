@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import Phone from '../components/Phone';
-import Header from '../components/Header';
 import AlertCard from '../components/AlertCard';
-import BottomNav from '../components/BottomNav';
 import AlertModal from '../components/AlertModal';
 
 const MESA1_MODAL_ITEMS = [
@@ -10,7 +7,7 @@ const MESA1_MODAL_ITEMS = [
   { label: 'Servilletas' },
 ];
 
-export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) {
+export default function ActiveAlertsPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const alerts = [
@@ -55,26 +52,19 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
   ];
 
   return (
-    <Phone>
-      <Header />
-      <div className="page-content">
-        <div className="page-title">Active Alerts</div>
-
-        <div className="alerts-list">
-          {alerts.map((alert) => {
-            const { onOpenModal, ...rest } = alert;
-            return (
-              <AlertCard
-                key={alert.tableName}
-                {...rest}
-                onClick={onOpenModal}
-              />
-            );
-          })}
-        </div>
+    <>
+      <div className="px-3 pb-5 flex flex-col items-center gap-2.5 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
+        {alerts.map((alert) => {
+          const { onOpenModal, ...rest } = alert;
+          return (
+            <AlertCard
+              key={alert.tableName}
+              {...rest}
+              onClick={onOpenModal}
+            />
+          );
+        })}
       </div>
-
-      <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
 
       {modalOpen && (
         <AlertModal
@@ -92,6 +82,6 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
           onVerComanda={() => {}}
         />
       )}
-    </Phone>
+    </>
   );
 }
