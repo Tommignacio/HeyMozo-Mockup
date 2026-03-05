@@ -1,18 +1,7 @@
-import Phone from '../components/Phone';
-import Header from '../components/Header';
-import BottomNav from '../components/BottomNav';
-
-export default function MisMesasPage({ activeTab, onTabChange }) {
+export default function MisMesasPage() {
   return (
-    <Phone>
-      <Header />
-      <div className="page-content">
-        <div className="page-title">Mis Mesas</div>
-        <div className="alerts-list" style={{ padding: 16, color: '#8e8e93' }}>
-          <p>Próximamente...</p>
-        </div>
-      </div>
-      <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
-    </Phone>
+    <div className="px-4 lg:px-8 py-4 text-[#8e8e93]">
+      <p>Próximamente...</p>
+    </div>
   );
 }

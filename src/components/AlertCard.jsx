@@ -39,6 +39,18 @@ export default function AlertCard({
     yellow: 'bg-[#f5c518]',
   };
 
+  const variantGlow = {
+    red: 'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
+    orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
+    yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
+  };
+
+  const variantBodyFrom = {
+    red: 'from-[rgba(214,45,32,0.12)]',
+    orange: 'from-[rgba(240,112,32,0.12)]',
+    yellow: 'from-[rgba(245,197,24,0.08)]',
+  };
+
   const iconMap = {
     check: CHECK_ICON,
     bell: BELL_ICON,
@@ -54,14 +66,14 @@ export default function AlertCard({
 
   return (
     <div
-      className="rounded-[14px] overflow-hidden bg-[#2c2c2e] cursor-pointer active:opacity-85 w-full max-w-sm md:max-w-none"
+      className={`rounded-[14px] overflow-hidden bg-[#2c2c2e] cursor-pointer active:opacity-90 w-full ${variantGlow[variant]}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
       {/* Table header */}
-      <div className={`${variantColors[variant]} py-2.5 px-4 flex items-center justify-between relative overflow-visible`}>
+      <div className={`${variantColors[variant]} py-2.5 px-4 flex items-center justify-center relative overflow-visible`}>
         <span
           className={`text-xl font-extrabold tracking-wide uppercase ${
             variant === 'yellow' ? 'text-[#1a1a1a]' : 'text-white'
@@ -77,11 +89,11 @@ export default function AlertCard({
       </div>
 
       {/* Alert body */}
-      <div className="p-3 px-4 flex items-center gap-3.5 bg-[#2c2c2e]">
-        <div className="w-10 h-10 flex items-center justify-center shrink-0">
+      <div className={`p-4 pb-3 flex flex-col items-center gap-2 bg-gradient-to-b ${variantBodyFrom[variant]} to-transparent`}>
+        <div className="w-10 h-10 flex items-center justify-center">
           {iconEl}
         </div>
-        <div>
+        <div className="text-center">
           <div className="text-white text-[15px] font-bold uppercase tracking-wide">{title}</div>
           <div className="text-[#8e8e93] text-xs font-medium mt-0.5 uppercase tracking-wider">{subtitle}</div>
         </div>
