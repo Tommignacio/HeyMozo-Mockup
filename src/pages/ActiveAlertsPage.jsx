@@ -53,7 +53,7 @@ export default function ActiveAlertsPage() {
 
   return (
     <>
-      <div className="px-2 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
+      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
         {alerts.map((alert) => {
           const { onOpenModal, ...rest } = alert;
           return (
