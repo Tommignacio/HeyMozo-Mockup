@@ -57,19 +57,21 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
   return (
     <Phone>
       <Header />
-      <div className="page-title">Active Alerts</div>
+      <div className="page-content">
+        <div className="page-title">Active Alerts</div>
 
-      <div className="alerts-list">
-        {alerts.map((alert) => {
-          const { onOpenModal, ...rest } = alert;
-          return (
-            <AlertCard
-              key={alert.tableName}
-              {...rest}
-              onClick={onOpenModal}
-            />
-          );
-        })}
+        <div className="alerts-list">
+          {alerts.map((alert) => {
+            const { onOpenModal, ...rest } = alert;
+            return (
+              <AlertCard
+                key={alert.tableName}
+                {...rest}
+                onClick={onOpenModal}
+              />
+            );
+          })}
+        </div>
       </div>
 
       <BottomNav activeTab={activeTab} onTabChange={onTabChange} />

@@ -7,9 +7,17 @@
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .app-container {
     align-items: flex-start;
+    background: #1c1c1e;
+  }
+}
+
+@media (min-width: 769px) {
+  .app-container {
+    align-items: stretch;
+    padding: 0;
     background: #1c1c1e;
   }
 }
