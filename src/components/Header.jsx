@@ -1,17 +1,41 @@
-export default function Header() {
+const SETTINGS_ICON = (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
+    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.63-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.03-1.58zm-7.14 2.66c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+  </svg>
+);
+
+export default function Header({ pageTitle }) {
   return (
-    <div className="header">
-      <div className="logo-area">
-        <div className="logo-icon">🍽️</div>
-        <span className="logo-text">HeyMozo</span>
+    <header className="bg-[#1c1c1e] px-4 lg:px-8 py-2 lg:py-4 flex items-center justify-between border-b border-[#2c2c2e]">
+      {/* Mobile: Logo */}
+      <div className="flex items-center gap-2 lg:hidden">
+        <div className="w-[38px] h-[38px] bg-[#e8362a] rounded-[10px] flex items-center justify-center text-lg">
+          🍽️
+        </div>
+        <span className="text-xl font-bold tracking-tight">HeyMozo</span>
       </div>
-      <div className="header-right">
-        <button type="button" className="sector-btn">
+
+      {/* Desktop: Page title */}
+      <h1 className="hidden lg:block text-2xl font-bold tracking-tight">
+        {pageTitle}
+      </h1>
+
+      {/* Right side: Sector selector + Settings */}
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="bg-transparent border-[1.5px] border-[#555] text-white px-3 py-[7px] rounded-lg text-[13px] font-medium flex items-center gap-1.5 cursor-pointer"
+        >
           Select Sector
-          <span className="sector-chevron">▾</span>
+          <span className="text-[11px] text-[#aaa]">▾</span>
         </button>
-        <span className="filter-icon">⊞</span>
+        <button
+          type="button"
+          className="text-[#8e8e93] hover:text-white transition-colors cursor-pointer bg-transparent border-none p-[7px]"
+        >
+          {SETTINGS_ICON}
+        </button>
       </div>
-    </div>
+    </header>
   );
 }

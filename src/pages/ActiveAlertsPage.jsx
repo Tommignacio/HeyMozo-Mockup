@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import Phone from '../components/Phone';
-import StatusBar from '../components/StatusBar';
-import Header from '../components/Header';
 import AlertCard from '../components/AlertCard';
-import BottomNav from '../components/BottomNav';
 import AlertModal from '../components/AlertModal';
 
 const MESA1_MODAL_ITEMS = [
@@ -11,7 +7,7 @@ const MESA1_MODAL_ITEMS = [
   { label: 'Servilletas' },
 ];
 
-export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) {
+export default function ActiveAlertsPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const alerts = [
@@ -56,12 +52,8 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
   ];
 
   return (
-    <Phone>
-      <StatusBar />
-      <Header />
-      <div className="page-title">Active Alerts</div>
-
-      <div className="alerts-list">
+    <>
+      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
         {alerts.map((alert) => {
           const { onOpenModal, ...rest } = alert;
           return (
@@ -74,24 +66,15 @@ export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) 
         })}
       </div>
 
-      <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
-
       {modalOpen && (
         <AlertModal
           tableName="MESA 1"
           items={MESA1_MODAL_ITEMS}
-          summary={
-            <>
-              Mesa 1: Hielo +<br />
-              Servilletas - Waiting
-              <br />
-              4 min
-            </>
-          }
+          waitingTime="191 min"
           onClose={() => setModalOpen(false)}
           onVerComanda={() => {}}
         />
       )}
-    </Phone>
+    </>
   );
 }
