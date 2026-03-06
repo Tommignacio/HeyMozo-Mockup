@@ -4,7 +4,7 @@ const SERVICETTE_ICON = (
   </svg>
 );
 
-export default function AlertModal({ tableName, items = [], summary, onClose, onVerComanda }) {
+export default function AlertModal({ tableName, items = [], waitingTime, onClose, onVerComanda }) {
   return (
     <div
       className="fixed inset-0 bg-black/72 z-50 flex items-center justify-center p-4 lg:p-8"
@@ -17,6 +17,9 @@ export default function AlertModal({ tableName, items = [], summary, onClose, on
         {/* Modal header */}
         <div className="bg-[#f07020] py-3 px-5 text-center">
           <div className="text-[22px] font-extrabold text-white tracking-wide">{tableName}</div>
+          {waitingTime && (
+            <div className="text-[13px] text-white/70 font-medium mt-0.5 uppercase tracking-wider">Waiting: {waitingTime}</div>
+          )}
         </div>
 
         {/* Items list */}
@@ -39,13 +42,6 @@ export default function AlertModal({ tableName, items = [], summary, onClose, on
             </div>
           ))}
         </div>
-
-        {/* Summary */}
-        {summary && (
-          <div className="pt-[18px] px-5 pb-1.5 text-center text-white text-[22px] font-bold leading-snug tracking-tight">
-            {summary}
-          </div>
-        )}
 
         {/* Ver comanda link */}
         {onVerComanda && (

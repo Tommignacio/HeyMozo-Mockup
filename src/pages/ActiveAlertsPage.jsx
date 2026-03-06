@@ -70,14 +70,7 @@ export default function ActiveAlertsPage() {
         <AlertModal
           tableName="MESA 1"
           items={MESA1_MODAL_ITEMS}
-          summary={
-            <>
-              Mesa 1: Hielo +<br />
-              Servilletas - Waiting
-              <br />
-              4 min
-            </>
-          }
+          waitingTime="191 min"
           onClose={() => setModalOpen(false)}
           onVerComanda={() => {}}
         />
