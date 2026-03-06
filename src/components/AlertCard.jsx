@@ -22,46 +22,64 @@ const BELL_PLUS_CHECK = (
   </div>
 );
 
+const CHECK_CIRCLE_ICON = (
+  <svg width="44" height="44" viewBox="0 0 24 24" className="fill-white opacity-85">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+  </svg>
+);
+
+const iconMap = {
+  check:         CHECK_ICON,
+  bell:          BELL_ICON,
+  'bell-check':  BELL_PLUS_CHECK,
+  'check-circle': CHECK_CIRCLE_ICON,
+  info: (
+    <div className="w-[42px] h-[42px] bg-[#48484a] rounded-full flex items-center justify-center text-white text-lg font-semibold shrink-0">
+      i
+    </div>
+  ),
+};
+
+const variantColors = {
+  red:   'bg-[#d62d20]',
+  orange:'bg-[#f07020]',
+  yellow:'bg-[#f5c518]',
+  paid:  'bg-[#3a3a3c]',
+};
+
+const variantGlow = {
+  red:    'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
+  orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
+  yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
+  paid:   'shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)]',
+};
+
+const variantBodyFrom = {
+  red:    'from-[rgba(214,45,32,0.12)]',
+  orange: 'from-[rgba(240,112,32,0.12)]',
+  yellow: 'from-[rgba(245,197,24,0.08)]',
+  paid:   'from-[rgba(255,255,255,0.03)]',
+};
+
+const headerTextColor = {
+  red:    'text-white',
+  orange: 'text-white',
+  yellow: 'text-[#1a1a1a]',
+  paid:   'text-[#8e8e93]',
+};
+
 export default function AlertCard({
   tableName,
   variant = 'red',
   badgeCount,
   title,
+  detail,
   subtitle,
   actionLabel,
   actionVariant = 'blue',
   icon = 'check',
   onClick,
 }) {
-  const variantColors = {
-    red: 'bg-[#d62d20]',
-    orange: 'bg-[#f07020]',
-    yellow: 'bg-[#f5c518]',
-  };
-
-  const variantGlow = {
-    red: 'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
-    orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
-    yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
-  };
-
-  const variantBodyFrom = {
-    red: 'from-[rgba(214,45,32,0.12)]',
-    orange: 'from-[rgba(240,112,32,0.12)]',
-    yellow: 'from-[rgba(245,197,24,0.08)]',
-  };
-
-  const iconMap = {
-    check: CHECK_ICON,
-    bell: BELL_ICON,
-    'bell-check': BELL_PLUS_CHECK,
-    info: (
-      <div className="w-[52px] h-[52px] bg-[#48484a] rounded-full flex items-center justify-center text-white text-xl font-semibold shrink-0">
-        i
-      </div>
-    ),
-  };
-
   const iconEl = iconMap[icon] ?? CHECK_ICON;
 
   return (
@@ -74,15 +92,11 @@ export default function AlertCard({
     >
       {/* Table header */}
       <div className={`${variantColors[variant]} py-5 px-5 flex items-center justify-center relative overflow-visible`}>
-        <span
-          className={`text-3xl font-extrabold tracking-wide uppercase my-[0.15rem] ${
-            variant === 'yellow' ? 'text-[#1a1a1a]' : 'text-white'
-          }`}
-        >
+        <span className={`text-3xl font-extrabold tracking-wide uppercase my-[0.15rem] ${headerTextColor[variant]}`}>
           {tableName}
         </span>
         {badgeCount != null && (
-          <div className="bg-[#ff3b30] text-white text-[12px] font-bold w-6 h-6 rounded-full flex items-center justify-center absolute -top-1.5 -right-1.5 border-2 border-[#1c1c1e] z-10">
+          <div className="bg-[#ff3b30] text-white text-[11px] font-bold w-6 h-6 rounded-full flex items-center justify-center absolute -top-1.5 -right-1.5 border-2 border-[#1c1c1e] z-10">
             {badgeCount}
           </div>
         )}
@@ -95,15 +109,20 @@ export default function AlertCard({
         </div>
         <div className="flex flex-col flex-1">
           <div className="text-white text-[21px] font-bold uppercase tracking-wide leading-tight">{title}</div>
-          <div className="text-[#8e8e93] text-[16px] font-medium mt-1 uppercase tracking-wider">{subtitle}</div>
+          {detail && (
+            <div className="text-white/75 text-[14px] font-medium mt-1 leading-snug">{detail}</div>
+          )}
+          <div className="text-[#8e8e93] text-[13px] font-medium mt-1 uppercase tracking-wider">{subtitle}</div>
         </div>
       </div>
 
       {/* Action button */}
       <div
-        className={`mx-3 mb-5 p-6 rounded-[12px] text-center text-[26px] font-bold tracking-wide uppercase cursor-pointer transition-opacity active:opacity-70 flex items-center justify-center gap-2 ${
+        className={`mx-3 mb-5 p-6 rounded-[12px] text-center text-[22px] font-bold tracking-wide uppercase cursor-pointer transition-opacity active:opacity-70 flex items-center justify-center gap-2 ${
           actionVariant === 'blue'
             ? 'bg-[#3478f6] text-white'
+            : actionVariant === 'green-outline'
+            ? 'bg-transparent border-2 border-green-500 text-green-400'
             : 'bg-[#3a3a3c] text-white'
         }`}
       >
