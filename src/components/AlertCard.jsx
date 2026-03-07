@@ -1,67 +1,80 @@
 const CHECK_ICON = (
-  <svg width="44" height="44" viewBox="0 0 24 24" className="fill-white opacity-85">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" />
+  <svg viewBox="0 0 24 24" className="w-7 h-7 md:w-9 md:h-9" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="16" y1="13" x2="8" y2="13"/>
+    <line x1="16" y1="17" x2="8" y2="17"/>
   </svg>
 );
 
 const BELL_ICON = (
-  <svg width="44" height="44" viewBox="0 0 24 24" className="fill-white opacity-85">
-    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+  <svg viewBox="0 0 24 24" className="w-7 h-7 md:w-9 md:h-9" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 01-3.46 0"/>
   </svg>
 );
 
-const BELL_PLUS_CHECK = (
-  <div className="flex items-center gap-1.5">
-    <svg width="36" height="36" viewBox="0 0 24 24" className="fill-white opacity-85">
-      <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-    </svg>
-    <span className="text-white text-xl font-light opacity-70">+</span>
-    <svg width="36" height="36" viewBox="0 0 24 24" className="fill-white opacity-85">
-      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" />
-    </svg>
-  </div>
+const CHECK_CIRCLE_ICON = (
+  <svg viewBox="0 0 24 24" className="w-7 h-7 md:w-9 md:h-9" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
 );
+
+const INFO_ICON = (
+  <svg viewBox="0 0 24 24" className="w-7 h-7 md:w-9 md:h-9" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="8" x2="12" y2="12"/>
+    <line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+);
+
+const iconMap = {
+  check: CHECK_ICON,
+  bell: BELL_ICON,
+  'check-circle': CHECK_CIRCLE_ICON,
+  info: INFO_ICON,
+};
+
+const variantColors = {
+  red:    'bg-[#d62d20]',
+  orange: 'bg-[#f07020]',
+  yellow: 'bg-[#f5c518]',
+  paid:   'bg-[#3a3a3c]',
+};
+
+const variantGlow = {
+  red:    'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
+  orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
+  yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
+  paid:   'shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)]',
+};
+
+const variantBodyFrom = {
+  red:    'from-[rgba(214,45,32,0.12)]',
+  orange: 'from-[rgba(240,112,32,0.12)]',
+  yellow: 'from-[rgba(245,197,24,0.08)]',
+  paid:   'from-[rgba(255,255,255,0.03)]',
+};
+
+const headerTextColor = {
+  red:    'text-white',
+  orange: 'text-white',
+  yellow: 'text-[#1a1a1a]',
+  paid:   'text-[#8e8e93]',
+};
 
 export default function AlertCard({
   tableName,
   variant = 'red',
   badgeCount,
   title,
-  subtitle,
+  waitTime,
+  icon = 'check',
   actionLabel,
   actionVariant = 'blue',
-  icon = 'check',
   onClick,
 }) {
-  const variantColors = {
-    red: 'bg-[#d62d20]',
-    orange: 'bg-[#f07020]',
-    yellow: 'bg-[#f5c518]',
-  };
-
-  const variantGlow = {
-    red: 'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
-    orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
-    yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
-  };
-
-  const variantBodyFrom = {
-    red: 'from-[rgba(214,45,32,0.12)]',
-    orange: 'from-[rgba(240,112,32,0.12)]',
-    yellow: 'from-[rgba(245,197,24,0.08)]',
-  };
-
-  const iconMap = {
-    check: CHECK_ICON,
-    bell: BELL_ICON,
-    'bell-check': BELL_PLUS_CHECK,
-    info: (
-      <div className="w-[52px] h-[52px] bg-[#48484a] rounded-full flex items-center justify-center text-white text-xl font-semibold shrink-0">
-        i
-      </div>
-    ),
-  };
-
   const iconEl = iconMap[icon] ?? CHECK_ICON;
 
   return (
@@ -72,42 +85,46 @@ export default function AlertCard({
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
-      {/* Table header */}
-      <div className={`${variantColors[variant]} py-5 px-5 flex items-center justify-center relative overflow-visible`}>
-        <span
-          className={`text-3xl font-extrabold tracking-wide uppercase my-[0.15rem] ${
-            variant === 'yellow' ? 'text-[#1a1a1a]' : 'text-white'
-          }`}
-        >
+      {/* Header: centered table name */}
+      <div className={`${variantColors[variant]} py-5 md:py-6 px-5 flex items-center justify-center relative overflow-visible`}>
+        <span className={`text-3xl md:text-4xl font-extrabold tracking-wide uppercase my-[0.15rem] ${headerTextColor[variant]}`}>
           {tableName}
         </span>
         {badgeCount != null && (
-          <div className="bg-[#ff3b30] text-white text-[12px] font-bold w-6 h-6 rounded-full flex items-center justify-center absolute -top-1.5 -right-1.5 border-2 border-[#1c1c1e] z-10">
+          <div className="bg-[#ff3b30] text-white text-[11px] font-bold w-6 h-6 rounded-full flex items-center justify-center absolute -top-1.5 -right-1.5 border-2 border-[#1c1c1e] z-10">
             {badgeCount}
           </div>
         )}
       </div>
 
-      {/* Alert body — icon left, text right */}
-      <div className={`px-5 py-5 flex flex-row items-center gap-5 bg-gradient-to-b ${variantBodyFrom[variant]} to-transparent`}>
-        <div className="w-14 h-14 flex items-center justify-center shrink-0">
+      {/* Body: icon left, title + waitTime right */}
+      <div className={`px-5 md:px-6 py-5 md:py-6 flex flex-row items-center gap-4 md:gap-5 bg-gradient-to-b ${variantBodyFrom[variant]} to-transparent`}>
+        <div className="bg-[#3a3a3c] rounded-[10px] w-[52px] h-[52px] md:w-[68px] md:h-[68px] flex items-center justify-center shrink-0">
           {iconEl}
         </div>
         <div className="flex flex-col flex-1">
-          <div className="text-white text-[21px] font-bold uppercase tracking-wide leading-tight">{title}</div>
-          <div className="text-[#8e8e93] text-[16px] font-medium mt-1 uppercase tracking-wider">{subtitle}</div>
+          <div className="text-white text-[21px] md:text-[26px] lg:text-[28px] font-bold uppercase tracking-wide leading-tight">
+            {title}
+          </div>
+          {waitTime && (
+            <div className="text-[#8e8e93] text-[13px] md:text-[15px] font-medium mt-1 uppercase tracking-wider">
+              ⏱ {waitTime}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Action button */}
       <div
-        className={`mx-3 mb-5 p-6 rounded-[12px] text-center text-[26px] font-bold tracking-wide uppercase cursor-pointer transition-opacity active:opacity-70 flex items-center justify-center gap-2 ${
+        className={`mx-3 md:mx-4 mb-5 md:mb-6 p-6 md:p-7 rounded-[12px] text-center text-[22px] md:text-[26px] font-bold cursor-pointer transition-opacity active:opacity-70 flex items-center justify-center gap-2 ${
           actionVariant === 'blue'
             ? 'bg-[#3478f6] text-white'
+            : actionVariant === 'green-outline'
+            ? 'bg-transparent border-2 border-green-500 text-green-400'
             : 'bg-[#3a3a3c] text-white'
         }`}
       >
-        {actionVariant === 'blue' && <span className="text-3xl font-light">←</span>}
+        {actionVariant === 'blue' && <span className="text-3xl md:text-4xl font-light leading-none">←</span>}
         {actionLabel}
       </div>
     </div>

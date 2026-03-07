@@ -3,8 +3,8 @@ import AlertCard from '../components/AlertCard';
 import AlertModal from '../components/AlertModal';
 
 const MESA1_MODAL_ITEMS = [
-  { emoji: '🧊', label: 'Hielo' },
-  { label: 'Servilletas' },
+  { emoji: '💳', label: 'Paga con Tarjeta' },
+  { label: 'Llevar Posnet' },
 ];
 
 export default function ActiveAlertsPage() {
@@ -15,45 +15,44 @@ export default function ActiveAlertsPage() {
       tableName: 'MESA 1',
       variant: 'red',
       badgeCount: 1,
-      title: 'CHECK REQUESTED',
-      subtitle: 'WAITING: 191 MIN',
-      actionLabel: 'VISTO!',
-      actionVariant: 'blue',
+      waitTime: '2 MIN',
+      title: 'CUENTA: TARJETA',
       icon: 'check',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
       onOpenModal: () => setModalOpen(true),
+    },
+    {
+      tableName: 'MESA 2',
+      variant: 'red',
+      waitTime: '1 MIN',
+      title: 'CUENTA: EFECTIVO',
+      icon: 'check',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
     },
     {
       tableName: 'MESA 5',
       variant: 'orange',
-      title: 'CALL WAITER',
-      subtitle: 'WAITING: 4 MIN',
-      actionLabel: '¡VOY!',
-      actionVariant: 'dark',
+      waitTime: '4 MIN',
+      title: 'LLEVAR HIELO',
       icon: 'bell',
-    },
-    {
-      tableName: 'MESA 2',
-      variant: 'orange',
-      title: 'CALL WAITER + CHECK',
-      subtitle: 'WAITING: 3 MIN',
-      actionLabel: 'RESUELTO',
-      actionVariant: 'dark',
-      icon: 'bell-check',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
     },
     {
       tableName: 'MESA 3',
-      variant: 'yellow',
-      title: 'NEW CLIENT',
-      subtitle: 'ARRIVED: 1 MIN',
-      actionLabel: 'OK',
-      actionVariant: 'dark',
-      icon: 'info',
+      variant: 'paid',
+      title: 'YA PAGARON (MP)',
+      icon: 'check-circle',
+      actionLabel: 'LIBERAR MESA',
+      actionVariant: 'green-outline',
     },
   ];
 
   return (
     <>
-      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
+      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-5 lg:gap-6 lg:px-8 xl:px-12 lg:pb-8 max-w-[1400px] mx-auto w-full">
         {alerts.map((alert) => {
           const { onOpenModal, ...rest } = alert;
           return (
@@ -70,7 +69,7 @@ export default function ActiveAlertsPage() {
         <AlertModal
           tableName="MESA 1"
           items={MESA1_MODAL_ITEMS}
-          waitingTime="191 min"
+          waitingTime="2 min"
           onClose={() => setModalOpen(false)}
           onVerComanda={() => {}}
         />
