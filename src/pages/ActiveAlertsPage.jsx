@@ -15,49 +15,44 @@ export default function ActiveAlertsPage() {
       tableName: 'MESA 1',
       variant: 'red',
       badgeCount: 1,
-      title: 'PIDE CUENTA',
-      detail: '💳 PAGA CON TARJETA (Llevar Posnet)',
-      subtitle: 'ESPERANDO: 2 MIN',
-      actionLabel: '¡LLEVANDO POSNET!',
-      actionVariant: 'blue',
+      waitTime: '2 MIN',
+      title: 'CUENTA: TARJETA',
       icon: 'check',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
       onOpenModal: () => setModalOpen(true),
     },
     {
       tableName: 'MESA 2',
       variant: 'red',
-      title: 'PIDE CUENTA',
-      detail: '💵 EFECTIVO (Paga con $50.000)',
-      subtitle: 'ESPERANDO: 1 MIN',
-      actionLabel: '¡LLEVANDO VUELTO!',
-      actionVariant: 'blue',
+      waitTime: '1 MIN',
+      title: 'CUENTA: EFECTIVO',
       icon: 'check',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
     },
     {
       tableName: 'MESA 5',
       variant: 'orange',
-      title: 'LLAMA MOZO',
-      detail: '🧊 Traer Hielo',
-      subtitle: 'ESPERANDO: 4 MIN',
-      actionLabel: '¡VOY!',
-      actionVariant: 'dark',
+      waitTime: '4 MIN',
+      title: 'LLEVAR HIELO',
       icon: 'bell',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
     },
     {
       tableName: 'MESA 3',
       variant: 'paid',
-      title: 'CUENTA PAGADA',
-      detail: '📱 MERCADO PAGO (Comprobante OK)',
-      subtitle: 'TIEMPO TOTAL: 1h 45m',
-      actionLabel: '✅ ¡SE FUERON! (Liberar)',
-      actionVariant: 'green-outline',
+      title: 'YA PAGARON (MP)',
       icon: 'check-circle',
+      actionLabel: 'LIBERAR MESA',
+      actionVariant: 'green-outline',
     },
   ];
 
   return (
     <>
-      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-4 lg:px-8 lg:pb-8">
+      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-5 lg:gap-6 lg:px-8 xl:px-12 lg:pb-8 max-w-[1400px] mx-auto w-full">
         {alerts.map((alert) => {
           const { onOpenModal, ...rest } = alert;
           return (
