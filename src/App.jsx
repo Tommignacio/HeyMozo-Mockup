@@ -7,6 +7,8 @@ import MisMesasPage from './pages/MisMesasPage';
 
 function App() {
   const [activeTab, setActiveTab] = useState('alerts');
+  const [mesa1Status, setMesa1Status] = useState('PENDING');
+  const [mesa2Status, setMesa2Status] = useState('PENDING');
   const pageTitle = activeTab === 'alerts' ? 'Active Alerts' : 'Mis Mesas';
 
   return (
@@ -25,9 +27,12 @@ function App() {
           </h1>
 
           {activeTab === 'alerts' ? (
-            <ActiveAlertsPage />
+            <ActiveAlertsPage
+              mesa1Status={mesa1Status} setMesa1Status={setMesa1Status}
+              mesa2Status={mesa2Status} setMesa2Status={setMesa2Status}
+            />
           ) : (
-            <MisMesasPage />
+            <MisMesasPage mesa1Status={mesa1Status} mesa2Status={mesa2Status} />
           )}
         </main>
 

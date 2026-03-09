@@ -74,6 +74,7 @@ export default function AlertCard({
   actionLabel,
   actionVariant = 'blue',
   onClick,
+  onActionClick,
 }) {
   const iconEl = iconMap[icon] ?? CHECK_ICON;
 
@@ -123,8 +124,8 @@ export default function AlertCard({
             ? 'bg-transparent border-2 border-green-500 text-green-400'
             : 'bg-[#3a3a3c] text-white'
         }`}
+        onClick={(e) => { e.stopPropagation(); onActionClick?.(); }}
       >
-        {actionVariant === 'blue' && <span className="text-3xl md:text-4xl font-light leading-none">←</span>}
         {actionLabel}
       </div>
     </div>
