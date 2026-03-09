@@ -4,7 +4,56 @@ const SERVICETTE_ICON = (
   </svg>
 );
 
-export default function AlertModal({ tableName, items = [], waitingTime, onClose, onVerComanda }) {
+export default function AlertModal({ tableName, items = [], waitingTime, onClose, onVerComanda, onAction, variant = 'default', actionLabel = '¡VISTO!', billingEmoji = '💳', billingLabel = 'PAGA CON TARJETA', headerColor = '#e8362a' }) {
+  if (variant === 'billing') {
+    return (
+      <div
+        className="fixed inset-0 bg-black/72 z-50 flex items-center justify-center p-4 lg:p-8"
+        onClick={(e) => e.target === e.currentTarget && onClose?.()}
+      >
+        <div
+          className="bg-[#2a2a2c] rounded-[20px] overflow-hidden w-full max-w-sm shadow-2xl animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header con color dinámico, tabla centrada y tiempo */}
+          <div className="py-3 px-5 flex items-center justify-between" style={{ background: headerColor }}>
+            <div className="w-12" />
+            <div className="text-[22px] font-extrabold text-white tracking-wide">{tableName}</div>
+            {waitingTime
+              ? <div className="text-[14px] text-white/80 font-semibold uppercase tracking-wider w-12 text-right">{waitingTime}</div>
+              : <div className="w-12" />
+            }
+          </div>
+
+          {/* Cuerpo minimalista de cobranza */}
+          <div className="bg-[#1e1e20] mx-3.5 mt-3.5 rounded-[14px] flex flex-col items-center py-9 gap-5">
+            <div className="text-[80px] leading-none">{billingEmoji}</div>
+            <div className="text-[28px] font-extrabold text-white tracking-wide text-center">{billingLabel}</div>
+          </div>
+
+          {/* Ver historial link */}
+          <button
+            type="button"
+            className="flex items-center justify-center gap-1.5 pt-2.5 px-5 pb-1 text-[#8e8e93] text-sm font-medium cursor-pointer bg-transparent border-none w-full font-[inherit]"
+            onClick={() => {}}
+          >
+            <div className="w-[18px] h-[18px] border-2 border-[#8e8e93] rounded-full flex items-center justify-center text-[13px] leading-none text-[#8e8e93] shrink-0">+</div>
+            <span>Ver historial de pedidos</span>
+          </button>
+
+          {/* Botón acción — flush al fondo del card */}
+          <button
+            type="button"
+            className="mt-3 mx-0 mb-0 p-7 text-center text-[22px] font-bold bg-[#3478f6] text-white cursor-pointer tracking-wide transition-opacity active:opacity-75 border-none w-full font-[inherit]"
+            onClick={onAction || onClose}
+          >
+            {actionLabel}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="fixed inset-0 bg-black/72 z-50 flex items-center justify-center p-4 lg:p-8"
