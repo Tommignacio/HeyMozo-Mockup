@@ -16,22 +16,22 @@ const staticMesas = [
 const mesaHistory = {
   '1': [
     { event: 'Pidió la cuenta (tarjeta)', time: 'Hace 2 min' },
-    { event: 'Llamó al mozo',             time: 'Hace 12 min' },
+    { event: 'Llamó al mozo',             time: 'Hace 12 min', icon: 'bell' },
     { event: 'Se sentó',                  time: 'Hace 47 min' },
   ],
   '2': [
     { event: 'Pidió la cuenta (efectivo)', time: 'Hace 1 min' },
-    { event: 'Llamó al mozo',              time: 'Hace 9 min' },
+    { event: 'Llamó al mozo',              time: 'Hace 9 min',  icon: 'bell' },
     { event: 'Se sentó',                   time: 'Hace 31 min' },
   ],
   '3': [
     { event: 'Cuenta cobrada (MP)',   time: 'Hace 5 min' },
     { event: 'Pidió la cuenta',       time: 'Hace 8 min' },
-    { event: 'Llamó al mozo',         time: 'Hace 22 min' },
+    { event: 'Llamó al mozo',         time: 'Hace 22 min', icon: 'bell' },
     { event: 'Se sentó',              time: 'Hace 65 min' },
   ],
   '5': [
-    { event: 'Llamó al mozo', time: 'Hace 4 min',  emoji: '🧊' },
+    { event: 'Llamó al mozo', time: 'Hace 4 min', icon: 'bell', emoji: '🧊' },
     { event: 'Se sentó',      time: 'Hace 18 min' },
   ],
 };
@@ -55,6 +55,12 @@ const variantStatusEmoji = {
 const CLOCK_ICON = (
   <svg viewBox="0 0 24 24" className="w-6 h-6 fill-[#8e8e93] shrink-0">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
+  </svg>
+);
+
+const BELL_ICON_SM = (
+  <svg viewBox="0 0 24 24" className="w-6 h-6 fill-[#8e8e93] shrink-0">
+    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
   </svg>
 );
 
@@ -149,14 +155,14 @@ export default function MisMesasPage({
                     key={i}
                     className={`flex items-center gap-4 py-[16px] px-5 ${i < arr.length - 1 ? 'border-b border-[#2c2c2e]' : ''}`}
                   >
-                    {ev.emoji
-                      ? <div className="text-[26px] leading-none shrink-0 w-6 text-center">{ev.emoji}</div>
-                      : CLOCK_ICON
-                    }
-                    <div>
+                    {ev.icon === 'bell' ? BELL_ICON_SM : CLOCK_ICON}
+                    <div className="flex-1">
                       <div className="text-[15px] font-bold text-white leading-tight">{ev.event}</div>
                       <div className="text-[12px] text-[#8e8e93] mt-0.5">{ev.time}</div>
                     </div>
+                    {ev.emoji && (
+                      <div className="text-[26px] leading-none shrink-0">{ev.emoji}</div>
+                    )}
                   </div>
                 ))}
               </div>
