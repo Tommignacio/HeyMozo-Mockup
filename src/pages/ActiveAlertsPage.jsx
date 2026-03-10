@@ -4,7 +4,7 @@ import AlertModal from '../components/AlertModal';
 
 // Estados por mesa: 'PENDING' → 'PAID' → 'GONE'
 
-export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status }) {
+export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released }) {
   const [modalData, setModalData] = useState(null);
 
   const mesa1Card = mesa1Status === 'PENDING'
@@ -73,15 +73,16 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       actionVariant: 'blue',
       onClick: () => setModalData({ tableName: 'MESA 5', waitingTime: '4 MIN', billingEmoji: '🧊', billingLabel: 'LLEVAR HIELO', headerColor: '#f07020' }),
     },
-    {
+    ...(!mesa3Released ? [{
       id: 'mesa3',
       tableName: 'MESA 3',
       variant: 'paid',
-      title: 'YA PAGARON (MP)',
+      title: 'COBRADO (MP)',
       icon: 'check-circle',
       actionLabel: 'LIBERAR MESA',
       actionVariant: 'green-outline',
-    },
+      onActionClick: () => setMesa3Released(true),
+    }] : []),
   ];
 
   // PENDING arriba → static en el medio → PAID al fondo → GONE fuera

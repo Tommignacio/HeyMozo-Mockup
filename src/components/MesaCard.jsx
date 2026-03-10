@@ -1,3 +1,9 @@
+const CHECK_CIRCLE_ICON = (
+  <svg viewBox="0 0 24 24" className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 fill-current opacity-90">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z" />
+  </svg>
+);
+
 const RECEIPT_ICON = (
   <svg viewBox="0 0 24 24" className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 fill-current opacity-90">
     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" />
@@ -44,26 +50,31 @@ const iconMap = {
   receipt: RECEIPT_ICON,
   bell: BELL_ICON,
   'bell-receipt': BELL_RECEIPT_ICON,
+  'check-circle': CHECK_CIRCLE_ICON,
   info: INFO_ICON,
   person: PERSON_ICON,
   table: TABLE_ICON,
 };
 
 const variantStyles = {
-  red:    { bg: 'bg-[#d62d20]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(214,45,32,0.55)]' },
-  orange: { bg: 'bg-[#f07020]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(240,112,32,0.55)]' },
-  yellow: { bg: 'bg-[#f5c518]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(245,197,24,0.5)]'  },
-  green:  { bg: 'bg-[#30d158]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(48,209,88,0.45)]'  },
-  libre:  { bg: 'bg-[#2c2c2e]', text: 'text-[#636366]', glow: ''                                                },
+  red:      { bg: 'bg-[#d62d20]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(214,45,32,0.55)]'   },
+  orange:   { bg: 'bg-[#f07020]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(240,112,32,0.55)]'  },
+  yellow:   { bg: 'bg-[#f5c518]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(245,197,24,0.5)]'   },
+  green:    { bg: 'bg-[#30d158]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(48,209,88,0.45)]'   },
+  paid:     { bg: 'bg-[#30d158]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(48,209,88,0.45)]'   },
+  occupied: { bg: 'bg-[#0a84ff]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(10,132,255,0.5)]'   },
+  libre:    { bg: 'bg-[#2c2c2e]', text: 'text-[#636366]', glow: ''                                                 },
 };
 
-export default function MesaCard({ number, status, time, icon = 'table', variant = 'libre', badgeCount }) {
-  const { bg, text, glow } = variantStyles[variant];
+export default function MesaCard({ number, status, time, icon = 'table', variant = 'libre', badgeCount, onClick }) {
+  const style = variantStyles[variant] ?? variantStyles.libre;
+  const { bg, text, glow } = style;
   const iconEl = iconMap[icon] ?? TABLE_ICON;
 
   return (
     <div
       className={`relative rounded-[16px] ${bg} ${glow} ${text} flex flex-col items-center justify-between p-5 md:p-6 lg:p-8 aspect-square cursor-pointer active:opacity-85`}
+      onClick={onClick}
     >
       {/* Badge */}
       {badgeCount != null && (

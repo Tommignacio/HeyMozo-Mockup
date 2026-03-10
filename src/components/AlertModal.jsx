@@ -31,16 +31,6 @@ export default function AlertModal({ tableName, items = [], waitingTime, onClose
             <div className="text-[28px] font-extrabold text-white tracking-wide text-center">{billingLabel}</div>
           </div>
 
-          {/* Ver historial link */}
-          <button
-            type="button"
-            className="flex items-center justify-center gap-1.5 pt-2.5 px-5 pb-1 text-[#8e8e93] text-sm font-medium cursor-pointer bg-transparent border-none w-full font-[inherit]"
-            onClick={() => {}}
-          >
-            <div className="w-[18px] h-[18px] border-2 border-[#8e8e93] rounded-full flex items-center justify-center text-[13px] leading-none text-[#8e8e93] shrink-0">+</div>
-            <span>Ver historial de pedidos</span>
-          </button>
-
           {/* Botón acción — flush al fondo del card */}
           <button
             type="button"
@@ -64,7 +54,7 @@ export default function AlertModal({ tableName, items = [], waitingTime, onClose
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal header */}
-        <div className="bg-[#f07020] py-3 px-5 text-center">
+        <div className="py-3 px-5 text-center" style={{ background: headerColor }}>
           <div className="text-[22px] font-extrabold text-white tracking-wide">{tableName}</div>
           {waitingTime && (
             <div className="text-[13px] text-white/70 font-medium mt-0.5 uppercase tracking-wider">Waiting: {waitingTime}</div>

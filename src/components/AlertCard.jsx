@@ -40,28 +40,28 @@ const variantColors = {
   red:    'bg-[#d62d20]',
   orange: 'bg-[#f07020]',
   yellow: 'bg-[#f5c518]',
-  paid:   'bg-[#3a3a3c]',
+  paid:   'bg-[#30d158]',
 };
 
 const variantGlow = {
   red:    'shadow-[0_6px_36px_-2px_rgba(214,45,32,0.55),0_2px_14px_-4px_rgba(214,45,32,0.35)]',
   orange: 'shadow-[0_6px_36px_-2px_rgba(240,112,32,0.55),0_2px_14px_-4px_rgba(240,112,32,0.35)]',
   yellow: 'shadow-[0_6px_36px_-2px_rgba(245,197,24,0.45),0_2px_14px_-4px_rgba(245,197,24,0.25)]',
-  paid:   'shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)]',
+  paid:   'shadow-[0_6px_36px_-2px_rgba(48,209,88,0.55),0_2px_14px_-4px_rgba(48,209,88,0.35)]',
 };
 
 const variantBodyFrom = {
   red:    'from-[rgba(214,45,32,0.12)]',
   orange: 'from-[rgba(240,112,32,0.12)]',
   yellow: 'from-[rgba(245,197,24,0.08)]',
-  paid:   'from-[rgba(255,255,255,0.03)]',
+  paid:   'from-[rgba(48,209,88,0.12)]',
 };
 
 const headerTextColor = {
   red:    'text-white',
   orange: 'text-white',
   yellow: 'text-[#1a1a1a]',
-  paid:   'text-[#8e8e93]',
+  paid:   'text-white',
 };
 
 export default function AlertCard({
