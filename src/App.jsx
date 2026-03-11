@@ -9,6 +9,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('alerts');
   const [mesa1Status, setMesa1Status] = useState('PENDING');
   const [mesa2Status, setMesa2Status] = useState('PENDING');
+  const [mesa3Released, setMesa3Released] = useState(false);
+  const [mesa4Status, setMesa4Status] = useState('NEW_ORDER');
   const pageTitle = activeTab === 'alerts' ? 'Active Alerts' : 'Mis Mesas';
 
   return (
@@ -26,14 +28,22 @@ function App() {
             {pageTitle}
           </h1>
 
-          {activeTab === 'alerts' ? (
+          <div className={activeTab !== 'alerts' ? 'hidden' : undefined}>
             <ActiveAlertsPage
               mesa1Status={mesa1Status} setMesa1Status={setMesa1Status}
               mesa2Status={mesa2Status} setMesa2Status={setMesa2Status}
+              mesa3Released={mesa3Released} setMesa3Released={setMesa3Released}
+              mesa4Status={mesa4Status} setMesa4Status={setMesa4Status}
             />
-          ) : (
-            <MisMesasPage mesa1Status={mesa1Status} mesa2Status={mesa2Status} />
-          )}
+          </div>
+          <div className={activeTab !== 'mesas' ? 'hidden' : undefined}>
+            <MisMesasPage
+              mesa1Status={mesa1Status} setMesa1Status={setMesa1Status}
+              mesa2Status={mesa2Status} setMesa2Status={setMesa2Status}
+              mesa3Released={mesa3Released} setMesa3Released={setMesa3Released}
+              mesa4Status={mesa4Status} setMesa4Status={setMesa4Status}
+            />
+          </div>
         </main>
 
         {/* Bottom nav - mobile only */}

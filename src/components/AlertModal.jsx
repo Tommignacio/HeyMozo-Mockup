@@ -12,43 +12,36 @@ export default function AlertModal({ tableName, items = [], waitingTime, onClose
         onClick={(e) => e.target === e.currentTarget && onClose?.()}
       >
         <div
-          className="bg-[#2a2a2c] rounded-[20px] overflow-hidden w-full max-w-sm shadow-2xl animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]"
+          className="rounded-[20px] overflow-hidden w-full max-w-sm shadow-2xl animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]"
+          style={{ background: headerColor }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header con color dinámico, tabla centrada y tiempo */}
-          <div className="py-3 px-5 flex items-center justify-between" style={{ background: headerColor }}>
+          {/* Header */}
+          <div className="py-3 px-5 flex items-center justify-between">
             <div className="w-12" />
-            <div className="text-[22px] font-extrabold text-white tracking-wide">{tableName}</div>
+            <div className="text-[22px] font-bold text-white tracking-wide">{tableName}</div>
             {waitingTime
-              ? <div className="text-[14px] text-white/80 font-semibold uppercase tracking-wider w-12 text-right">{waitingTime}</div>
+              ? <div className="text-[14px] text-white/80 font-medium uppercase tracking-wider w-12 text-right">{waitingTime}</div>
               : <div className="w-12" />
             }
           </div>
 
-          {/* Cuerpo minimalista de cobranza */}
-          <div className="bg-[#1e1e20] mx-3.5 mt-3.5 rounded-[14px] flex flex-col items-center py-9 gap-5">
+          {/* Billing body */}
+          <div className="bg-white/10 mx-3.5 mt-3.5 rounded-[14px] flex flex-col items-center py-9 gap-5">
             <div className="text-[80px] leading-none">{billingEmoji}</div>
-            <div className="text-[28px] font-extrabold text-white tracking-wide text-center">{billingLabel}</div>
+            <div className="text-[28px] font-bold text-white tracking-wide text-center">{billingLabel}</div>
           </div>
 
-          {/* Ver historial link */}
-          <button
-            type="button"
-            className="flex items-center justify-center gap-1.5 pt-2.5 px-5 pb-1 text-[#8e8e93] text-sm font-medium cursor-pointer bg-transparent border-none w-full font-[inherit]"
-            onClick={() => {}}
-          >
-            <div className="w-[18px] h-[18px] border-2 border-[#8e8e93] rounded-full flex items-center justify-center text-[13px] leading-none text-[#8e8e93] shrink-0">+</div>
-            <span>Ver historial de pedidos</span>
-          </button>
-
-          {/* Botón acción — flush al fondo del card */}
-          <button
-            type="button"
-            className="mt-3 mx-0 mb-0 p-7 text-center text-[22px] font-bold bg-[#3478f6] text-white cursor-pointer tracking-wide transition-opacity active:opacity-75 border-none w-full font-[inherit]"
-            onClick={onAction || onClose}
-          >
-            {actionLabel}
-          </button>
+          {/* Action button — white */}
+          <div className="flex justify-center pt-5 pb-5">
+            <button
+              type="button"
+              className="w-[80%] py-4 rounded-[12px] text-center text-[18px] font-bold bg-white text-[#1a1a1a] cursor-pointer tracking-wide transition-opacity active:opacity-75 border-none font-[inherit]"
+              onClick={onAction || onClose}
+            >
+              {actionLabel}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -64,7 +57,7 @@ export default function AlertModal({ tableName, items = [], waitingTime, onClose
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal header */}
-        <div className="bg-[#f07020] py-3 px-5 text-center">
+        <div className="py-3 px-5 text-center" style={{ background: headerColor }}>
           <div className="text-[22px] font-extrabold text-white tracking-wide">{tableName}</div>
           {waitingTime && (
             <div className="text-[13px] text-white/70 font-medium mt-0.5 uppercase tracking-wider">Waiting: {waitingTime}</div>
