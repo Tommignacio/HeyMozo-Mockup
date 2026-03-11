@@ -1,97 +1,154 @@
 import { useState } from 'react';
-import Phone from '../components/Phone';
-import StatusBar from '../components/StatusBar';
-import Header from '../components/Header';
 import AlertCard from '../components/AlertCard';
-import BottomNav from '../components/BottomNav';
 import AlertModal from '../components/AlertModal';
 
-const MESA1_MODAL_ITEMS = [
-  { emoji: '🧊', label: 'Hielo' },
-  { label: 'Servilletas' },
-];
+// Estados por mesa: 'PENDING' → 'PAID' → 'GONE'
 
-export default function ActiveAlertsPage({ activeTab = 'alerts', onTabChange }) {
-  const [modalOpen, setModalOpen] = useState(false);
+export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status }) {
+  const [modalData, setModalData] = useState(null);
 
-  const alerts = [
+  const mesa1Card = mesa1Status === 'PENDING'
+    ? {
+        id: 'mesa1',
+        tableName: 'MESA 1',
+        variant: 'red',
+        waitTime: '2 MIN',
+        title: 'Cuenta: Tarjeta',
+        icon: 'check',
+        actionLabel: '¡VOY!',
+        actionVariant: 'blue',
+        onClick: () => setModalData({
+          tableName: 'MESA 1', waitingTime: '2 MIN', billingEmoji: '💳', billingLabel: 'PAGA CON TARJETA',
+          onAction: () => { setMesa1Status('PAID'); setModalData(null); },
+        }),
+        onActionClick: () => setMesa1Status('PAID'),
+      }
+    : {
+        id: 'mesa1',
+        tableName: 'MESA 1',
+        variant: 'paid',
+        waitTime: '2 MIN',
+        title: 'Cobrado (Tarjeta)',
+        icon: 'check-circle',
+        actionLabel: 'LIBERAR MESA',
+        actionVariant: 'green-outline',
+        onActionClick: () => setMesa1Status('GONE'),
+      };
+
+  const mesa2Card = mesa2Status === 'PENDING'
+    ? {
+        id: 'mesa2',
+        tableName: 'MESA 2',
+        variant: 'red',
+        waitTime: '1 MIN',
+        title: 'Cuenta: Efectivo',
+        icon: 'check',
+        actionLabel: '¡VOY!',
+        actionVariant: 'blue',
+        onClick: () => setModalData({
+          tableName: 'MESA 2', waitingTime: '1 MIN', billingEmoji: '💵', billingLabel: 'PAGA CON EFECTIVO',
+          onAction: () => { setMesa2Status('PAID'); setModalData(null); },
+        }),
+        onActionClick: () => setMesa2Status('PAID'),
+      }
+    : {
+        id: 'mesa2',
+        tableName: 'MESA 2',
+        variant: 'paid',
+        waitTime: '1 MIN',
+        title: 'Cobrado (Efectivo)',
+        icon: 'check-circle',
+        actionLabel: 'LIBERAR MESA',
+        actionVariant: 'green-outline',
+        onActionClick: () => setMesa2Status('GONE'),
+      };
+
+  const staticAlerts = [
+    ...(mesa4Status === 'NEW_ORDER' ? [{
+      id: 'mesa4',
+      tableName: 'MESA 4',
+      variant: 'purple',
+      waitTime: '1 MIN',
+      title: 'Nuevo Pedido',
+      icon: 'cart',
+      badgeCount: 3,
+      actionLabel: 'PENDIENTE',
+      onActionClick: () => setMesa4Status('COOKING'),
+    }] : []),
+    ...(mesa4Status === 'COOKING' ? [{
+      id: 'mesa4',
+      tableName: 'MESA 4',
+      variant: 'purple',
+      waitTime: '1 MIN',
+      title: 'Esperando Comida',
+      icon: 'cart',
+      dimmed: true,
+      actionLabel: '¡LISTO!',
+      onActionClick: () => setMesa4Status('OCCUPIED'),
+    }] : []),
     {
-      tableName: 'MESA 1',
-      variant: 'red',
-      badgeCount: 1,
-      title: 'CHECK REQUESTED',
-      subtitle: 'WAITING: 191 MIN',
-      actionLabel: 'VISTO!',
-      actionVariant: 'blue',
-      icon: 'check',
-      onOpenModal: () => setModalOpen(true),
-    },
-    {
+      id: 'mesa5',
       tableName: 'MESA 5',
       variant: 'orange',
-      title: 'CALL WAITER',
-      subtitle: 'WAITING: 4 MIN',
-      actionLabel: '¡VOY!',
-      actionVariant: 'dark',
+      waitTime: '4 MIN',
+      title: 'Llevar Hielo',
       icon: 'bell',
+      actionLabel: '¡VOY!',
+      actionVariant: 'blue',
+      onClick: () => setModalData({ tableName: 'MESA 5', waitingTime: '4 MIN', billingEmoji: '🧊', billingLabel: 'LLEVAR HIELO', headerColor: '#f07020' }),
     },
-    {
-      tableName: 'MESA 2',
-      variant: 'orange',
-      title: 'CALL WAITER + CHECK',
-      subtitle: 'WAITING: 3 MIN',
-      actionLabel: 'RESUELTO',
-      actionVariant: 'dark',
-      icon: 'bell-check',
-    },
-    {
+    ...(!mesa3Released ? [{
+      id: 'mesa3',
       tableName: 'MESA 3',
-      variant: 'yellow',
-      title: 'NEW CLIENT',
-      subtitle: 'ARRIVED: 1 MIN',
-      actionLabel: 'OK',
-      actionVariant: 'dark',
-      icon: 'info',
-    },
+      variant: 'paid',
+      waitTime: '5 MIN',
+      title: 'Cobrado (MP)',
+      icon: 'check-circle',
+      actionLabel: 'LIBERAR MESA',
+      actionVariant: 'green-outline',
+      onActionClick: () => setMesa3Released(true),
+    }] : []),
   ];
 
-  return (
-    <Phone>
-      <StatusBar />
-      <Header />
-      <div className="page-title">Active Alerts</div>
+  // PENDING arriba → static en el medio → COOKING/PAID al fondo → GONE fuera
+  const pending = [
+    ...(mesa1Status === 'PENDING' ? [mesa1Card] : []),
+    ...(mesa2Status === 'PENDING' ? [mesa2Card] : []),
+  ];
+  const paid = [
+    ...(mesa1Status === 'PAID' ? [mesa1Card] : []),
+    ...(mesa2Status === 'PAID' ? [mesa2Card] : []),
+  ];
+  const cooking = staticAlerts.filter(a => a.dimmed);
+  const topAlerts = staticAlerts.filter(a => !a.dimmed);
+  const alerts = [...pending, ...topAlerts, ...cooking, ...paid];
 
-      <div className="alerts-list">
-        {alerts.map((alert) => {
-          const { onOpenModal, ...rest } = alert;
-          return (
-            <AlertCard
-              key={alert.tableName}
-              {...rest}
-              onClick={onOpenModal}
-            />
-          );
-        })}
+  return (
+    <>
+      <div className="px-5 pt-2 pb-5 flex flex-col gap-3.5 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-5 lg:gap-6 lg:px-8 xl:px-12 lg:pb-8 max-w-[1400px] mx-auto w-full" style={{ padding: '1rem' }}>
+        {alerts.map(({ id, onClick, onActionClick, ...rest }) => (
+          <AlertCard
+            key={id}
+            {...rest}
+            onClick={onClick}
+            onActionClick={onActionClick}
+          />
+        ))}
       </div>
 
-      <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
-
-      {modalOpen && (
+      {modalData && (
         <AlertModal
-          tableName="MESA 1"
-          items={MESA1_MODAL_ITEMS}
-          summary={
-            <>
-              Mesa 1: Hielo +<br />
-              Servilletas - Waiting
-              <br />
-              4 min
-            </>
-          }
-          onClose={() => setModalOpen(false)}
-          onVerComanda={() => {}}
+          tableName={modalData.tableName}
+          waitingTime={modalData.waitingTime}
+          billingEmoji={modalData.billingEmoji}
+          billingLabel={modalData.billingLabel}
+          headerColor={modalData.headerColor}
+          onAction={modalData.onAction}
+          variant="billing"
+          actionLabel="¡VOY!"
+          onClose={() => setModalData(null)}
         />
       )}
-    </Phone>
+    </>
   );
 }

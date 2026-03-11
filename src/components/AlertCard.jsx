@@ -1,69 +1,105 @@
 const CHECK_ICON = (
-  <svg width="28" height="28" viewBox="0 0 24 24">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" />
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] shrink-0" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="16" y1="13" x2="8" y2="13"/>
+    <line x1="16" y1="17" x2="8" y2="17"/>
   </svg>
 );
 
 const BELL_ICON = (
-  <svg width="28" height="28" viewBox="0 0 24 24">
-    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] shrink-0" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 01-3.46 0"/>
   </svg>
 );
 
-const BELL_PLUS_CHECK = (
-  <div className="alert-icon-combo">
-    <svg width="22" height="22" viewBox="0 0 24 24">
-      <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-    </svg>
-    <span className="plus-sign">+</span>
-    <svg width="22" height="22" viewBox="0 0 24 24">
-      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z" />
-    </svg>
-  </div>
+const CHECK_CIRCLE_ICON = (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] shrink-0" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
 );
+
+const CART_ICON = (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] shrink-0" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+  </svg>
+);
+
+const iconMap = {
+  check: CHECK_ICON,
+  bell: BELL_ICON,
+  'check-circle': CHECK_CIRCLE_ICON,
+  cart: CART_ICON,
+};
+
+const variantBg = {
+  red:    '#d62d20',
+  orange: '#f07020',
+  yellow: '#f5c518',
+  paid:   '#30d158',
+  purple: '#9333ea',
+  blue:   '#0a84ff',
+};
 
 export default function AlertCard({
   tableName,
   variant = 'red',
-  badgeCount,
   title,
-  subtitle,
-  actionLabel,
-  actionVariant = 'blue',
+  waitTime,
   icon = 'check',
+  actionLabel,
+  badgeCount,
+  dimmed,
   onClick,
+  onActionClick,
 }) {
-  const iconMap = {
-    check: CHECK_ICON,
-    bell: BELL_ICON,
-    'bell-check': BELL_PLUS_CHECK,
-    info: (
-      <div className="info-icon">i</div>
-    ),
-  };
-
   const iconEl = iconMap[icon] ?? CHECK_ICON;
 
   return (
-    <div className="alert-card" onClick={onClick} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onClick?.()}>
-      <div className={`table-header ${variant}`} style={{ position: 'relative', overflow: 'visible' }}>
-        <span className="table-name">{tableName}</span>
-        {badgeCount != null && (
-          <div className="badge" style={{ border: '2px solid #1c1c1e' }}>
-            {badgeCount}
+    <div
+      className={`relative rounded-[16px] overflow-visible cursor-pointer active:opacity-90 w-full h-[128px] flex flex-col ${dimmed ? 'opacity-75' : ''}`}
+      style={{ background: variantBg[variant] ?? '#3a3a3c', padding: '0 0.5rem 0.5rem 0.5rem', borderRadius: '16px' }}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
+    >
+      {/* Badge */}
+      {badgeCount != null && (
+        <div className="absolute -top-2 -right-2 bg-red-600 text-white w-7 h-7 flex items-center justify-center rounded-full text-sm font-bold border-2 border-[#1c1c1e] z-10">
+          {badgeCount}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="px-6 pt-4 pb-2">
+        <div className="text-white text-[24px] font-bold tracking-wide leading-tight" style={{ padding: '0.5rem' }}>
+          {tableName}
+        </div>
+        <div className="flex items-center gap-1.5 mt-1">
+          {iconEl}
+          <span className="text-white/90 text-[16px] font-medium leading-snug tracking-wide">
+            {title}
+          </span>
+        </div>
+        {waitTime && (
+          <div className="text-white/70 text-[13px] font-medium mt-1 tracking-wider">
+            ⏱ {waitTime}
           </div>
         )}
       </div>
-      <div className="alert-body">
-        <div className="alert-icon">{iconEl}</div>
-        <div className="alert-text-group">
-          <div className="alert-title">{title}</div>
-          <div className="alert-subtitle">{subtitle}</div>
+
+      {/* Action button — pushed to bottom */}
+      <div className="mt-auto flex justify-center pb-3">
+        <div
+          className={`w-[80%] py-3 text-center text-[17px] font-bold cursor-pointer transition-opacity active:opacity-70 tracking-wide bg-white text-[#1a1a1a] ${variant === 'purple' ? 'rounded-full active:scale-95 transition-transform' : 'rounded-[12px]'}`}
+          onClick={(e) => { e.stopPropagation(); onActionClick?.(); }}
+        >
+          {actionLabel}
         </div>
-      </div>
-      <div className={`action-btn btn-${actionVariant}`}>
-        {actionVariant === 'blue' && <span className="arrow">←</span>}
-        {actionLabel}
       </div>
     </div>
   );
