@@ -46,6 +46,13 @@ const TABLE_ICON = (
   </svg>
 );
 
+const CART_ICON = (
+  <svg viewBox="0 0 24 24" className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 fill-current opacity-90">
+    <circle cx="9" cy="21" r="1.5"/><circle cx="20" cy="21" r="1.5"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+  </svg>
+);
+
 const iconMap = {
   receipt: RECEIPT_ICON,
   bell: BELL_ICON,
@@ -54,6 +61,7 @@ const iconMap = {
   info: INFO_ICON,
   person: PERSON_ICON,
   table: TABLE_ICON,
+  cart: CART_ICON,
 };
 
 const variantStyles = {
@@ -63,6 +71,7 @@ const variantStyles = {
   green:    { bg: 'bg-[#30d158]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(48,209,88,0.45)]'   },
   paid:     { bg: 'bg-[#30d158]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(48,209,88,0.45)]'   },
   occupied: { bg: 'bg-[#0a84ff]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(10,132,255,0.5)]'   },
+  purple:   { bg: 'bg-[#9333ea]', text: 'text-white',     glow: 'shadow-[0_4px_20px_-2px_rgba(147,51,234,0.55)]'  },
   libre:    { bg: 'bg-[#2c2c2e]', text: 'text-[#636366]', glow: ''                                                 },
 };
 

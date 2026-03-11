@@ -4,7 +4,7 @@ import AlertModal from '../components/AlertModal';
 
 // Estados por mesa: 'PENDING' → 'PAID' → 'GONE'
 
-export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released }) {
+export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status }) {
   const [modalData, setModalData] = useState(null);
 
   const mesa1Card = mesa1Status === 'PENDING'
@@ -13,7 +13,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         tableName: 'MESA 1',
         variant: 'red',
         waitTime: '2 MIN',
-        title: 'CUENTA: TARJETA',
+        title: 'Cuenta: Tarjeta',
         icon: 'check',
         actionLabel: '¡VOY!',
         actionVariant: 'blue',
@@ -27,7 +27,8 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         id: 'mesa1',
         tableName: 'MESA 1',
         variant: 'paid',
-        title: 'COBRADO (TARJETA)',
+        waitTime: '2 MIN',
+        title: 'Cobrado (Tarjeta)',
         icon: 'check-circle',
         actionLabel: 'LIBERAR MESA',
         actionVariant: 'green-outline',
@@ -40,7 +41,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         tableName: 'MESA 2',
         variant: 'red',
         waitTime: '1 MIN',
-        title: 'CUENTA: EFECTIVO',
+        title: 'Cuenta: Efectivo',
         icon: 'check',
         actionLabel: '¡VOY!',
         actionVariant: 'blue',
@@ -54,7 +55,8 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         id: 'mesa2',
         tableName: 'MESA 2',
         variant: 'paid',
-        title: 'COBRADO (EFECTIVO)',
+        waitTime: '1 MIN',
+        title: 'Cobrado (Efectivo)',
         icon: 'check-circle',
         actionLabel: 'LIBERAR MESA',
         actionVariant: 'green-outline',
@@ -62,12 +64,34 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       };
 
   const staticAlerts = [
+    ...(mesa4Status === 'NEW_ORDER' ? [{
+      id: 'mesa4',
+      tableName: 'MESA 4',
+      variant: 'purple',
+      waitTime: '1 MIN',
+      title: 'Nuevo Pedido',
+      icon: 'cart',
+      badgeCount: 3,
+      actionLabel: 'PENDIENTE',
+      onActionClick: () => setMesa4Status('COOKING'),
+    }] : []),
+    ...(mesa4Status === 'COOKING' ? [{
+      id: 'mesa4',
+      tableName: 'MESA 4',
+      variant: 'purple',
+      waitTime: '1 MIN',
+      title: 'Esperando Comida',
+      icon: 'cart',
+      dimmed: true,
+      actionLabel: '¡LISTO!',
+      onActionClick: () => setMesa4Status('OCCUPIED'),
+    }] : []),
     {
       id: 'mesa5',
       tableName: 'MESA 5',
       variant: 'orange',
       waitTime: '4 MIN',
-      title: 'LLEVAR HIELO',
+      title: 'Llevar Hielo',
       icon: 'bell',
       actionLabel: '¡VOY!',
       actionVariant: 'blue',
@@ -77,7 +101,8 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       id: 'mesa3',
       tableName: 'MESA 3',
       variant: 'paid',
-      title: 'COBRADO (MP)',
+      waitTime: '5 MIN',
+      title: 'Cobrado (MP)',
       icon: 'check-circle',
       actionLabel: 'LIBERAR MESA',
       actionVariant: 'green-outline',
@@ -85,7 +110,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
     }] : []),
   ];
 
-  // PENDING arriba → static en el medio → PAID al fondo → GONE fuera
+  // PENDING arriba → static en el medio → COOKING/PAID al fondo → GONE fuera
   const pending = [
     ...(mesa1Status === 'PENDING' ? [mesa1Card] : []),
     ...(mesa2Status === 'PENDING' ? [mesa2Card] : []),
@@ -94,11 +119,13 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
     ...(mesa1Status === 'PAID' ? [mesa1Card] : []),
     ...(mesa2Status === 'PAID' ? [mesa2Card] : []),
   ];
-  const alerts = [...pending, ...staticAlerts, ...paid];
+  const cooking = staticAlerts.filter(a => a.dimmed);
+  const topAlerts = staticAlerts.filter(a => !a.dimmed);
+  const alerts = [...pending, ...topAlerts, ...cooking, ...paid];
 
   return (
     <>
-      <div className="px-3 pt-1 pb-5 flex flex-col items-center gap-3 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-5 lg:gap-6 lg:px-8 xl:px-12 lg:pb-8 max-w-[1400px] mx-auto w-full">
+      <div className="px-5 pt-2 pb-5 flex flex-col gap-3.5 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 md:items-start md:gap-5 lg:gap-6 lg:px-8 xl:px-12 lg:pb-8 max-w-[1400px] mx-auto w-full" style={{ padding: '1rem' }}>
         {alerts.map(({ id, onClick, onActionClick, ...rest }) => (
           <AlertCard
             key={id}
