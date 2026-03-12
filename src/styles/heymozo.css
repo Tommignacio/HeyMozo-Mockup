@@ -6,12 +6,10 @@
 
 /* PHONE */
 .phone {
-  width: 375px;
-  min-height: 812px;
+  width: 100%;
+  min-height: 100vh;
   background: #1c1c1e;
-  border-radius: 44px;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   position: relative;
 }
 
@@ -326,7 +324,7 @@
 
 /* MODAL */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.72);
   z-index: 100;
