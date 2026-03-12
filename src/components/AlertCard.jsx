@@ -60,8 +60,8 @@ export default function AlertCard({
 
   return (
     <div
-      className={`relative rounded-[16px] overflow-visible cursor-pointer active:opacity-90 w-full h-[128px] flex flex-col ${dimmed ? 'opacity-75' : ''}`}
-      style={{ background: variantBg[variant] ?? '#3a3a3c', padding: '0 0.5rem 0.5rem 0.5rem', borderRadius: '16px' }}
+      className={`relative rounded-[16px] overflow-visible cursor-pointer active:opacity-90 w-full flex flex-col ${dimmed ? 'opacity-75' : ''}`}
+      style={{ background: variantBg[variant] ?? '#3a3a3c', padding: '0 0.5rem 0.5rem 0.5rem', borderRadius: '16px', height: 'auto' }}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -75,7 +75,7 @@ export default function AlertCard({
       )}
 
       {/* Content */}
-      <div className="px-6 pt-4 pb-2">
+      <div className="px-6 pt-4 pb-2" style={{ padding: '0.5rem' }}>
         <div className="text-white text-[24px] font-bold tracking-wide leading-tight" style={{ padding: '0.5rem' }}>
           {tableName}
         </div>
@@ -95,7 +95,8 @@ export default function AlertCard({
       {/* Action button — pushed to bottom */}
       <div className="mt-auto flex justify-center pb-3">
         <div
-          className={`w-[80%] py-3 text-center text-[17px] font-bold cursor-pointer transition-opacity active:opacity-70 tracking-wide bg-white text-[#1a1a1a] ${variant === 'purple' ? 'rounded-full active:scale-95 transition-transform' : 'rounded-[12px]'}`}
+          className={`py-3 text-center text-[17px] font-bold cursor-pointer transition-opacity active:opacity-70 tracking-wide bg-white text-[#1a1a1a] ${variant === 'purple' ? 'rounded-full active:scale-95 transition-transform' : 'rounded-[12px]'}`}
+          style={{ padding: '0.5rem', width: '-webkit-fill-available' }}
           onClick={(e) => { e.stopPropagation(); onActionClick?.(); }}
         >
           {actionLabel}

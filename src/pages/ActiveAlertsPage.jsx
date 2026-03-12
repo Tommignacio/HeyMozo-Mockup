@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import AlertCard from '../components/AlertCard';
 import AlertModal from '../components/AlertModal';
+import OrderDetailModal from '../components/OrderDetailModal';
 
 // Estados por mesa: 'PENDING' → 'PAID' → 'GONE'
 
+const mesa4Items = [
+  { qty: 2, name: 'Pinta IPA', description: 'Cerveza artesanal tirada' },
+  { qty: 1, name: 'Papas Fritas', description: 'Porción grande', modifier: 'SIN SAL' },
+];
+
 export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status }) {
   const [modalData, setModalData] = useState(null);
+  const [orderModal, setOrderModal] = useState(false);
 
   const mesa1Card = mesa1Status === 'PENDING'
     ? {
@@ -73,6 +80,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       icon: 'cart',
       badgeCount: 3,
       actionLabel: 'PENDIENTE',
+      onClick: () => setOrderModal(true),
       onActionClick: () => setMesa4Status('COOKING'),
     }] : []),
     ...(mesa4Status === 'COOKING' ? [{
@@ -84,6 +92,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       icon: 'cart',
       dimmed: true,
       actionLabel: '¡LISTO!',
+      onClick: () => setOrderModal(true),
       onActionClick: () => setMesa4Status('OCCUPIED'),
     }] : []),
     {
@@ -147,6 +156,19 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
           variant="billing"
           actionLabel="¡VOY!"
           onClose={() => setModalData(null)}
+        />
+      )}
+
+      {orderModal && (
+        <OrderDetailModal
+          mesaNumber="4"
+          items={mesa4Items}
+          actionLabel={mesa4Status === 'NEW_ORDER' ? 'PENDIENTE' : '¡LISTO!'}
+          onAction={() => {
+            if (mesa4Status === 'NEW_ORDER') setMesa4Status('COOKING');
+            else if (mesa4Status === 'COOKING') setMesa4Status('OCCUPIED');
+          }}
+          onClose={() => setOrderModal(false)}
         />
       )}
     </>
