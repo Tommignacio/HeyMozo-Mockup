@@ -25,7 +25,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         actionLabel: '¡VOY!',
         actionVariant: 'blue',
         onClick: () => setModalData({
-          tableName: 'MESA 1', waitingTime: '2 MIN', billingEmoji: '💳', billingLabel: 'PAGA CON TARJETA',
+          tableName: 'MESA 1', waitingTime: '2 MIN', billingEmoji: '💳', billingLabel: 'PAGA CON TARJETA', headerColor: '#d62d20',
           onAction: () => { setMesa1Status('PAID'); setModalData(null); },
         }),
         onActionClick: () => setMesa1Status('PAID'),
@@ -53,7 +53,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         actionLabel: '¡VOY!',
         actionVariant: 'blue',
         onClick: () => setModalData({
-          tableName: 'MESA 2', waitingTime: '1 MIN', billingEmoji: '💵', billingLabel: 'PAGA CON EFECTIVO',
+          tableName: 'MESA 2', waitingTime: '1 MIN', billingEmoji: '💵', billingLabel: 'PAGA CON EFECTIVO', headerColor: '#d62d20',
           onAction: () => { setMesa2Status('PAID'); setModalData(null); },
         }),
         onActionClick: () => setMesa2Status('PAID'),
@@ -153,7 +153,6 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
           billingLabel={modalData.billingLabel}
           headerColor={modalData.headerColor}
           onAction={modalData.onAction}
-          variant="billing"
           actionLabel="¡VOY!"
           onClose={() => setModalData(null)}
         />
