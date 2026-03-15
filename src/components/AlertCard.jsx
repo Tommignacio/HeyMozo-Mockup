@@ -35,6 +35,12 @@ const iconMap = {
   cart: CART_ICON,
 };
 
+// Material Icons names used in Stitch designs
+const MATERIAL_ICONS = new Set([
+  'credit_card', 'hourglass_empty', 'shopping_cart',
+  'notifications', 'check_circle', 'schedule',
+]);
+
 const variantBg = {
   red:    '#d62d20',
   orange: '#f07020',
@@ -48,15 +54,21 @@ export default function AlertCard({
   tableName,
   variant = 'red',
   title,
+  subtitle,
   waitTime,
   icon = 'check',
   actionLabel,
   badgeCount,
   dimmed,
+  disabledBtn,
   onClick,
   onActionClick,
 }) {
-  const iconEl = iconMap[icon] ?? CHECK_ICON;
+  const iconEl = icon
+    ? MATERIAL_ICONS.has(icon)
+      ? <span className="material-icons text-white/85" style={{ fontSize: '20px' }}>{icon}</span>
+      : (iconMap[icon] ?? CHECK_ICON)
+    : null;
 
   return (
     <div
@@ -75,19 +87,28 @@ export default function AlertCard({
       )}
 
       {/* Content */}
-      <div className="px-6 pt-4 pb-2" style={{ padding: '0.5rem' }}>
-        <div className="text-white text-[24px] font-bold tracking-wide leading-tight" style={{ padding: '0.5rem' }}>
-          {tableName}
+      <div style={{ padding: '0.5rem' }}>
+        {/* Table name + wait time in top-right corner (esquina superior) */}
+        <div className="flex items-start justify-between" style={{ padding: '0.5rem 0.5rem 0.25rem' }}>
+          <div className="text-white text-[24px] font-bold tracking-wide leading-tight">
+            {tableName}
+          </div>
+          {waitTime && (
+            <div className="text-white/80 font-semibold flex items-center gap-0.5 mt-1">
+              <span className="material-icons" style={{ fontSize: '14px' }}>schedule</span>
+              <span style={{ fontSize: '12px', letterSpacing: '0.05em' }}>{waitTime}</span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-1.5 mt-1">
+        <div className={`flex items-center gap-1.5 ${iconEl ? '' : ''}`} style={{ padding: '0 0.5rem' }}>
           {iconEl}
           <span className="text-white/90 text-[16px] font-medium leading-snug tracking-wide">
             {title}
           </span>
         </div>
-        {waitTime && (
-          <div className="text-white/70 text-[13px] font-medium mt-1 tracking-wider">
-            ⏱ {waitTime}
+        {subtitle && (
+          <div className="text-[14px] font-bold mt-1 leading-snug" style={{ padding: '0 0.5rem', color: '#fde047' }}>
+            {subtitle}
           </div>
         )}
       </div>
@@ -95,9 +116,16 @@ export default function AlertCard({
       {/* Action button — pushed to bottom */}
       <div className="mt-auto flex justify-center pb-3">
         <div
-          className={`py-3 text-center text-[17px] font-bold cursor-pointer transition-opacity active:opacity-70 tracking-wide bg-white text-[#1a1a1a] ${variant === 'purple' ? 'rounded-full active:scale-95 transition-transform' : 'rounded-[12px]'}`}
-          style={{ padding: '0.5rem', width: '-webkit-fill-available' }}
-          onClick={(e) => { e.stopPropagation(); onActionClick?.(); }}
+          className={`py-3 text-center font-bold tracking-wide ${variant === 'purple' && !disabledBtn ? 'rounded-full active:scale-95 transition-transform' : 'rounded-[12px]'}`}
+          style={{
+            padding: '0.5rem',
+            width: '-webkit-fill-available',
+            ...(disabledBtn
+              ? { backgroundColor: 'rgba(200,200,200,0.22)', color: '#9ca3af', fontSize: '13px', cursor: 'not-allowed', letterSpacing: '0.2px' }
+              : { backgroundColor: 'white', color: '#1a1a1a', fontSize: '17px', cursor: 'pointer' }
+            ),
+          }}
+          onClick={(e) => { if (!disabledBtn) { e.stopPropagation(); onActionClick?.(); } }}
         >
           {actionLabel}
         </div>
