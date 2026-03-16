@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeyMozo Cashier Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca7",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-dark": "#1a2e28",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">monitoring</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-none">Dashboard Cajero</h1>
+<p class="text-xs text-slate-500 dark:text-primary/60 mt-1 font-medium">HeyMozo System</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+<span class="size-2 bg-primary rounded-full status-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary">Turno Activo</span>
+</div>
+<p class="text-xs font-mono mt-1 opacity-70">14:45:22</p>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto px-4 pb-32">
+<!-- Pending Transfers Section -->
+<section class="mt-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-400">pending_actions</span>
+                    Transferencias Pendientes
+                </h2>
+<span class="bg-amber-400/10 text-amber-400 text-xs font-bold px-2 py-1 rounded">2 avisos</span>
+</div>
+<!-- Table Card -->
+<div class="bg-surface-dark rounded-2xl p-4 border border-white/5 shadow-xl">
+<div class="flex gap-4 mb-4">
+<div class="size-20 rounded-xl bg-cover bg-center shrink-0 border border-white/10" data-alt="Recibo de transferencia bancaria en pantalla" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuClpFyvp78waGbcLBwY-jqHhe04LvnB6Yw5WNyWzmQmO3NS4cHtdT8ErO-mhLFsMTtuLj159b1ZaY9yKBAhdcIRJnALRsk4s0lY47hMI9mbX2sinndgGVrkFKKMDlpJxjts0xlwMr9AQ2Xz1fSdWack3ziSy0vDQWn9Z4u6lti-bn13BseMIsDA9NMA3g9ScI66YS2V0mgucPI3G4iYKc7EWClEaMVJAuXxuC8J_9sP6usu-DcEhOe-ucW2-f_5gupC4QwhLHzwowjq')"></div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="text-2xl font-black text-primary">MESA 6</h3>
+<span class="text-xs font-medium text-slate-400">Hace 3 min</span>
+</div>
+<p class="text-sm text-slate-300 mt-1 italic">Confirmar comprobante</p>
+<p class="text-lg font-bold mt-1 text-slate-100">$45.000 <span class="text-xs font-normal opacity-60">ARS</span></p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition-all">
+<span class="material-symbols-outlined text-sm">close</span>
+                        Rechazar
+                    </button>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-background-dark font-bold py-3 rounded-xl transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        Aprobar
+                    </button>
+</div>
+</div>
+</section>
+<!-- Summary Section -->
+<section class="mt-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bar_chart</span>
+                    Monitor de Mesas
+                </h2>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-3 mb-6">
+<div class="bg-primary/5 border border-primary/10 p-4 rounded-2xl">
+<p class="text-xs font-medium text-primary uppercase">Ventas Turno</p>
+<p class="text-xl font-bold mt-1">$124.500</p>
+</div>
+<div class="bg-accent-blue/5 border border-accent-blue/10 p-4 rounded-2xl">
+<p class="text-xs font-medium text-accent-blue uppercase">Mesas Activas</p>
+<p class="text-xl font-bold mt-1">12 / 20</p>
+</div>
+</div>
+<!-- Table Grid -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Table 1: Occupied -->
+<div class="aspect-square bg-orange-500/10 border border-orange-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-orange-500 text-3xl">restaurant</span>
+<span class="text-sm font-black text-orange-500">M1</span>
+<span class="text-[10px] font-bold text-orange-400 opacity-80 uppercase">Comiendo</span>
+</div>
+<!-- Table 2: Requesting Check -->
+<div class="aspect-square bg-primary/20 border-2 border-primary rounded-2xl flex flex-col items-center justify-center gap-2 p-2 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-primary text-3xl">payments</span>
+<span class="text-sm font-black text-primary">M2</span>
+<span class="text-[10px] font-bold text-primary uppercase">Pidiendo</span>
+</div>
+<!-- Table 3: Empty -->
+<div class="aspect-square bg-slate-800/40 border border-slate-700 rounded-2xl flex flex-col items-center justify-center gap-2 p-2 opacity-50">
+<span class="material-symbols-outlined text-slate-500 text-3xl">chair</span>
+<span class="text-sm font-black text-slate-500">M3</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Libre</span>
+</div>
+<!-- Table 4: Dirty/Cleaning -->
+<div class="aspect-square bg-purple-500/10 border border-purple-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-purple-500 text-3xl">cleaning_services</span>
+<span class="text-sm font-black text-purple-500">M4</span>
+<span class="text-[10px] font-bold text-purple-400 opacity-80 uppercase">Limpieza</span>
+</div>
+<!-- Table 5: Occupied -->
+<div class="aspect-square bg-orange-500/10 border border-orange-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-orange-500 text-3xl">restaurant</span>
+<span class="text-sm font-black text-orange-500">M5</span>
+<span class="text-[10px] font-bold text-orange-400 opacity-80 uppercase">Comiendo</span>
+</div>
+<!-- Table 6: Alert -->
+<div class="aspect-square bg-red-500/20 border-2 border-red-500 rounded-2xl flex flex-col items-center justify-center gap-2 p-2 animate-pulse">
+<span class="material-symbols-outlined text-red-500 text-3xl">warning</span>
+<span class="text-sm font-black text-red-500">M6</span>
+<span class="text-[10px] font-bold text-red-500 uppercase">Pendiente</span>
+</div>
+<!-- Table 7: Occupied -->
+<div class="aspect-square bg-orange-500/10 border border-orange-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-orange-500 text-3xl">restaurant</span>
+<span class="text-sm font-black text-orange-500">M7</span>
+<span class="text-[10px] font-bold text-orange-400 opacity-80 uppercase">Comiendo</span>
+</div>
+<!-- Table 8: Occupied -->
+<div class="aspect-square bg-orange-500/10 border border-orange-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-orange-500 text-3xl">restaurant</span>
+<span class="text-sm font-black text-orange-500">M8</span>
+<span class="text-[10px] font-bold text-orange-400 opacity-80 uppercase">Comiendo</span>
+</div>
+<!-- Table 9: Requesting Help -->
+<div class="aspect-square bg-blue-500/10 border border-blue-500/20 rounded-2xl flex flex-col items-center justify-center gap-2 p-2">
+<span class="material-symbols-outlined text-blue-500 text-3xl">hail</span>
+<span class="text-sm font-black text-blue-500">M9</span>
+<span class="text-[10px] font-bold text-blue-400 opacity-80 uppercase">Mozo!</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-background-dark border-t border-white/5 px-6 pb-8 pt-3 flex items-center justify-between safe-area-bottom">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="p-1 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">notifications</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-primary">Alertas</span>
+</a>
+<a class="flex flex-col items-center gap-1 group -translate-y-4" href="#">
+<div class="size-14 bg-accent-blue rounded-full flex items-center justify-center shadow-lg shadow-accent-blue/40 border-4 border-background-dark group-active:scale-95 transition-all">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1">account_balance_wallet</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-accent-blue mt-1">Cajero</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="p-1 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">grid_view</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-primary">Mesas</span>
+</a>
+</nav>
+<!-- App Overlay (iOS Style) -->
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl z-[100] hidden md:block"></div>
+</body></html>

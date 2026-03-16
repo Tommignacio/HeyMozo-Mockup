@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca7",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#11131e",
+                        "card-dark": "#1a1d2e",
+                        "border-dark": "#2d324a"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .pulse-green { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 w-full border-b border-border-dark bg-background-dark/80 backdrop-blur-md px-6 lg:px-12 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-background-dark font-bold">restaurant</span>
+</div>
+<div>
+<h1 class="text-xl font-extrabold tracking-tight text-white">HeyMozo</h1>
+<p class="text-xs font-medium text-primary/70 uppercase tracking-widest">Dashboard Cajero</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<span class="text-primary text-sm font-bold">Turno Activo</span>
+</div>
+<div class="flex items-center gap-3 text-slate-400 font-mono text-lg bg-card-dark px-4 py-2 rounded-xl border border-border-dark">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>20:45</span>
+</div>
+<div class="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-emerald-400 p-0.5">
+<img alt="User Profile" class="rounded-full bg-card-dark" data-alt="Avatar of a male cashier wearing a uniform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiIEiJfcrWWhxIJcoQ3rN4wPRmfFsm5C1SIkywFoVdRIyNEnTccfpft5VRF7cOf35wtouuKLlNQR1qbsZSeTum3BvzENdDpXpLBUWZQcsZEijNOw9K1ex5YeCpCEE9oGt_Z7ixfaIKCCi-tKuG9OT7YVKk-PnPOSKwC21c1NrTrqGbY6kkIWnFXo_099ez0T3396O0xwmp0aRjk9lGrrGGKeTbUciXm3X3dzB9Ri1czYFbAZm7-Bx4PuWS-rgXvxtb15MlG-RcOcjy"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto p-6 lg:p-12">
+<!-- Summary Bar -->
+<div class="flex flex-wrap gap-4 mb-10">
+<div class="flex-1 min-w-[240px] bg-card-dark border border-border-dark p-6 rounded-2xl flex items-center gap-5">
+<div class="bg-primary/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary text-3xl">payments</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Caja Total</p>
+<p class="text-2xl font-black text-white">$450.000</p>
+</div>
+</div>
+<div class="flex-1 min-w-[240px] bg-card-dark border border-border-dark p-6 rounded-2xl flex items-center gap-5">
+<div class="bg-amber-500/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-amber-500 text-3xl">volunteer_activism</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Propinas Hoy</p>
+<p class="text-2xl font-black text-white">$25.000</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Column: Transferencias Pendientes -->
+<div class="lg:col-span-4 space-y-6">
+<div class="flex items-center justify-between px-2">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span>⏳ Transferencias Pendientes</span>
+</h2>
+<span class="bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">1</span>
+</div>
+<!-- Transfer Card -->
+<div class="bg-card-dark border-l-4 border-blue-500 rounded-xl p-5 shadow-xl shadow-black/20 group hover:translate-x-1 transition-transform">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Mesa 6</span>
+<h3 class="text-lg font-bold text-white mt-1">Transferencia Bancaria</h3>
+<p class="text-sm text-slate-400">ID: #49201 • Hace 4 min</p>
+</div>
+<div class="bg-slate-800 p-2 rounded-lg">
+<span class="material-symbols-outlined text-slate-300">receipt_long</span>
+</div>
+</div>
+<div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 mb-5">
+<p class="text-amber-500 text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">attach_money</span>
+                            Declaró: $22.000
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 bg-primary text-background-dark font-bold py-2.5 rounded-xl hover:brightness-110 transition-all text-sm">
+<span class="material-symbols-outlined text-sm">check</span>
+                            APROBAR
+                        </button>
+<button class="flex items-center justify-center gap-2 bg-red-500/10 border border-red-500/20 text-red-500 font-bold py-2.5 rounded-xl hover:bg-red-500 hover:text-white transition-all text-sm">
+<span class="material-symbols-outlined text-sm">close</span>
+                            RECHAZAR
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column: Monitor de Mesas -->
+<div class="lg:col-span-8 space-y-6">
+<div class="flex items-center justify-between px-2">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span>📊 Monitor de Mesas</span>
+<span class="text-slate-500 text-sm font-normal ml-2">6 mesas activas</span>
+</h2>
+<button class="text-primary text-sm font-bold hover:underline">Ver todas</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Mesa 1 - Red (Paying/Alert) -->
+<div class="bg-card-dark border border-red-500/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 group cursor-pointer hover:border-red-500 transition-colors">
+<div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-red-500 text-4xl">notification_important</span>
+</div>
+<span class="text-sm font-black text-white uppercase">Mesa 1</span>
+<span class="text-[10px] font-bold text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">SOLICITÓ CUENTA</span>
+</div>
+<!-- Mesa 2 - Grey (Empty) -->
+<div class="bg-card-dark border border-border-dark rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="w-16 h-16 rounded-2xl bg-slate-700/30 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-slate-500 text-4xl">sensor_door</span>
+</div>
+<span class="text-sm font-black text-slate-400 uppercase">Mesa 2</span>
+<span class="text-[10px] font-bold text-slate-500 bg-slate-500/10 px-2 py-0.5 rounded-full">LIBRE</span>
+</div>
+<!-- Mesa 3 - Green (Eating) -->
+<div class="bg-card-dark border border-primary/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 group cursor-pointer hover:border-primary transition-colors">
+<div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-primary text-4xl">restaurant</span>
+</div>
+<span class="text-sm font-black text-white uppercase">Mesa 3</span>
+<span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">OCUPADA</span>
+</div>
+<!-- Mesa 4 - Purple (Reserved) -->
+<div class="bg-card-dark border border-purple-500/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 group cursor-pointer hover:border-purple-500 transition-colors">
+<div class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-purple-500 text-4xl">event_seat</span>
+</div>
+<span class="text-sm font-black text-white uppercase">Mesa 4</span>
+<span class="text-[10px] font-bold text-purple-500 bg-purple-500/10 px-2 py-0.5 rounded-full">RESERVADA</span>
+</div>
+<!-- Mesa 5 - Grey (Empty) -->
+<div class="bg-card-dark border border-border-dark rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="w-16 h-16 rounded-2xl bg-slate-700/30 flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-slate-500 text-4xl">sensor_door</span>
+</div>
+<span class="text-sm font-black text-slate-400 uppercase">Mesa 5</span>
+<span class="text-[10px] font-bold text-slate-500 bg-slate-500/10 px-2 py-0.5 rounded-full">LIBRE</span>
+</div>
+<!-- Mesa 6 - Blue (Pending Payment - Pulsing) -->
+<div class="bg-card-dark border-2 border-blue-500 rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 cursor-pointer shadow-lg shadow-blue-500/20 relative overflow-hidden group">
+<div class="absolute inset-0 bg-blue-500/5 pulse-green"></div>
+<div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-1 relative z-10">
+<span class="material-symbols-outlined text-blue-400 text-4xl">account_balance</span>
+</div>
+<span class="text-sm font-black text-white uppercase relative z-10">Mesa 6</span>
+<span class="text-[10px] font-bold text-blue-400 bg-blue-500/20 px-2 py-0.5 rounded-full relative z-10">PAGO PENDIENTE</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only Context) -->
+<div class="fixed bottom-0 w-full lg:hidden bg-card-dark border-t border-border-dark px-6 py-4 flex justify-around">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<span class="material-symbols-outlined text-slate-500">table_bar</span>
+<span class="material-symbols-outlined text-slate-500">payments</span>
+<span class="material-symbols-outlined text-slate-500">settings</span>
+</div>
+</body></html>

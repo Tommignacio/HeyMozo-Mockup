@@ -10,7 +10,7 @@ const mesa4Items = [
   { qty: 1, name: 'Papas Fritas', description: 'Porción grande', modifier: 'SIN SAL' },
 ];
 
-export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status }) {
+export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status, mesa6Status, setMesa6Status }) {
   const [modalData, setModalData] = useState(null);
   const [orderModal, setOrderModal] = useState(false);
 
@@ -20,10 +20,10 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         tableName: 'MESA 1',
         variant: 'red',
         waitTime: '2 MIN',
-        title: 'Cuenta: Tarjeta',
-        icon: 'check',
-        actionLabel: '¡VOY!',
-        actionVariant: 'blue',
+        title: 'Llevar Posnet (Tarjeta)',
+        subtitle: '💸 + $2.000 Propina (Acreditada)',
+        icon: 'credit_card',
+        actionLabel: '¡LISTO!',
         onClick: () => setModalData({
           tableName: 'MESA 1', waitingTime: '2 MIN', billingEmoji: '💳', billingLabel: 'PAGA CON TARJETA', headerColor: '#d62d20',
           onAction: () => { setMesa1Status('PAID'); setModalData(null); },
@@ -38,7 +38,6 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         title: 'Cobrado (Tarjeta)',
         icon: 'check-circle',
         actionLabel: 'LIBERAR MESA',
-        actionVariant: 'green-outline',
         onActionClick: () => setMesa1Status('GONE'),
       };
 
@@ -70,14 +69,23 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         onActionClick: () => setMesa2Status('GONE'),
       };
 
+  const mesa6Card = mesa6Status === 'WAITING'
+    ? { id: 'mesa6', tableName: 'MESA 6', variant: 'blue', waitTime: '1 MIN', title: 'Validando Transferencia en Caja', subtitle: 'Monto total: $22.000', icon: 'hourglass_empty', actionLabel: 'ESPERANDO OK DE CAJA...', disabledBtn: true }
+    : mesa6Status === 'APPROVED'
+    ? { id: 'mesa6', tableName: 'MESA 6', variant: 'paid', waitTime: '1 MIN', title: 'Transferencia Aprobada ✓', subtitle: 'Monto total: $22.000', icon: 'check_circle', actionLabel: '¡LISTO!', onActionClick: () => setMesa6Status('GONE') }
+    : mesa6Status === 'REJECTED'
+    ? { id: 'mesa6', tableName: 'MESA 6', variant: 'red', waitTime: '1 MIN', title: 'Transferencia Rechazada', subtitle: 'Avisar al cliente', icon: 'notifications', actionLabel: 'AVISAR CLIENTE', onActionClick: () => setMesa6Status('GONE') }
+    : null;
+
   const staticAlerts = [
+    ...(mesa6Card ? [mesa6Card] : []),
     ...(mesa4Status === 'NEW_ORDER' ? [{
       id: 'mesa4',
       tableName: 'MESA 4',
       variant: 'purple',
       waitTime: '1 MIN',
       title: 'Nuevo Pedido',
-      icon: 'cart',
+      icon: 'shopping_cart',
       badgeCount: 3,
       actionLabel: 'PENDIENTE',
       onClick: () => setOrderModal(true),
@@ -101,9 +109,8 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       variant: 'orange',
       waitTime: '4 MIN',
       title: 'Llevar Hielo',
-      icon: 'bell',
-      actionLabel: '¡VOY!',
-      actionVariant: 'blue',
+      icon: 'notifications',
+      actionLabel: '¡LISTO!',
       onClick: () => setModalData({ tableName: 'MESA 5', waitingTime: '4 MIN', billingEmoji: '🧊', billingLabel: 'LLEVAR HIELO', headerColor: '#f07020' }),
     },
     ...(!mesa3Released ? [{
@@ -111,10 +118,10 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       tableName: 'MESA 3',
       variant: 'paid',
       waitTime: '5 MIN',
-      title: 'Cobrado (MP)',
-      icon: 'check-circle',
+      title: 'Cobrado (Transferencia OK)',
+      subtitle: '💸 + $1.500 Propina',
+      icon: 'check_circle',
       actionLabel: 'LIBERAR MESA',
-      actionVariant: 'green-outline',
       onActionClick: () => setMesa3Released(true),
     }] : []),
   ];
