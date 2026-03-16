@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SETTINGS_ICON = (
   <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] fill-current">
@@ -12,8 +13,16 @@ const CHECK_ICON = (
   </svg>
 );
 
+const CAJERO_ICON = (
+  <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] fill-current">
+    <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+  </svg>
+);
+
 export default function Header({ pageTitle }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <header className="bg-[#1c1c1e] px-4 lg:px-8 py-2 lg:py-4 flex items-center justify-between border-b border-[#2c2c2e]">
@@ -61,12 +70,41 @@ export default function Header({ pageTitle }) {
           )}
         </div>
 
-        <button
-          type="button"
-          className="text-[#8e8e93] hover:text-white transition-colors cursor-pointer bg-transparent border-none p-[7px]"
-        >
-          {SETTINGS_ICON}
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            className="text-[#8e8e93] hover:text-white transition-colors cursor-pointer bg-transparent border-none p-[7px]"
+            onClick={() => setSettingsOpen((v) => !v)}
+          >
+            {SETTINGS_ICON}
+          </button>
+
+          {settingsOpen && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setSettingsOpen(false)} />
+              <div className="absolute right-0 top-full mt-1.5 z-50 bg-[#2c2c2e] border border-[#3a3a3c] rounded-xl overflow-hidden shadow-xl min-w-[170px]">
+                <button
+                  type="button"
+                  className="w-full px-4 py-3 text-[13px] font-medium text-white flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none hover:bg-[#3a3a3c] transition-colors font-[inherit]"
+                  onClick={() => { setSettingsOpen(false); navigate('/cajero'); }}
+                >
+                  Dashboard Cajero
+                  {CAJERO_ICON}
+                </button>
+                <div className="border-t border-[#3a3a3c]" />
+                <button
+                  type="button"
+                  className="w-full px-4 py-3 text-[13px] font-medium flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none hover:bg-[#3a3a3c] transition-colors font-[inherit]"
+                  style={{ color: '#ef4444' }}
+                  onClick={() => { setSettingsOpen(false); sessionStorage.clear(); window.location.reload(); }}
+                >
+                  Reiniciar Demo
+                  <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] fill-current"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

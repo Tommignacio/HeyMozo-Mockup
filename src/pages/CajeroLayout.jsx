@@ -127,6 +127,7 @@ export default function CajeroLayout({
   const navigate = useNavigate();
   const [time, setTime] = useState(getCurrentTime);
   const [activeTab, setActiveTab] = useState('transferencias');
+  const [configOpen, setConfigOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setTime(getCurrentTime()), 30000);
@@ -265,11 +266,44 @@ export default function CajeroLayout({
               <span className="material-symbols-outlined text-sm">schedule</span>
               <span>{time}</span>
             </div>
-            {/* Avatar */}
-            <div className="h-10 w-10 rounded-full p-0.5 shrink-0" style={{ background: 'linear-gradient(to top right, #13eca7, #34d399)' }}>
-              <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: '#1a1d2e' }}>
-                <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '20px' }}>person</span>
-              </div>
+            {/* Config dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                className="h-10 w-10 rounded-full p-0.5 shrink-0 bg-transparent border-none cursor-pointer"
+                style={{ background: 'linear-gradient(to top right, #13eca7, #34d399)' }}
+                onClick={() => setConfigOpen((v) => !v)}
+              >
+                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: '#1a1d2e' }}>
+                  <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '20px' }}>settings</span>
+                </div>
+              </button>
+
+              {configOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setConfigOpen(false)} />
+                  <div className="absolute right-0 top-full mt-2 z-50 rounded-xl overflow-hidden shadow-xl min-w-[180px]" style={{ background: '#1a1d2e', border: '1px solid #2d324a' }}>
+                    <button
+                      type="button"
+                      className="w-full px-4 py-3 text-[13px] font-medium text-white flex items-center gap-3 cursor-pointer bg-transparent border-none hover:bg-white/5 transition-colors font-[inherit]"
+                      onClick={() => { setConfigOpen(false); navigate('/mozo'); }}
+                    >
+                      <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '18px' }}>table_bar</span>
+                      Vista Mozo
+                    </button>
+                    <div style={{ borderTop: '1px solid #2d324a' }} />
+                    <button
+                      type="button"
+                      className="w-full px-4 py-3 text-[13px] font-medium flex items-center gap-3 cursor-pointer bg-transparent border-none hover:bg-white/5 transition-colors font-[inherit]"
+                      style={{ color: '#ef4444' }}
+                      onClick={() => { setConfigOpen(false); sessionStorage.clear(); window.location.reload(); }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#ef4444' }}>restart_alt</span>
+                      Reiniciar Demo
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -297,24 +331,6 @@ export default function CajeroLayout({
             onClick={() => setActiveTab('monitor')}
           />
           <div className="flex-1" />
-          <SidebarItem
-            icon="table_bar"
-            label="Vista Mozo"
-            active={false}
-            onClick={() => navigate('/mozo')}
-          />
-          <SidebarItem
-            icon="settings"
-            label="Configuración"
-            active={false}
-            onClick={() => {}}
-          />
-          <SidebarItem
-            icon="restart_alt"
-            label="Reiniciar Demo"
-            active={false}
-            onClick={() => { sessionStorage.clear(); window.location.reload(); }}
-          />
         </aside>
 
         {/* ── Main Content ── */}
