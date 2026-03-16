@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function getCurrentTime() {
   return new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -123,6 +124,7 @@ export default function CajeroLayout({
   mesa1Status, mesa2Status, mesa3Released, mesa4Status,
   mesa6Status, setMesa6Status,
 }) {
+  const navigate = useNavigate();
   const [time, setTime] = useState(getCurrentTime);
   const [activeTab, setActiveTab] = useState('transferencias');
 
@@ -296,10 +298,22 @@ export default function CajeroLayout({
           />
           <div className="flex-1" />
           <SidebarItem
+            icon="table_bar"
+            label="Vista Mozo"
+            active={false}
+            onClick={() => navigate('/mozo')}
+          />
+          <SidebarItem
             icon="settings"
             label="Configuración"
             active={false}
             onClick={() => {}}
+          />
+          <SidebarItem
+            icon="restart_alt"
+            label="Reiniciar Demo"
+            active={false}
+            onClick={() => { sessionStorage.clear(); window.location.reload(); }}
           />
         </aside>
 

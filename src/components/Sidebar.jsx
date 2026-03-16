@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ALERTS_ICON = (
   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0">
@@ -24,12 +25,19 @@ const CHEVRON_RIGHT = (
   </svg>
 );
 
+const CASHIER_ICON = (
+  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0">
+    <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+  </svg>
+);
+
 const tabs = [
   { id: 'alerts', label: 'Alertas', icon: ALERTS_ICON },
   { id: 'mesas',  label: 'Mis Mesas', icon: MESAS_ICON },
 ];
 
 export default function Sidebar({ activeTab, onTabChange }) {
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -76,6 +84,28 @@ export default function Sidebar({ activeTab, onTabChange }) {
           </button>
         ))}
       </nav>
+
+      {/* Cajero link + Reset */}
+      <div className="p-2 border-t border-[#2c2c2e] flex flex-col gap-0.5">
+        <button
+          type="button"
+          onClick={() => navigate('/cajero')}
+          className={`flex items-center gap-3 px-3 py-3 rounded-xl text-[13px] font-semibold transition-colors cursor-pointer border-none font-[inherit] whitespace-nowrap w-full text-[#8e8e93] hover:bg-[#2c2c2e]/60 hover:text-white ${collapsed ? 'justify-center' : ''}`}
+          title={collapsed ? 'Cajero' : undefined}
+        >
+          {CASHIER_ICON}
+          {!collapsed && <span>Cajero</span>}
+        </button>
+        <button
+          type="button"
+          onClick={() => { sessionStorage.clear(); window.location.reload(); }}
+          className={`flex items-center gap-3 px-3 py-3 rounded-xl text-[13px] font-semibold transition-colors cursor-pointer border-none font-[inherit] whitespace-nowrap w-full text-[#8e8e93] hover:bg-[#2c2c2e]/60 hover:text-white ${collapsed ? 'justify-center' : ''}`}
+          title={collapsed ? 'Reiniciar' : undefined}
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          {!collapsed && <span>Reiniciar Demo</span>}
+        </button>
+      </div>
 
     </aside>
   );

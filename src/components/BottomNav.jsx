@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 const BELL_ICON = (
   <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
     <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
@@ -10,10 +12,19 @@ const GRID_ICON = (
   </svg>
 );
 
+const CASHIER_ICON = (
+  <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+    <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+  </svg>
+);
+
 export default function BottomNav({ activeTab = 'alerts', onTabChange }) {
+  const navigate = useNavigate();
+
   const tabs = [
     { id: 'alerts', label: 'Alertas',   icon: BELL_ICON },
     { id: 'mesas',  label: 'Mis Mesas', icon: GRID_ICON  },
+    { id: 'cajero', label: 'Cajero',    icon: CASHIER_ICON },
   ];
 
   return (
@@ -25,7 +36,10 @@ export default function BottomNav({ activeTab = 'alerts', onTabChange }) {
           className={`flex-1 flex flex-col items-center justify-center gap-1 py-1 bg-transparent border-none cursor-pointer font-[inherit] transition-colors ${
             activeTab === tab.id ? 'text-white' : 'text-[#636366]'
           }`}
-          onClick={() => onTabChange?.(tab.id)}
+          onClick={() => {
+            if (tab.id === 'cajero') navigate('/cajero');
+            else onTabChange?.(tab.id);
+          }}
         >
           {tab.icon}
           <span className="text-[10px] font-semibold tracking-wide">{tab.label}</span>
