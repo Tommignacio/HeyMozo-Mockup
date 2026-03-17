@@ -1,0 +1,102 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>La Trattoria - Mesa 4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca7",
+                        "background-light": "#1c1c1e",
+                        "background-dark": "#1c1c1e",
+                        "brand-purple": "#9333ea",
+                        "brand-amber": "#f59e0b",
+                        "brand-green": "#16a34a",
+                        "footer-gray": "#6b7280"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #1c1c1e;
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+</head>
+<body class="bg-[#1c1c1e] min-h-[100dvh] flex flex-col font-display selection:bg-primary/30 text-white">
+<div class="flex-1 flex flex-col">
+<!-- Top Navigation / Logo -->
+<header class="pt-12 pb-4 flex flex-col items-center justify-center">
+<div class="flex items-center gap-3 mb-10">
+<div class="bg-[#e8362a] p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-2xl shrink-0" style="">restaurant</span>
+</div>
+<span class="text-white text-xl font-black tracking-tight" style="">Mi Resto</span>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center px-6">
+<!-- Welcome Message -->
+<div class="text-center mb-12 space-y-1">
+<h1 class="text-white text-6xl font-extrabold tracking-tight" style="">¡Hola!</h1>
+<p class="text-gray-400 text-sm font-medium pt-2" style="">Estás en la&nbsp;<span style="font-size: 0.875rem;">Mesa 4</span></p>
+</div>
+<!-- Action Buttons Stack -->
+<div class="w-full max-w-sm flex flex-col gap-5">
+<!-- Menu & Order -->
+<button class="w-full px-6 py-5 bg-brand-purple text-white rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-transform duration-100" style="">
+<span class="material-symbols-outlined text-2xl" style="">restaurant_menu</span>
+<span class="text-lg font-bold" style="">Ver Menú y Pedir</span>
+</button>
+<!-- Call Waiter (Secondary Visual logic preserved but distinct style) -->
+<button class="w-full px-6 py-5 bg-brand-amber text-[#1c1c1e] rounded-2xl flex items-center justify-center gap-3 shadow-[0_10px_25px_rgba(245,158,11,0.35)] active:scale-95 transition-transform duration-100 relative overflow-hidden" style="">
+<span class="material-symbols-outlined text-2xl font-bold" style="">notifications_active</span>
+<span class="text-lg font-extrabold uppercase tracking-tight" style="">Llamar al Mozo</span>
+</button>
+<!-- Payment -->
+<button class="w-full px-6 py-5 bg-brand-green text-white rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-transform duration-100" style="">
+<span class="material-symbols-outlined text-2xl" style="">credit_card</span>
+<span class="text-lg font-bold" style="">Pagar / Dejar Propina</span>
+</button>
+</div>
+<!-- Feedback Section -->
+<div class="mt-12 mb-12 text-center">
+<a class="inline-flex items-center gap-2 text-footer-gray hover:text-primary transition-colors duration-200" href="#" style="">
+<span class="text-sm font-medium" style="">⭐ ¿Cómo te atendimos? Dejanos tu opinión</span>
+</a>
+</div>
+</main>
+</div>
+<!-- Footer Attribution -->
+<footer class="px-6 py-8 text-center">
+<div class="pt-6 border-t border-[#3a3a3c] flex flex-col items-center gap-1">
+<div class="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
+<span class="material-symbols-outlined text-[14px] text-[#e8362a]" style="">restaurant</span>
+<span class="" style="">Tecnología HeyMozo</span>
+</div>
+</div>
+</footer>
+<!-- Background Decoration (Subtle Glow) -->
+<div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none"></div>
+</body></html>

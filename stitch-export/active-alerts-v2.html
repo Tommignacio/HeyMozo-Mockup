@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeyMozo - Active Alerts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 16px 12px;
+      background-color: #121212;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .header-tip {
+      font-size: 15px;
+      font-weight: 700;
+      color: #facc15;
+      white-space: nowrap;
+    }
+
+    /* ── CARDS CONTAINER ── */
+    .cards-container {
+      flex: 1;
+      padding: 8px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    /* ── ALERT CARD ── */
+    .alert-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-header {
+      padding: 14px 16px 10px;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #121212;
+    }
+
+    .card-body {
+      padding: 2px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-text-gold {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fde047;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-footer {
+      padding: 10px 12px 12px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn:active {
+      opacity: 0.85;
+    }
+
+    .btn-white {
+      background-color: #ffffff;
+      color: #1a1a1a;
+    }
+
+    .btn-disabled {
+      background-color: rgba(200, 200, 200, 0.25);
+      color: #6b7280;
+      cursor: not-allowed;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── CARD COLORS ── */
+    .card-red    { background-color: #dc2626; }
+    .card-blue   { background-color: #2563eb; }
+    .card-purple { background-color: #9333ea; }
+    .card-orange { background-color: #f97316; }
+    .card-green  { background-color: #16a34a; }
+
+    /* Subtle glow per card */
+    .card-red    { box-shadow: 0 4px 24px rgba(220, 38, 38, 0.4); }
+    .card-blue   { box-shadow: 0 4px 24px rgba(37, 99, 235, 0.4); }
+    .card-purple { box-shadow: 0 4px 24px rgba(147, 51, 234, 0.5); }
+    .card-orange { box-shadow: 0 4px 24px rgba(249, 115, 22, 0.4); }
+    .card-green  { box-shadow: 0 4px 24px rgba(22, 163, 74, 0.4); }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      background-color: #000000;
+      padding: 10px 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-top: 1px solid #1f1f1f;
+      position: sticky;
+      bottom: 0;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #ffffff;
+    }
+
+    .nav-item.inactive {
+      color: #555555;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .nav-device {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1f1f1f;
+      border-radius: 20px;
+      padding: 6px 14px;
+    }
+
+    .nav-device-dot {
+      width: 8px;
+      height: 8px;
+      background: #6b7280;
+      border-radius: 50%;
+    }
+
+    .toggle-track {
+      width: 36px;
+      height: 20px;
+      background: #1a73e8;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .toggle-thumb {
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      right: 2px;
+      top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-title">Active Alerts</span>
+    <span class="header-tip">Total Turno: $15.400 💸</span>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-container">
+
+    <!-- CARD 1: ROJA – MESA 1 -->
+    <div class="alert-card card-red">
+      <div class="card-header">
+        <div class="card-title">MESA 1</div>
+      </div>
+      <div class="card-body">
+        <div class="card-text">💳 Llevar Posnet (Tarjeta)</div>
+        <div class="card-text-gold">💸 + $2.000 Propina (Acreditada)</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-white">¡VOY CON POSNET!</button>
+      </div>
+    </div>
+
+    <!-- CARD 2: AZUL – MESA 6 (NUEVA) -->
+    <div class="alert-card card-blue">
+      <div class="card-header">
+        <div class="card-title">MESA 6</div>
+      </div>
+      <div class="card-body">
+        <div class="card-text" style="font-weight:800;">⏳ Validando Transferencia en Caja</div>
+        <div class="card-text">Monto total: $22.000</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-disabled" disabled>ESPERANDO OK DE CAJA...</button>
+      </div>
+    </div>
+
+    <!-- CARD 3: MORADA – MESA 4 -->
+    <div class="alert-card card-purple">
+      <div class="card-header" style="position:relative;">
+        <div class="card-title">MESA 4</div>
+        <div class="card-badge">3</div>
+      </div>
+      <div class="card-body">
+        <div class="card-text">🛒 Nuevo Pedido</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-white">PENDIENTE</button>
+      </div>
+    </div>
+
+    <!-- CARD 4: NARANJA – MESA 5 -->
+    <div class="alert-card card-orange">
+      <div class="card-header">
+        <div class="card-title">MESA 5</div>
+      </div>
+      <div class="card-body">
+        <div class="card-text">🔔 Llevar Hielo</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-white">¡VOY!</button>
+      </div>
+    </div>
+
+    <!-- CARD 5: VERDE – MESA 3 -->
+    <div class="alert-card card-green">
+      <div class="card-header">
+        <div class="card-title">MESA 3</div>
+      </div>
+      <div class="card-body">
+        <div class="card-text">✅ Cobrado (Transferencia OK)</div>
+        <div class="card-text-gold">💸 + $1.500 Propina</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-white">LIBERAR MESA</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+      <span class="nav-label">Alertas</span>
+    </div>
+    <div class="nav-device">
+      <div class="nav-device-dot"></div>
+      <span style="color:#9ca3af;font-size:12px;">···</span>
+      <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#9ca3af"><path d="M7 10l5 5 5-5z"/></svg>
+    </div>
+    <div class="nav-item inactive">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 3h8v8H3zm0 10h8v8H3zm10-10h8v8h-8zm0 10h8v8h-8z"/>
+      </svg>
+      <span class="nav-label">Mis Mesas</span>
+    </div>
+  </div>
+
+</body>
+</html>

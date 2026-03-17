@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca7",
+                        "accent": "#9333ea",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#1c1c1e",
+                        "card-dark": "#2c2c2e",
+                        "border-dark": "#3a3a3c",
+                        "text-muted": "#9ca3af"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "1.25rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-dark font-display text-slate-100 min-h-screen pb-32">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 bg-background-dark/95 backdrop-blur-md border-b border-border-dark px-4 py-3">
+<div class="flex items-center justify-between max-w-md mx-auto">
+<div class="flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-slate-100">arrow_back_ios</span>
+<span class="text-sm font-medium">Volver</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">Hamburguesas</h1>
+<div class="relative">
+<span class="material-symbols-outlined text-2xl">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">2</span>
+</div>
+</div>
+</header>
+<!-- Sticky Category Bar -->
+<nav class="sticky top-[57px] z-40 bg-background-dark py-3 overflow-hidden">
+<div class="flex gap-2 overflow-x-auto no-scrollbar px-4 max-w-md mx-auto">
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-accent text-white text-sm font-semibold shadow-lg shadow-accent/20">Hamburguesas</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-card-dark text-text-muted text-sm font-medium border border-border-dark">Bebidas</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-card-dark text-text-muted text-sm font-medium border border-border-dark">Pizzas</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-card-dark text-text-muted text-sm font-medium border border-border-dark">Postres</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-card-dark text-text-muted text-sm font-medium border border-border-dark">Ensaladas</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-card-dark text-text-muted text-sm font-medium border border-border-dark">Extras</button>
+</div>
+</nav>
+<!-- Product List -->
+<main class="max-w-md mx-auto px-4 mt-2 space-y-4">
+<!-- Card 1 -->
+<div class="flex bg-card-dark rounded-2xl p-3 gap-4 border border-border-dark shadow-sm">
+<div class="w-24 h-24 shrink-0 bg-border-dark rounded-xl flex items-center justify-center overflow-hidden" data-alt="Close up of a juicy double smash burger"><img alt="Doble Smash Burger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR0Hp8UL7sUEjUQHaEJIOHFZ4NJvBnZ-hbfERps1zIgRxxaR8M-jMKxIU72ANk7xEj04Kmh6n8rzArmT9vFQsBI1SnCWpCW7v-rovREGVLav4YbAzI_j5RSfQL9abZLNvJEUrbu-1eo4IfYvXGikfBKDdzDwa-HXrWERprBxmALRwuGtp_mGvpe89EbjjC6WvATcUvKNkKzBJgXdaELAzPoIK3h9UmbIsBydxShNyhbEtBpjxgjUaYd52tQiVcm_lQxdsNXHM23LZc"/></div>
+<div class="flex flex-col justify-between flex-1 py-0.5">
+<div>
+<h3 class="text-base font-bold text-slate-100">Doble Smash Burger</h3>
+<p class="text-xs text-text-muted leading-tight mt-1">Doble medallón smash, cheddar, cebolla caramelizada</p>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-lg">$8.500</span>
+<button class="bg-accent hover:bg-accent/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Agregar
+                    </button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex bg-card-dark rounded-2xl p-3 gap-4 border border-border-dark shadow-sm">
+<div class="w-24 h-24 shrink-0 bg-border-dark rounded-xl flex items-center justify-center overflow-hidden" data-alt="Classic beef burger with lettuce and tomato"><img alt="Classic Burger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuF86EfAjkiE1a59sEjBKAAJwz3MqepgGirxbQcDTfxgA2W_PuXzKNkA4Jm0c9BYKQ1Etbz50uuhJFJVFgEd9lHUd_NHsao6evef-5WcAqd_ClWRuzlnvI7wtFnoV_gAknpoD-A7UVolL_hTf3qM5tT-oLjIfJd1CqwaUhNGSRgPVfjrXfswj8YGS1V02tGfq1dqnfF6YwiRdy8IEFSdFQoDOtE5IhZWSOyabnc264GpHlsPZOAlP9BzWM5nhPE5LQlmLnShOaRew5"/></div>
+<div class="flex flex-col justify-between flex-1 py-0.5">
+<div>
+<h3 class="text-base font-bold text-slate-100">Classic Burger</h3>
+<p class="text-xs text-text-muted leading-tight mt-1">Medallón de carne, lechuga, tomate, pepinos</p>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-lg">$7.200</span>
+<button class="bg-accent hover:bg-accent/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Agregar
+                    </button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex bg-card-dark rounded-2xl p-3 gap-4 border border-border-dark shadow-sm">
+<div class="w-24 h-24 shrink-0 bg-border-dark rounded-xl flex items-center justify-center overflow-hidden" data-alt="Bacon and cheddar cheese burger with special sauce"><img alt="Bacon Cheddar Burger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe9iPI_CowTv9ZlmS2wa6k1BeAsdurSPd-bxbxWKxZWfkSGiphYRoCGGNmU5vdbxZBwVnbToUZb-4AlwU47PUUfMkaYQozQKpWQrhPCcr6zd3ClIMVPpDnnNKzAJsD10_08gSfJB6SFJYkcjOyi06S5EZYr5wfn-9CPcvi9xpIWb8g12RvGB8uWtu5o2AHxkTBXVm-3XyvfUx0k8PBJWXvtaxMo4m_Y2sUhrWhlBeVU1Whxr40L6rvRnlc3mghbOHeMd6ZsiJE8dGZ"/></div>
+<div class="flex flex-col justify-between flex-1 py-0.5">
+<div>
+<h3 class="text-base font-bold text-slate-100">Bacon Cheddar Burger</h3>
+<p class="text-xs text-text-muted leading-tight mt-1">Bacon crocante, doble cheddar, salsa especial</p>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-lg">$9.000</span>
+<button class="bg-accent hover:bg-accent/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Agregar
+                    </button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="flex bg-card-dark rounded-2xl p-3 gap-4 border border-border-dark shadow-sm">
+<div class="w-24 h-24 shrink-0 bg-border-dark rounded-xl flex items-center justify-center overflow-hidden" data-alt="Vegetarian lentil burger with avocado and aioli"><img alt="Veggie Burger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAMjtpCVppcMofvUZyupWSHP6rQGDlKGXGa3glkI7ggFZArV5p1qrlIN76spCMSskVak4-HGIH2Gg4o8fpdrJH_6O0P1lSVurtGw5yThwcJ0-kMJuYJO6PN6ylcCgvGUWT6n875uW8xCi4uHyw7gj1IYEP9hGxYl2dR70YK7vZruH4cGXAl4mJXT_YNNDTECLv0SEd7R-4bvzOudZjlxU_Cd_jeFtKvcNxo7qN61k2bXVTinIGC7zDCRWk_ThpiNOwiFxkzCbShI87"/></div>
+<div class="flex flex-col justify-between flex-1 py-0.5">
+<div>
+<h3 class="text-base font-bold text-slate-100">Veggie Burger</h3>
+<p class="text-xs text-text-muted leading-tight mt-1">Medallón de lentejas, palta, alioli de hierbas</p>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-lg">$7.800</span>
+<button class="bg-accent hover:bg-accent/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Agregar
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Bottom Bar -->
+<div class="fixed bottom-6 left-0 right-0 px-4 z-50">
+<div class="max-w-md mx-auto bg-accent rounded-2xl h-14 flex items-center justify-between px-5 shadow-2xl shadow-accent/40">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-wider text-white/80 font-medium">Mi Pedido</span>
+<span class="text-sm font-bold text-white">2 ítems | $15.500</span>
+</div>
+<button class="flex items-center gap-2 text-sm font-bold text-white">
+                Ver Pedido
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>
