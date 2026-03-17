@@ -60,6 +60,10 @@ export default function MozoLayout({
 
         <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
+
+      {/* ── Background glow decoration ── */}
+      <div className="fixed rounded-full pointer-events-none" style={{ top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(232, 54, 42, 0.04)', filter: 'blur(100px)' }} />
+      <div className="fixed rounded-full pointer-events-none" style={{ bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(147, 51, 234, 0.05)', filter: 'blur(100px)' }} />
     </div>
   );
 }

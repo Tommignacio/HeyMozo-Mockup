@@ -54,8 +54,8 @@ const COLOR_MAP = {
     badgeBg: 'rgba(19,236,167,0.1)', hoverBorder: '#13eca7',
   },
   slate: {
-    iconBg: 'rgba(51,65,85,0.3)', border: '#2d324a', text: '#64748b',
-    badgeBg: 'rgba(100,116,139,0.1)', hoverBorder: '#2d324a',
+    iconBg: 'rgba(51,65,85,0.3)', border: '#3a3a3c', text: '#64748b',
+    badgeBg: 'rgba(100,116,139,0.1)', hoverBorder: '#3a3a3c',
   },
 };
 
@@ -69,7 +69,7 @@ function MesaCard({ number, visual }) {
 
   return (
     <div
-      className={`bg-[#1a1d2e] rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 cursor-pointer transition-colors ${visual.dim ? 'opacity-60 hover:opacity-100 transition-opacity' : ''} ${visual.pulse ? 'relative overflow-hidden' : ''}`}
+      className={`bg-[#2c2c2e] rounded-2xl p-6 flex flex-col items-center justify-center text-center gap-3 cursor-pointer transition-colors ${visual.dim ? 'opacity-60 hover:opacity-100 transition-opacity' : ''} ${visual.pulse ? 'relative overflow-hidden' : ''}`}
       style={{
         border: borderStyle,
         boxShadow: visual.pulse ? '0 10px 25px rgba(59,130,246,0.2)' : undefined,
@@ -127,7 +127,6 @@ export default function CajeroLayout({
   const navigate = useNavigate();
   const [time, setTime] = useState(getCurrentTime);
   const [activeTab, setActiveTab] = useState('transferencias');
-  const [configOpen, setConfigOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setTime(getCurrentTime()), 30000);
@@ -153,7 +152,7 @@ export default function CajeroLayout({
       {hasPending ? (
         <div
           className="group rounded-xl p-5 transition-transform hover:translate-x-1"
-          style={{ background: '#1a1d2e', borderLeft: '4px solid #3b82f6', boxShadow: '0 20px 25px rgba(0,0,0,0.2)' }}
+          style={{ background: '#2c2c2e', borderLeft: '4px solid #3b82f6', boxShadow: '0 20px 25px rgba(0,0,0,0.2)' }}
         >
           <div className="flex justify-between items-start mb-4" style={{ padding: '1rem' }}>
             <div>
@@ -161,7 +160,7 @@ export default function CajeroLayout({
               <h3 className="text-lg font-bold text-white mt-1">Transferencia Bancaria</h3>
               <p className="text-sm text-slate-400">ID: #49201 • Hace 4 min</p>
             </div>
-            <div className="p-2 rounded-lg" style={{ background: '#1e293b' }}>
+            <div className="p-2 rounded-lg" style={{ background: '#3a3a3c' }}>
               <span className="material-symbols-outlined text-slate-300">receipt_long</span>
             </div>
           </div>
@@ -177,7 +176,7 @@ export default function CajeroLayout({
             <button
               type="button"
               className="flex items-center justify-center gap-2 font-bold py-2.5 rounded-xl transition-all text-sm border-none cursor-pointer hover:brightness-110"
-              style={{ background: '#13eca7', color: '#11131e', padding: '0.3rem' }}
+              style={{ background: '#13eca7', color: '#1c1c1e', padding: '0.3rem' }}
               onClick={() => setMesa6Status('APPROVED')}
             >
               <span className="material-symbols-outlined text-sm">check</span>
@@ -197,7 +196,7 @@ export default function CajeroLayout({
       ) : (
         <div
           className="rounded-xl p-8 flex flex-col items-center justify-center gap-3 text-center"
-          style={{ background: '#1a1d2e', border: '1px solid #2d324a', minHeight: '180px' }}
+          style={{ background: '#2c2c2e', border: '1px solid #3a3a3c', minHeight: '180px' }}
         >
           <span className="material-symbols-outlined text-4xl" style={{ color: '#13eca7' }}>check_circle</span>
           <span className="text-sm font-medium text-slate-500">Sin transferencias pendientes</span>
@@ -226,7 +225,7 @@ export default function CajeroLayout({
   );
 
   return (
-    <div className="min-h-screen flex flex-col font-['Inter',sans-serif] text-slate-100" style={{ background: '#11131e' }}>
+    <div className="min-h-screen flex flex-col font-['Inter',sans-serif] text-slate-100" style={{ background: '#1c1c1e' }}>
 
       {/* ── pulse-green animation (matches Stitch CSS) ── */}
       <style>{`.pulse-green { animation: pulseGreen 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; } @keyframes pulseGreen { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }`}</style>
@@ -234,13 +233,13 @@ export default function CajeroLayout({
       {/* ── Sticky Header ── */}
       <header
         className="sticky top-0 z-50 w-full backdrop-blur-md px-6 lg:px-12 py-4"
-        style={{ background: 'rgba(17,19,30,0.8)', borderBottom: '1px solid #2d324a' }}
+        style={{ background: 'rgba(28,28,30,0.8)', borderBottom: '1px solid #3a3a3c' }}
       >
         <div className="mx-auto flex items-center justify-between" style={{ padding: '1rem' }}>
           {/* Left: logo + title */}
           <div className="flex items-center gap-4">
             <div className="p-2 rounded-lg" style={{ background: '#13eca7' }}>
-              <span className="material-symbols-outlined font-bold" style={{ color: '#11131e' }}>restaurant</span>
+              <span className="material-symbols-outlined font-bold" style={{ color: '#1c1c1e' }}>restaurant</span>
             </div>
             <div>
               <h1 className="text-xl font-extrabold tracking-tight text-white">HeyMozo</h1>
@@ -261,49 +260,16 @@ export default function CajeroLayout({
             </div>
             <div
               className="flex items-center gap-3 text-slate-400 font-mono text-lg px-4 py-2 rounded-xl"
-              style={{ background: '#1a1d2e', border: '1px solid #2d324a', padding: '0.1rem' }}
+              style={{ background: '#2c2c2e', border: '1px solid #3a3a3c', padding: '0.1rem' }}
             >
               <span className="material-symbols-outlined text-sm">schedule</span>
               <span>{time}</span>
             </div>
-            {/* Config dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                className="h-10 w-10 rounded-full p-0.5 shrink-0 bg-transparent border-none cursor-pointer"
-                style={{ background: 'linear-gradient(to top right, #13eca7, #34d399)' }}
-                onClick={() => setConfigOpen((v) => !v)}
-              >
-                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: '#1a1d2e' }}>
-                  <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '20px' }}>settings</span>
-                </div>
-              </button>
-
-              {configOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setConfigOpen(false)} />
-                  <div className="absolute right-0 top-full mt-2 z-50 rounded-xl overflow-hidden shadow-xl min-w-[180px]" style={{ background: '#1a1d2e', border: '1px solid #2d324a' }}>
-                    <button
-                      type="button"
-                      className="w-full px-4 py-3 text-[13px] font-medium text-white flex items-center gap-3 cursor-pointer bg-transparent border-none hover:bg-white/5 transition-colors font-[inherit]"
-                      onClick={() => { setConfigOpen(false); navigate('/mozo'); }}
-                    >
-                      <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '18px' }}>table_bar</span>
-                      Vista Mozo
-                    </button>
-                    <div style={{ borderTop: '1px solid #2d324a' }} />
-                    <button
-                      type="button"
-                      className="w-full px-4 py-3 text-[13px] font-medium flex items-center gap-3 cursor-pointer bg-transparent border-none hover:bg-white/5 transition-colors font-[inherit]"
-                      style={{ color: '#ef4444' }}
-                      onClick={() => { setConfigOpen(false); sessionStorage.clear(); window.location.reload(); }}
-                    >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#ef4444' }}>restart_alt</span>
-                      Reiniciar Demo
-                    </button>
-                  </div>
-                </>
-              )}
+            {/* Avatar */}
+            <div className="h-10 w-10 rounded-full p-0.5 shrink-0" style={{ background: 'linear-gradient(to top right, #13eca7, #34d399)' }}>
+              <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: '#2c2c2e' }}>
+                <span className="material-symbols-outlined text-slate-400" style={{ fontSize: '20px' }}>person</span>
+              </div>
             </div>
           </div>
         </div>
@@ -315,7 +281,7 @@ export default function CajeroLayout({
         {/* ── Desktop Sidebar ── */}
         <aside
           className="hidden lg:flex flex-col w-[240px] shrink-0 py-6 px-4 gap-2"
-          style={{ background: '#141625', borderRight: '1px solid #2d324a' }}
+          style={{ background: '#252528', borderRight: '1px solid #3a3a3c' }}
         >
           <SidebarItem
             icon="receipt_long"
@@ -331,13 +297,31 @@ export default function CajeroLayout({
             onClick={() => setActiveTab('monitor')}
           />
           <div className="flex-1" />
+          <SidebarItem
+            icon="table_bar"
+            label="Vista Mozo"
+            active={false}
+            onClick={() => navigate('/mozo')}
+          />
+          <SidebarItem
+            icon="settings"
+            label="Configuración"
+            active={false}
+            onClick={() => {}}
+          />
+          <SidebarItem
+            icon="restart_alt"
+            label="Reiniciar Demo"
+            active={false}
+            onClick={() => { sessionStorage.clear(); window.location.reload(); }}
+          />
         </aside>
 
         {/* ── Main Content ── */}
         <main className="flex-1 p-6 lg:p-12 pb-24 lg:pb-12">
           {/* Summary bar — two stat cards */}
           <div className="flex flex-wrap gap-4 mb-10" style={{ margin: '0 0 2rem 0' }}>
-            <div className="flex-1 min-w-[240px] rounded-2xl flex items-center gap-5" style={{ background: '#1a1d2e', border: '1px solid #2d324a', padding: '1rem' }}>
+            <div className="flex-1 min-w-[240px] rounded-2xl flex items-center gap-5" style={{ background: '#2c2c2e', border: '1px solid #3a3a3c', padding: '1rem' }}>
               <div className="p-3 rounded-xl" style={{ background: 'rgba(19,236,167,0.2)', padding: '0.5rem', borderRadius: '2rem' }}>
                 <span className="material-symbols-outlined text-3xl" style={{ color: '#13eca7' }}>payments</span>
               </div>
@@ -346,7 +330,7 @@ export default function CajeroLayout({
                 <p className="text-2xl font-black text-white">$450.000</p>
               </div>
             </div>
-            <div className="flex-1 min-w-[240px] rounded-2xl flex items-center gap-5" style={{ background: '#1a1d2e', border: '1px solid #2d324a', padding: '1rem' }}>
+            <div className="flex-1 min-w-[240px] rounded-2xl flex items-center gap-5" style={{ background: '#2c2c2e', border: '1px solid #3a3a3c', padding: '1rem' }}>
               <div className="p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.2)', padding: '0.5rem', borderRadius: '2rem' }}>
                 <span className="material-symbols-outlined text-3xl" style={{ color: '#f59e0b' }}>volunteer_activism</span>
               </div>
@@ -365,7 +349,7 @@ export default function CajeroLayout({
       {/* ── Bottom Nav (mobile only) — Transferencias / Monitor ── */}
       <div
         className="fixed bottom-0 w-full lg:hidden flex justify-around px-6 py-4 z-50"
-        style={{ background: '#1a1d2e', borderTop: '1px solid #2d324a' }}
+        style={{ background: '#2c2c2e', borderTop: '1px solid #3a3a3c' }}
       >
         <button
           type="button"
@@ -391,6 +375,9 @@ export default function CajeroLayout({
         </button>
       </div>
 
+      {/* ── Background glow decoration ── */}
+      <div className="fixed rounded-full pointer-events-none" style={{ top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(232, 54, 42, 0.04)', filter: 'blur(100px)' }} />
+      <div className="fixed rounded-full pointer-events-none" style={{ bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(147, 51, 234, 0.05)', filter: 'blur(100px)' }} />
     </div>
   );
 }

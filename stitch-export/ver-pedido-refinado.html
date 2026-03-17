@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeyMozo - Tu Pedido</title>
+<!-- Inter font for clean typography -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'dark-bg': '#1c1c1e',
+            'card-bg': '#2c2c2e',
+            'border-subtle': '#3a3a3c',
+            'brand-green': '#13eca7',
+            'text-gray': '#9ca3af',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      background-color: #1c1c1e;
+      color: #ffffff;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Smooth transition for sticky header shadow */
+    header {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen pb-32">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-dark-bg/80 border-b border-border-subtle px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<!-- Back Arrow Icon -->
+<svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-white font-medium">Menú</span>
+</div>
+<h1 class="text-white font-bold text-lg">Tu Pedido</h1>
+</header>
+<!-- END: MainHeader -->
+<main class="px-4 py-6 flex flex-col gap-6">
+<!-- BEGIN: OrderItemsList -->
+<section class="flex flex-col gap-3" data-purpose="items-list">
+<!-- Item 1: Burger -->
+<div class="bg-card-bg border border-border-subtle rounded-2xl p-4 flex gap-4">
+<img alt="Doble Smash Burger" class="w-24 h-24 rounded-xl object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEKvqoLT_qJsiHufkCzpmhpXLDhSFv8MnhulEN2YA5VyLtd-PtX7ysTbsI-DvQho2aOYnEpkcYq3oMisxvxYeP0RWC7uL8UoGI0utWi4tTgNAKzITsCgNVUjBeoyjuG6KTVC1xyZOSchJrnoop3C6jEeu2apbAdBDAGwuaL9lWscQr2-QDSsouQ67fycJETeQ4UBNRZGrD0Mrf9bQv3IDhJoaZDNYTHAhwopzEMQsZgp1Z8zBuDBv23F_nBNnLR_tOI5gz9EKM8cc8"/>
+<div class="flex flex-col justify-between w-full">
+<div>
+<h3 class="text-white font-bold text-base leading-tight">Doble Smash Burger</h3>
+<p class="text-text-gray text-sm mt-1 leading-snug">Doble medallón smash, cheddar, cebolla caramelizada</p>
+</div>
+<div class="flex items-center justify-between mt-3">
+<!-- Quantity Controls -->
+<div class="flex items-center gap-4 bg-dark-bg/50 px-3 py-1.5 rounded-lg border border-border-subtle">
+<button class="font-bold text-xl leading-none text-purple-600">−</button>
+<span class="text-white font-bold text-sm">2</span>
+<button class="font-bold text-xl leading-none text-purple-600">+</button>
+</div>
+<span class="font-bold text-lg text-white">$17.000</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Drink -->
+<div class="bg-card-bg border border-border-subtle rounded-2xl p-4 flex gap-4">
+<img alt="Limonada Natural" class="w-24 h-24 rounded-xl object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuDD42_trr012-X2jJ4AhY4372NUxJTEDK5TRDaZdpBFpv5WSZyDiw8nPpt9LJYIJMxOxkYVLM_5bOldj4f5mdhzkESpoxDlEjcPiHEaPZVhRCljNDQW-Ihylq4t_UB15HQyWB_TfU9hzSFQt4ss0edJ74yoHbXWFBOHYITVXoVpWAYEhJLfsa8QFN8TWna98qwk6_4HzO1dHlCmMic3WFc51vjVKCygIAttXWaOoA3RKl0_v3Px5I3T4EcW0GyawfUGux6wrkjhck"/>
+<div class="flex flex-col justify-between w-full">
+<div>
+<h3 class="text-white font-bold text-base leading-tight">Limonada Natural</h3>
+<p class="text-text-gray text-sm mt-1 leading-snug">Jugo de limón fresco con hierbabuena</p>
+</div>
+<div class="flex items-center justify-between mt-3">
+<!-- Quantity Controls -->
+<div class="flex items-center gap-4 bg-dark-bg/50 px-3 py-1.5 rounded-lg border border-border-subtle">
+<button class="font-bold text-xl leading-none text-purple-600">−</button>
+<span class="text-white font-bold text-sm">1</span>
+<button class="font-bold text-xl leading-none text-purple-600">+</button>
+</div>
+<span class="font-bold text-lg text-white">$4.200</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: OrderItemsList -->
+<!-- BEGIN: AddNoteSection -->
+<section data-purpose="notes-container">
+<div class="bg-card-bg border border-border-subtle rounded-xl p-4 flex items-center gap-3">
+<svg class="h-6 w-6 text-text-gray" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-white placeholder-text-gray w-full p-0" placeholder="Agregar nota al pedido (alergias, sin sal, etc.)" type="text"/>
+</div>
+</section>
+<!-- END: AddNoteSection -->
+<!-- BEGIN: OrderSummaryCard -->
+<section class="bg-card-bg border border-border-subtle rounded-2xl p-5 flex flex-col gap-4 mb-4" data-purpose="order-summary">
+<div class="flex justify-between items-center">
+<span class="text-white font-bold text-xl">Total</span>
+<span class="font-bold text-2xl text-white">$23.320</span>
+</div>
+</section>
+<!-- END: OrderSummaryCard -->
+</main>
+<!-- BEGIN: BottomActionButton -->
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark-bg via-dark-bg to-transparent">
+<button class="w-full bg-brand-green hover:opacity-90 active:scale-[0.98] transition-all py-4 rounded-2xl shadow-xl shadow-brand-green/20 flex items-center justify-center gap-3">
+<span class="text-dark-bg font-bold text-lg text-black">Confirmar Pedido</span>
+<svg class="h-6 w-6 text-dark-bg" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+</svg>
+</button>
+</div>
+<!-- END: BottomActionButton -->
+</body></html>

@@ -117,7 +117,7 @@ function TimelineIcon({ type = 'clock' }) {
         )}
       </div>
       {/* Mini clock badge */}
-      <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#0a84ff] flex items-center justify-center border-2 border-[#11131e]">
+      <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#0a84ff] flex items-center justify-center border-2 border-[#1c1c1e]">
         <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z" />
         </svg>
@@ -166,7 +166,11 @@ export default function MisMesasPage({
   const headerColor = modal ? (variantHeaderColor[modal.mesa.variant] ?? '#3a3a3c') : '#3a3a3c';
 
   return (
-    <div className="px-3 pt-2 pb-6 lg:px-8 lg:pb-8">
+    <div className="px-3 pt-2 pb-6 lg:px-8 lg:pb-8 relative">
+      {/* ── Background glow decoration ── */}
+      <div className="fixed rounded-full pointer-events-none" style={{ top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(232, 54, 42, 0.04)', filter: 'blur(100px)' }} />
+      <div className="fixed rounded-full pointer-events-none" style={{ bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(147, 51, 234, 0.05)', filter: 'blur(100px)' }} />
+
       <div className="grid grid-cols-3 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {mesas.map((mesa) => (
           <MesaCard key={mesa.number} {...mesa} onClick={() => handleMesaClick(mesa)} />
@@ -179,7 +183,7 @@ export default function MisMesasPage({
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
           onClick={(e) => e.target === e.currentTarget && setModal(null)}
         >
-          <div className="bg-[#11131e] w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden transform transition-all animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
+          <div className="bg-[#1c1c1e] w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden transform transition-all animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
 
             {/* Header */}
             <div className="flex items-center justify-between relative" style={{ padding: '26px', background: headerColor }}>
@@ -244,7 +248,7 @@ export default function MisMesasPage({
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
           onClick={(e) => e.target === e.currentTarget && setModal({ type: 'action', mesa: modal.mesa })}
         >
-          <div className="bg-[#11131e] w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden transform transition-all animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
+          <div className="bg-[#1c1c1e] w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl overflow-hidden transform transition-all animate-[modal-in_0.25s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
 
             {/* Header */}
             <div className="flex items-center justify-between relative" style={{ padding: '26px', background: headerColor }}>
