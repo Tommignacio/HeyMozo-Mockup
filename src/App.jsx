@@ -7,6 +7,7 @@ import MenuPage from './pages/MenuPage';
 import MozoLayout from './pages/MozoLayout';
 import CajeroLayout from './pages/CajeroLayout';
 import CartPage from './pages/CartPage';
+import ConfirmadoPage from './pages/ConfirmadoPage';
 
 /* ── Persist state in sessionStorage so it survives navigation / refresh ── */
 function usePersistedState(key, defaultValue) {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/cliente" element={<ClientePage />} />
           <Route path="/cliente/menu" element={<MenuPage />} />
           <Route path="/cliente/pedido" element={<CartPage />} />
+          <Route path="/cliente/confirmado" element={<ConfirmadoPage />} />
           <Route path="/mozo/*" element={<MozoLayout {...mesaState} />} />
           <Route path="/cajero" element={<CajeroLayout {...mesaState} />} />
         </Routes>

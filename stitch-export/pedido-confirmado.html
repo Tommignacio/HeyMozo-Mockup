@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeyMozo - ¡Pedido en marcha!</title>
+<!-- BEGIN: Scripts and Styles -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'heymozo-dark': '#1c1c1e',
+            'heymozo-card': '#2c2c2e',
+            'heymozo-purple': '#9333ea',
+          },
+          animation: {
+            'slow-pulse': 'pulse-custom 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            'pulse-custom': {
+              '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+              '50%': { opacity: 0.8, transform: 'scale(1.05)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-animations">
+    /* Subtle custom pulse for the success ring */
+    @keyframes subtle-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .animate-ring-pulse {
+      animation: subtle-pulse 2s infinite;
+    }
+  </style>
+<!-- END: Scripts and Styles -->
+</head>
+<body class="bg-heymozo-dark text-white font-sans antialiased overflow-hidden">
+<!-- BEGIN: Main Success Container -->
+<main class="flex flex-col items-center justify-center min-h-screen w-full px-6 max-w-[390px] mx-auto" data-purpose="success-screen-layout">
+<!-- BEGIN: Success Icon Section -->
+<section class="relative flex flex-col items-center" data-purpose="status-icon">
+<!-- Outer Pulsing Circle -->
+<div class="w-28 h-28 rounded-full bg-green-500/15 border-2 border-green-500/30 flex items-center justify-center animate-ring-pulse">
+<!-- Checkmark SVG -->
+<svg class="h-14 w-14 text-white" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Chef Emoji Overlay -->
+<div class="absolute bottom-0 right-0 bg-heymozo-dark p-1 rounded-full text-2xl" data-purpose="chef-emoji">
+        👨‍🍳
+      </div>
+</section>
+<!-- END: Success Icon Section -->
+<!-- BEGIN: Text Content -->
+<section class="mt-6 text-center" data-purpose="success-message">
+<h1 class="text-3xl font-bold tracking-tight">
+        ¡Pedido en marcha!
+      </h1>
+<p class="text-gray-400 text-sm mt-3 px-8 leading-relaxed max-w-xs mx-auto">
+        La cocina ya recibió tu orden. Relajate, el mozo llevará todo a tu mesa apenas esté listo.
+      </p>
+</section>
+<!-- END: Text Content -->
+<!-- BEGIN: Summary Ticket Card -->
+<article class="w-full mt-8 bg-heymozo-card rounded-2xl p-5 shadow-xl" data-purpose="order-summary-card">
+<!-- Row: Table Number -->
+<div class="flex justify-between items-center py-1">
+<span class="text-gray-400 text-sm uppercase tracking-wide">Mesa</span>
+<span class="text-white font-semibold">Mesa 4</span>
+</div>
+<!-- Divider -->
+<div class="border-t border-gray-700 my-3"></div>
+<!-- Row: Total Amount -->
+<div class="flex justify-between items-center py-1">
+<span class="text-gray-400 text-sm">Total</span>
+<span class="text-white text-xl font-bold">$21.200</span>
+</div>
+<!-- Status Indicator -->
+<div class="mt-4 flex items-center justify-center gap-2" data-purpose="order-status">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+<span class="text-green-400 text-sm font-medium">Enviado a cocina</span>
+</div>
+</article>
+<!-- END: Summary Ticket Card -->
+<!-- BEGIN: Call To Action -->
+<footer class="w-full mt-8" data-purpose="navigation-footer">
+<button class="w-full bg-heymozo-purple hover:bg-purple-700 text-white font-semibold py-4 rounded-xl shadow-lg shadow-purple-600/20 transition-all active:scale-[0.98]" onclick="window.location.reload();" type="button">
+        Volver a mi mesa
+      </button>
+</footer>
+<!-- END: Call To Action -->
+</main>
+<!-- END: Main Success Container -->
+</body></html>

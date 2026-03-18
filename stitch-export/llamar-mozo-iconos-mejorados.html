@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Llamar al Mozo - Bottom Sheet</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration for custom theme colors -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sheet-bg': '#1a1c29',
+            'button-bg': '#2c2c2e',
+            'brand-orange': '#f97316',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="layout-adjustments">
+    /* Ensure the mobile view looks correct on the requested 390x844 dimensions */
+    body {
+      background-color: #000;
+      height: 844px;
+      width: 390px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Backdrop styling */
+    .backdrop {
+      background-color: rgba(0, 0, 0, 0.70);
+    }
+
+    /* Animation for the bottom sheet appearing */
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .animate-slide-up {
+      animation: slideUp 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="antialiased">
+<!-- BEGIN: Backdrop -->
+<!-- This provides the darkened background context for the modal -->
+<div class="backdrop absolute inset-0 z-0 flex items-end" data-purpose="screen-overlay">
+<!-- BEGIN: Bottom Sheet Container -->
+<div class="animate-slide-up w-full bg-sheet-bg rounded-t-[24px] p-6 shadow-2xl relative z-10" data-purpose="bottom-sheet-content">
+<!-- Drag Handle -->
+<div class="flex justify-center mb-4">
+<div class="w-12 h-1.5 bg-gray-600 rounded-full" data-purpose="drag-handle"></div>
+</div>
+<!-- Header Title -->
+<header class="text-center">
+<h1 class="text-white text-xl font-bold">¿Qué necesitás?</h1>
+</header>
+<!-- BEGIN: Quick Request Grid -->
+<!-- Grid layout for common restaurant requests -->
+<div class="grid grid-cols-2 gap-4 mt-6" data-purpose="quick-actions-grid">
+<!-- Action: Hielo -->
+<button class="bg-button-bg rounded-xl h-24 flex flex-col items-center justify-center transition-transform active:scale-95" data-purpose="quick-btn-ice">
+<span class="mb-1 text-4xl">🧊</span>
+<span class="text-white text-sm">Hielo</span>
+</button>
+<!-- Action: Condimentos -->
+<button class="bg-button-bg rounded-xl h-24 flex flex-col items-center justify-center transition-transform active:scale-95" data-purpose="quick-btn-condiments">
+<span class="mb-1 text-4xl">🧂</span>
+<span class="text-white text-sm">Condimentos</span>
+</button>
+<!-- Action: Servilletas -->
+<button class="bg-button-bg rounded-xl h-24 flex flex-col items-center justify-center transition-transform active:scale-95" data-purpose="quick-btn-napkins">
+<span class="mb-1 text-4xl">📄</span>
+<span class="text-white text-sm">Servilletas</span>
+</button>
+<!-- Action: Limpiar mesa -->
+<button class="bg-button-bg rounded-xl h-24 flex flex-col items-center justify-center transition-transform active:scale-95" data-purpose="quick-btn-clean">
+<span class="mb-1 text-4xl">🧹</span>
+<span class="text-white text-sm">Limpiar mesa</span>
+</button>
+</div>
+<!-- END: Quick Request Grid -->
+<!-- BEGIN: Call Waiter Main Button -->
+<!-- Primary call to action for general assistance -->
+<div class="mt-4" data-purpose="main-action-container">
+<button class="w-full bg-brand-orange py-4 rounded-xl text-white font-bold flex items-center justify-center transition-opacity active:opacity-90" data-purpose="call-waiter-btn">
+<span class="mr-2">🙋‍♂️</span>
+          Otra consulta (Viene el mozo)
+        </button>
+</div>
+<!-- END: Call Waiter Main Button -->
+<!-- BEGIN: Footer Actions -->
+<footer class="mt-6 mb-2 flex justify-center" data-purpose="bottom-sheet-footer">
+<button class="text-gray-400 text-sm hover:text-gray-200 transition-colors" data-purpose="cancel-btn">
+          Cancelar
+        </button>
+</footer>
+<!-- END: Footer Actions -->
+</div>
+<!-- END: Bottom Sheet Container -->
+</div>
+<!-- END: Backdrop -->
+</body></html>

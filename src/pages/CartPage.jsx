@@ -228,6 +228,7 @@ export default function CartPage() {
               cursor: 'pointer',
               boxShadow: '0 20px 40px rgba(19,236,167,0.2)',
             }}
+            onClick={() => navigate('/cliente/confirmado')}
           >
             <span className="font-bold" style={{ fontSize: '1.125rem', color: '#1c1c1e' }}>
               Confirmar Pedido

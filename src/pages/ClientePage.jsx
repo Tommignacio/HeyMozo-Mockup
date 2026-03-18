@@ -3,9 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
 import PayModal from '../components/PayModal';
 
+const QUICK_ACTIONS = [
+  { emoji: '🧊', label: 'Hielo' },
+  { emoji: '🧂', label: 'Condimentos' },
+  { emoji: '🧻', label: 'Servilletas' },
+  { emoji: '🧹', label: 'Limpiar mesa' },
+];
+
 export default function ClientePage() {
   const navigate = useNavigate();
   const [payModalOpen, setPayModalOpen] = useState(false);
+  const [mozoSheetOpen, setMozoSheetOpen] = useState(false);
+  const [mozoSent, setMozoSent] = useState(null);
 
   return (
     <Phone>
@@ -67,7 +76,7 @@ export default function ClientePage() {
                   cursor: 'pointer',
                   fontSize: '1.125rem',
                 }}
-                onClick={() => alert('Ya se está llamando al mozo')}
+                onClick={() => setMozoSheetOpen(true)}
               >
                 <span className="material-symbols-outlined text-2xl font-bold">notifications_active</span>
                 <span>Llamar al Mozo</span>
@@ -131,6 +140,115 @@ export default function ClientePage() {
           style={{ bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(147, 51, 234, 0.05)', filter: 'blur(100px)' }}
         />
       </div>
+
+      {/* ── Bottom Sheet: Llamar al Mozo ── */}
+      {mozoSheetOpen && (
+        <div
+          className="absolute inset-0 z-50 flex items-end"
+          style={{ background: 'rgba(0, 0, 0, 0.70)' }}
+          onClick={() => { setMozoSheetOpen(false); setMozoSent(null); }}
+        >
+          <div
+            className="w-full"
+            style={{
+              background: '#1c1c24',
+              borderRadius: '24px 24px 0 0',
+              padding: '1.5rem',
+              animation: 'mozo-slide-up 0.3s ease-out forwards',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center" style={{ marginBottom: '1rem' }}>
+              <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#4b5563' }} />
+            </div>
+
+            {/* Title */}
+            <h2 className="text-white text-xl font-bold text-center">¿Qué necesitás?</h2>
+
+            {/* Quick actions grid */}
+            <div className="grid grid-cols-2" style={{ gap: '1rem', marginTop: '1.5rem' }}>
+              {QUICK_ACTIONS.map((action) => (
+                <button
+                  key={action.label}
+                  className="flex flex-col items-center justify-center rounded-xl active:scale-95 transition-transform"
+                  style={{
+                    background: '#2c2c2e',
+                    height: '96px',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setMozoSent(action.label);
+                    setTimeout(() => { setMozoSheetOpen(false); setMozoSent(null); }, 1200);
+                  }}
+                >
+                  <span style={{ fontSize: '2rem', marginBottom: '4px' }}>{action.emoji}</span>
+                  <span className="text-white text-sm">{action.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Main call button */}
+            <button
+              className="w-full flex items-center justify-center font-bold text-white active:opacity-90 transition-opacity"
+              style={{
+                background: '#f97316',
+                padding: '1rem',
+                borderRadius: '0.75rem',
+                marginTop: '1rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                boxShadow: '0 10px 25px rgba(249,115,22,0.2)',
+              }}
+              onClick={() => {
+                setMozoSent('Mozo en camino');
+                setTimeout(() => { setMozoSheetOpen(false); setMozoSent(null); }, 1200);
+              }}
+            >
+              <span style={{ marginRight: '0.5rem' }}>🙋‍♂️</span>
+              Otra consulta (Viene el mozo)
+            </button>
+
+            {/* Cancel */}
+            <div className="flex justify-center" style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
+              <button
+                className="text-sm transition-colors"
+                style={{ color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }}
+                onClick={() => { setMozoSheetOpen(false); setMozoSent(null); }}
+              >
+                Cancelar
+              </button>
+            </div>
+
+            {/* Sent feedback toast */}
+            {mozoSent && (
+              <div
+                className="text-center text-sm font-medium"
+                style={{
+                  color: '#4ade80',
+                  marginTop: '0.5rem',
+                  animation: 'mozo-fade-in 0.2s ease-out',
+                }}
+              >
+                ✓ {mozoSent} — pedido enviado
+              </div>
+            )}
+          </div>
+
+          <style>{`
+            @keyframes mozo-slide-up {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+            @keyframes mozo-fade-in {
+              from { opacity: 0; transform: translateY(4px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+        </div>
+      )}
 
       <PayModal isOpen={payModalOpen} onClose={() => setPayModalOpen(false)} />
     </Phone>
