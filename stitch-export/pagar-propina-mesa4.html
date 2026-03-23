@@ -1,0 +1,193 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#003824",
+              "surface-container-highest": "#353437",
+              "on-primary-container": "#f6e6ff",
+              "tertiary-fixed-dim": "#ffb86b",
+              "tertiary-fixed": "#ffdcbc",
+              "inverse-on-surface": "#303032",
+              "secondary-container": "#00a572",
+              "tertiary": "#ffb86b",
+              "on-tertiary": "#492900",
+              "on-primary-fixed": "#2c0051",
+              "on-tertiary-fixed-variant": "#683d00",
+              "error": "#ffb4ab",
+              "on-tertiary-container": "#ffe8d4",
+              "tertiary-container": "#9a5c00",
+              "background": "#131315",
+              "on-surface-variant": "#cfc2d7",
+              "surface": "#131315",
+              "surface-tint": "#ddb8ff",
+              "surface-dim": "#131315",
+              "on-error": "#690005",
+              "error-container": "#93000a",
+              "secondary-fixed": "#6ffbbe",
+              "surface-variant": "#353437",
+              "on-surface": "#e4e2e4",
+              "on-background": "#e4e2e4",
+              "secondary": "#4edea3",
+              "inverse-surface": "#e4e2e4",
+              "on-primary": "#490080",
+              "surface-container-high": "#2a2a2c",
+              "on-tertiary-fixed": "#2c1700",
+              "surface-container-low": "#1b1b1d",
+              "primary-fixed-dim": "#ddb8ff",
+              "on-secondary-fixed-variant": "#005236",
+              "on-secondary-fixed": "#002113",
+              "on-primary-fixed-variant": "#6800b4",
+              "inverse-primary": "#861fdd",
+              "surface-bright": "#39393b",
+              "on-secondary-container": "#00311f",
+              "outline": "#988ca0",
+              "primary-container": "#9333ea",
+              "surface-container": "#1f1f21",
+              "surface-container-lowest": "#0e0e10",
+              "primary-fixed": "#f0dbff",
+              "secondary-fixed-dim": "#4edea3",
+              "primary": "#ddb8ff",
+              "on-error-container": "#ffdad6",
+              "outline-variant": "#4d4354"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #131315; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased overflow-x-hidden pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#131315] docked full-width top-0 shadow-[0px_40px_40px_0px_rgba(221,184,255,0.08)] z-50">
+<div class="flex items-center justify-between w-full px-6 h-16">
+<button class="active:scale-95 duration-200 text-[#ddb8ff] hover:bg-[#2a2a2c] transition-colors p-2 rounded-full" style="">
+<span class="material-symbols-outlined" data-icon="arrow_back" style="">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-[#e4e2e4] text-lg" style="">Pagar Propina Mesa 4</h1>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</div>
+</header>
+<main class="max-w-xl mx-auto px-6 pt-8 space-y-8">
+<!-- Order Summary Card (The Culinary Ledger) -->
+<section class="bg-surface-container-low rounded-lg p-6 space-y-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<div class="space-y-4">
+<h2 class="text-on-surface-variant font-medium text-sm tracking-widest uppercase" style="">Resumen de Cuenta</h2>
+<div class="space-y-3">
+<div class="flex justify-between items-center group">
+<div class="flex flex-col">
+<span class="text-on-surface font-semibold" style="">2x Doble Smash Burger</span>
+<span class="text-on-surface-variant text-xs" style="">Clásica con cheddar y bacon</span>
+</div>
+<span class="text-on-surface font-medium" style="">$17.000</span>
+</div>
+<div class="flex justify-between items-center group">
+<div class="flex flex-col">
+<span class="text-on-surface font-semibold" style="">1x Limonada</span>
+<span class="text-on-surface-variant text-xs" style="">Con menta y jengibre</span>
+</div>
+<span class="text-on-surface font-medium" style="">$4.200</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="text-on-surface-variant" style="">Subtotal</span>
+<span class="text-on-surface font-bold text-lg" style="">$21.200</span>
+</div>
+</section>
+<!-- Tip Selection (The Inset Area) -->
+<section class="bg-surface-container rounded-lg p-6 space-y-5">
+<h3 class="text-on-surface font-bold text-base" style="">¿Deseas agregar propina?</h3>
+<div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+<!-- Active Option -->
+<button class="bg-gradient-to-br from-primary to-primary-container text-white rounded-lg py-4 px-2 flex flex-col items-center justify-center transition-all active:scale-95 shadow-lg shadow-primary-container/20" style="">
+<span class="text-lg font-bold" style="">10%</span>
+<span class="text-[10px] opacity-80 uppercase tracking-tighter" style="">Sugerido</span>
+</button>
+<button class="bg-surface-container-highest hover:bg-surface-bright text-on-surface rounded-lg py-4 px-2 flex flex-col items-center justify-center transition-all active:scale-95" style="">
+<span class="text-lg font-bold" style="">15%</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter" style="">Excelente</span>
+</button>
+<button class="bg-surface-container-highest hover:bg-surface-bright text-on-surface rounded-lg py-4 px-2 flex flex-col items-center justify-center transition-all active:scale-95" style="">
+<span class="text-lg font-bold" style="">Otro</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter" style="">Monto</span>
+</button>
+<button class="bg-surface-container-highest hover:bg-surface-bright text-on-surface rounded-lg py-4 px-2 flex flex-col items-center justify-center transition-all active:scale-95" style="">
+<span class="text-lg font-bold" style="">Nada</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter" style="">Omitir</span>
+</button>
+</div>
+</section>
+<!-- Total Display (The Grand Final Act) -->
+<section class="flex flex-col items-center justify-center py-4">
+<span class="text-on-surface-variant text-sm font-medium mb-1" style="">Total a Pagar</span>
+<div class="text-secondary text-5xl md:text-6xl font-extrabold tracking-tight drop-shadow-[0_0_20px_rgba(78,222,163,0.15)]" style="">
+                $23.320
+            </div>
+</section>
+<!-- Payment Actions (Conversion Focus) -->
+<section class="space-y-4">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container hover:brightness-110 text-on-primary-fixed font-extrabold text-lg py-5 px-8 rounded-lg flex items-center justify-center gap-3 transition-all active:scale-95 shadow-xl shadow-primary/10" style="">
+<span class="material-symbols-outlined" data-icon="payments" style="">payments</span>
+                Pagar con Mercado Pago
+            </button>
+<button class="w-full bg-transparent border-2 border-outline-variant/30 hover:border-secondary text-secondary font-bold py-4 px-8 rounded-lg flex items-center justify-center gap-3 transition-all active:scale-95" style="">
+<span class="material-symbols-outlined" data-icon="account_balance" style="">account_balance</span>
+                Transferencia Bancaria (Alias)
+            </button>
+<div class="grid grid-cols-2 gap-4 pt-2">
+<button class="bg-surface-container-high hover:bg-surface-bright text-on-surface font-semibold py-4 px-4 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95" style="">
+<span class="material-symbols-outlined text-sm" data-icon="terminal" style="">terminal</span>
+                    Tarjeta Fisica/ MODO</button>
+<button class="bg-surface-container-high hover:bg-surface-bright text-on-surface font-semibold py-4 px-4 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95" style="">
+<span class="material-symbols-outlined text-sm" data-icon="account_balance_wallet" style="">account_balance_wallet</span>
+                    Efectivo
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-[#131315]/80 backdrop-blur-xl no-border shadow-none rounded-t-lg">
+<button class="flex flex-col items-center justify-center text-[#e4e2e4]/50 px-6 py-2 hover:text-[#ddb8ff] transition-all active:scale-90 duration-300" style="">
+<span class="material-symbols-outlined" data-icon="restaurant_menu" style="">restaurant_menu</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wide uppercase mt-1" style="">Menu</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#e4e2e4]/50 px-6 py-2 hover:text-[#ddb8ff] transition-all active:scale-90 duration-300" style="">
+<span class="material-symbols-outlined" data-icon="receipt_long" style="">receipt_long</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wide uppercase mt-1" style="">Orders</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#ddb8ff] to-[#9333ea] text-white rounded-lg px-6 py-2 active:scale-90 duration-300" style="">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: &quot;FILL&quot; 1;">payments</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wide uppercase mt-1" style="">Pay</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#e4e2e4]/50 px-6 py-2 hover:text-[#ddb8ff] transition-all active:scale-90 duration-300" style="">
+<span class="material-symbols-outlined" data-icon="person" style="">person</span>
+<span class="font-['Manrope'] text-[10px] font-medium tracking-wide uppercase mt-1" style="">Profile</span>
+</button>
+</nav>
+</body></html>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
-import PayModal from '../components/PayModal';
 
 const QUICK_ACTIONS = [
   { emoji: '🧊', label: 'Hielo' },
@@ -12,7 +11,6 @@ const QUICK_ACTIONS = [
 
 export default function ClientePage() {
   const navigate = useNavigate();
-  const [payModalOpen, setPayModalOpen] = useState(false);
   const [mozoSheetOpen, setMozoSheetOpen] = useState(false);
   const [mozoSent, setMozoSent] = useState(null);
 
@@ -93,7 +91,7 @@ export default function ClientePage() {
                   cursor: 'pointer',
                   fontSize: '1.125rem',
                 }}
-                onClick={() => setPayModalOpen(true)}
+                onClick={() => navigate('/cliente/pagar')}
               >
                 <span className="material-symbols-outlined text-2xl">credit_card</span>
                 <span>Pagar / Dejar Propina</span>
@@ -250,7 +248,6 @@ export default function ClientePage() {
         </div>
       )}
 
-      <PayModal isOpen={payModalOpen} onClose={() => setPayModalOpen(false)} />
     </Phone>
   );
 }

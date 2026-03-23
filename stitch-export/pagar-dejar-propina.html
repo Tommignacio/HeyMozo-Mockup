@@ -1,0 +1,195 @@
+<!DOCTYPE html><html class="dark" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#e4e2e4",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-primary-fixed": "#2c0051",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#9a5c00",
+                        "on-error": "#690005",
+                        "secondary-container": "#00a572",
+                        "inverse-on-surface": "#303032",
+                        "surface-container-high": "#2a2a2c",
+                        "primary-fixed-dim": "#ddb8ff",
+                        "tertiary": "#ffb86b",
+                        "on-primary-container": "#f6e6ff",
+                        "on-tertiary": "#492900",
+                        "inverse-surface": "#e4e2e4",
+                        "surface-container-highest": "#353437",
+                        "surface": "#131315",
+                        "outline-variant": "#4d4354",
+                        "on-secondary": "#003824",
+                        "on-primary": "#490080",
+                        "secondary": "#4edea3",
+                        "primary": "#ddb8ff",
+                        "on-tertiary-fixed": "#2c1700",
+                        "surface-container": "#1f1f21",
+                        "outline": "#988ca0",
+                        "on-secondary-fixed": "#002113",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e4e2e4",
+                        "surface-tint": "#ddb8ff",
+                        "on-primary-fixed-variant": "#6800b4",
+                        "tertiary-fixed": "#ffdcbc",
+                        "background": "#131315",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "surface-dim": "#131315",
+                        "on-secondary-container": "#00311f",
+                        "on-tertiary-container": "#ffe8d4",
+                        "on-surface-variant": "#cfc2d7",
+                        "primary-container": "#9333ea",
+                        "surface-container-low": "#1b1b1d",
+                        "surface-variant": "#353437",
+                        "inverse-primary": "#861fdd",
+                        "primary-fixed": "#f0dbff",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-secondary-fixed-variant": "#005236",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#39393b"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131315;
+            color: #e4e2e4;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary/30">
+<!-- Header Navigation -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-6 h-16 bg-[#131315] text-[#e4e2e4]">
+<div class="flex items-center gap-1 text-on-surface-variant text-sm font-label uppercase tracking-wider">
+<span class="material-symbols-outlined text-[20px]" style="">chevron_left</span>
+<span class="" style=""><br></span>
+</div>
+<h1 class="font-headline text-[#e4e2e4] tracking-[-0.04em] uppercase font-bold text-base" style="">Pagar / Dejar Propina</h1>
+<div class="text-on-surface-variant text-sm font-label tracking-tighter uppercase opacity-60" style="">Mesa 4</div>
+</header>
+<main class="pt-20 pb-32 px-5 max-w-[390px] mx-auto min-h-screen">
+<!-- Ticket Card -->
+<section class="bg-surface-container rounded-lg p-5 mb-4 shadow-sm">
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<span class="text-primary font-bold" style="">2x</span>
+<span class="text-on-surface font-medium" style="">Doble Smash Burger</span>
+</div>
+<span class="text-on-surface font-semibold" style="">$17.000</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="flex gap-3">
+<span class="text-primary font-bold" style="">1x</span>
+<span class="text-on-surface font-medium" style="">Limonada</span>
+</div>
+<span class="text-on-surface font-semibold" style="">$4.200</span>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/15 flex justify-between items-center">
+<span class="font-label text-xs uppercase tracking-[0.1em] text-on-surface-variant" style="">Subtotal Consumo</span>
+<span class="text-on-surface font-bold" style="">$21.200</span>
+</div>
+</div>
+</section>
+<!-- Tip Card -->
+<section class="bg-surface-container-low border border-primary-container/30 rounded-lg p-5 mb-8 relative overflow-hidden">
+<!-- Glassmorphism subtle background glow -->
+<div class="absolute -right-10 -top-10 w-24 h-24 bg-primary-container/10 blur-3xl rounded-full"></div>
+<h2 class="text-on-surface font-bold mb-4 flex items-center gap-2" style="">
+                Agradecé a tu mozo <span class="text-lg" style="">💸</span>
+</h2>
+<div class="grid grid-cols-4 gap-2 mb-4">
+<button class="bg-primary-container text-white py-3 rounded-DEFAULT font-bold text-sm transition-transform active:scale-95 duration-150" style="">
+                    10%
+                </button>
+<button class="bg-surface-container-high text-on-surface py-3 rounded-DEFAULT font-medium text-sm hover:bg-surface-variant transition-colors" style="">
+                    15%
+                </button>
+<button class="bg-surface-container-high text-on-surface py-3 rounded-DEFAULT font-medium text-sm hover:bg-surface-variant transition-colors" style="">
+                    Otro
+                </button>
+<button class="bg-surface-container-high text-on-surface-variant/50 py-3 rounded-DEFAULT font-medium text-sm hover:bg-surface-variant transition-colors" style="">
+                    Nada
+                </button>
+</div>
+<p class="text-on-surface-variant text-xs font-label tracking-wide uppercase opacity-70" style="">
+                Propina sugerida (10%): $2.120
+            </p>
+</section>
+<!-- Total Section -->
+<section class="text-center space-y-2 mb-8">
+<h3 class="text-secondary font-headline text-5xl font-extrabold tracking-tighter" style="">
+                $23.320
+            </h3>
+<p class="text-on-surface-variant text-sm font-medium" style="">
+                Total a pagar (Consumo + Propina)
+            </p>
+<div class="pt-4">
+<button class="inline-flex items-center gap-2 px-6 py-2 bg-surface-container-high rounded-full text-on-surface text-sm font-medium hover:bg-surface-variant transition-all" style="">
+<span class="material-symbols-outlined text-[18px]" style="">calculate</span>
+                    Dividir cuenta
+                </button>
+</div>
+</section>
+<!-- Payment Methods -->
+<section class="space-y-4">
+<label class="block text-on-surface-variant text-[10px] uppercase tracking-[0.2em] font-bold text-center mb-6" style="">¿Cómo querés pagar?</label>
+<button class="w-full bg-[#009EE3] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#009EE3]/10 active:scale-[0.98] transition-all" style="">
+                Pagar con Mercado Pago
+            </button>
+<button class="w-full bg-surface-container border border-secondary-container/30 text-on-surface py-4 rounded-xl font-bold active:scale-[0.98] transition-all" style="">
+                Transferencia Bancaria (Alias)
+            </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container text-on-surface py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all" style="">
+<span class="material-symbols-outlined text-[20px]" style="">point_of_sale</span><span style="font-family: Manrope, sans-serif; font-size: 16px; background-color: rgb(57, 57, 59);">Tarjeta/ MODO</span></button>
+<button class="bg-surface-container text-on-surface py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all" style="">
+<span class="material-symbols-outlined text-[20px]" style="">payments</span>
+                    Efectivo
+                </button>
+</div>
+</section>
+</main>
+<!-- Navigation Shell (Bottom Bar) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-8 pb-8 pt-4 bg-[#131315]/80 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-4px_48px_rgba(221,184,255,0.05)]">
+<a class="flex flex-col items-center justify-center text-[#e4e2e4]/50 p-3 hover:text-[#ddb8ff] transition-all" href="#" style="">
+<span class="material-symbols-outlined" style="">restaurant_menu</span>
+<span class="font-label text-[10px] uppercase tracking-[0.1em] font-medium mt-1" style="">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-white rounded-full p-3 shadow-lg shadow-primary-container/20 scale-[1.1]" href="#" style="">
+<span class="material-symbols-outlined" style="">receipt_long</span>
+<span class="hidden" style="">Bill</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e4e2e4]/50 p-3 hover:text-[#ddb8ff] transition-all" href="#" style="">
+<span class="material-symbols-outlined" style="">person_pin_circle</span>
+<span class="font-label text-[10px] uppercase tracking-[0.1em] font-medium mt-1" style="">Concierge</span>
+</a>
+</nav>
+</body></html>
