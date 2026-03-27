@@ -13,6 +13,8 @@ export default function ClientePage() {
   const navigate = useNavigate();
   const [mozoSheetOpen, setMozoSheetOpen] = useState(false);
   const [mozoSent, setMozoSent] = useState(null);
+  const [vipSheetOpen, setVipSheetOpen] = useState(false);
+  const [vipPhone, setVipPhone] = useState('');
 
   return (
     <Phone>
@@ -98,16 +100,14 @@ export default function ClientePage() {
               </button>
             </div>
 
-            {/* Feedback sutil */}
+            {/* Botón VIP Club */}
             <div className="text-center" style={{ marginTop: '3rem', marginBottom: '3rem' }}>
-              <a
-                className="inline-flex items-center gap-2 hover:text-[#13eca7] transition-colors duration-200"
-                style={{ color: '#6b7280', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none', cursor: 'pointer' }}
-                href="#"
-                onClick={(e) => { e.preventDefault(); alert('Gracias por tu opinión!'); }}
+              <button
+                style={{ background: 'none', border: 'none', color: '#9ca3af', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer', padding: 0 }}
+                onClick={() => setVipSheetOpen(true)}
               >
-                <span>⭐ ¿Cómo te atendimos? Dejanos tu opinión</span>
-              </a>
+                🎁 ¿Ya sos del Club? Recuperá tu regalo acá
+              </button>
             </div>
           </main>
         </div>
@@ -138,6 +138,87 @@ export default function ClientePage() {
           style={{ bottom: '-10%', right: '-10%', width: '40%', height: '40%', background: 'rgba(147, 51, 234, 0.05)', filter: 'blur(100px)' }}
         />
       </div>
+
+      {/* ── Bottom Sheet: VIP Club ── */}
+      {vipSheetOpen && (
+        <div
+          className="absolute inset-0 z-50 flex items-end"
+          style={{ background: 'rgba(0, 0, 0, 0.70)' }}
+          onClick={() => setVipSheetOpen(false)}
+        >
+          <div
+            className="w-full"
+            style={{
+              background: '#1a1c29',
+              borderRadius: '24px 24px 0 0',
+              padding: '1.5rem',
+              animation: 'mozo-slide-up 0.3s ease-out forwards',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center" style={{ marginBottom: '1.5rem' }}>
+              <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#4b5563' }} />
+            </div>
+
+            {/* Title */}
+            <h2 className="text-white text-xl font-bold text-center">¡Hola de nuevo! 👑</h2>
+            <p className="text-center text-sm" style={{ color: '#9ca3af', marginTop: '0.5rem', padding: '0 0.5rem' }}>
+              Ingresá tu celular para activar tus beneficios exclusivos en el menú de hoy.
+            </p>
+
+            {/* Phone input */}
+            <input
+              type="tel"
+              inputMode="numeric"
+              placeholder="Tu WhatsApp (ej: 11 1234 5678)"
+              value={vipPhone}
+              onChange={(e) => setVipPhone(e.target.value)}
+              className="w-full"
+              style={{
+                background: '#1f2937',
+                border: '1px solid #374151',
+                borderRadius: '0.75rem',
+                padding: '1rem',
+                color: '#e1e1f1',
+                fontSize: '1rem',
+                outline: 'none',
+                marginTop: '1.5rem',
+                fontFamily: 'Inter, sans-serif',
+              }}
+            />
+
+            {/* CTA button */}
+            <button
+              className="w-full font-bold text-white"
+              style={{
+                background: '#9333ea',
+                padding: '1rem',
+                borderRadius: '0.75rem',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                marginTop: '1rem',
+                boxShadow: '0 10px 25px rgba(147,51,234,0.2)',
+              }}
+              onClick={() => setVipSheetOpen(false)}
+            >
+              Activar mis beneficios
+            </button>
+
+            {/* Cancel */}
+            <div className="flex justify-center" style={{ marginTop: '1rem', marginBottom: '0.25rem' }}>
+              <button
+                className="text-sm"
+                style={{ color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer' }}
+                onClick={() => setVipSheetOpen(false)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Bottom Sheet: Llamar al Mozo ── */}
       {mozoSheetOpen && (

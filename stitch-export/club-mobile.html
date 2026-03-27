@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeyMozo - Active Alerts</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter for a clean UI -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-base-styles">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #121212;
+      color: white;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Subtle glow effect for active alert cards */
+    .alert-glow-purple {
+      box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- BEGIN: Navigation Header -->
+<header class="bg-[#1a1a1a] border-b border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="bg-[#ef4444] p-1.5 rounded-lg">
+<!-- Logo Icon Placeholder -->
+<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h1 class="text-xl font-extrabold tracking-tight">HeyMozo</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="bg-[#2a2a2a] text-xs font-semibold px-3 py-1.5 rounded-md border border-gray-700 flex items-center gap-1">
+        Sector A
+        <svg class="h-3 w-3" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<button class="p-1 text-gray-400">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</header>
+<!-- END: Navigation Header -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 p-4 space-y-4">
+<h2 class="text-3xl font-bold mb-4 tracking-tight">Active Alerts</h2>
+<!-- BEGIN: NUEVO PEDIDO Alert Card (Requested Focus) -->
+<div class="relative bg-purple-600 rounded-2xl p-5 alert-glow-purple" data-purpose="alert-card-new-order">
+<!-- Notification Badge -->
+<div class="absolute -top-2 -right-2 bg-red-600 text-white font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-[#121212] shadow-lg text-sm">
+        3
+      </div>
+<div class="mb-4">
+<h3 class="text-4xl font-extrabold text-white mb-3">MESA 4</h3>
+<div class="flex items-center gap-3 text-white mb-2">
+<!-- Shopping Cart Icon -->
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xl font-semibold">Nuevo Pedido</span>
+</div>
+<div class="flex items-center gap-2 text-white/80">
+<!-- Clock Icon -->
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm font-bold tracking-widest uppercase">1 MIN</span>
+</div>
+</div>
+<!-- Large Action Button -->
+<button class="w-full bg-white text-purple-700 font-extrabold py-4 rounded-full text-xl shadow-inner active:scale-95 transition-transform" data-purpose="action-button">
+        ¡MARCHADO!
+      </button>
+</div>
+<!-- END: NUEVO PEDIDO Alert Card -->
+<!-- BEGIN: Existing Alert - Mesa 1 -->
+<div class="bg-[#dc2626] rounded-2xl p-5 border-2 border-white/20 border-dashed" data-purpose="alert-card-mesa-1">
+<div class="mb-4">
+<h3 class="text-4xl font-extrabold text-white mb-3">MESA 1</h3>
+<div class="flex items-center gap-2 text-white mb-2">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xl font-semibold">Cuenta: Tarjeta</span>
+</div>
+<div class="flex items-center gap-2 text-white/80">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm font-bold tracking-widest uppercase">2 MIN</span>
+</div>
+</div>
+<button class="w-full bg-white text-black font-extrabold py-3 rounded-full text-lg shadow-md uppercase">
+        ¡VOY!
+      </button>
+</div>
+<!-- END: Existing Alert - Mesa 1 -->
+<!-- BEGIN: Existing Alert - Mesa 5 -->
+<div class="bg-[#f97316] rounded-2xl p-5" data-purpose="alert-card-mesa-5">
+<div class="mb-4">
+<h3 class="text-4xl font-extrabold text-white mb-3">MESA 5</h3>
+<div class="flex items-center gap-2 text-white mb-2">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xl font-semibold">Llevar Hielo</span>
+</div>
+<div class="flex items-center gap-2 text-white/80">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm font-bold tracking-widest uppercase">4 MIN</span>
+</div>
+</div>
+<button class="w-full bg-white text-black font-extrabold py-3 rounded-full text-lg shadow-md uppercase">
+        ¡VOY!
+      </button>
+</div>
+<!-- END: Existing Alert - Mesa 5 -->
+<!-- BEGIN: Existing Alert - Mesa 3 -->
+<div class="bg-[#22c55e] rounded-2xl p-5" data-purpose="alert-card-mesa-3">
+<div class="mb-4">
+<h3 class="text-4xl font-extrabold text-white mb-3">MESA 3</h3>
+<div class="flex items-center gap-2 text-white mb-2">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xl font-semibold">Cobrado (MP)</span>
+</div>
+<div class="flex items-center gap-2 text-white/80">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-sm font-bold tracking-widest uppercase">5 MIN</span>
+</div>
+</div>
+<button class="w-full bg-white text-black font-extrabold py-3 rounded-full text-lg shadow-md uppercase">
+        LIBERAR MESA
+      </button>
+</div>
+<!-- END: Existing Alert - Mesa 3 -->
+</main>
+<!-- END: Main Content Area -->
+<!-- BEGIN: Bottom Navigation (Simplified) -->
+<nav class="bg-[#1a1a1a] border-t border-gray-800 p-2 flex justify-around items-center">
+<button class="flex flex-col items-center p-2 text-gray-500">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] uppercase font-bold mt-1">Mesas</span>
+</button>
+<button class="flex flex-col items-center p-2 text-purple-500">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] uppercase font-bold mt-1">Alertas</span>
+</button>
+<button class="flex flex-col items-center p-2 text-gray-500">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] uppercase font-bold mt-1">Perfil</span>
+</button>
+</nav>
+<!-- END: Bottom Navigation -->
+</body></html>

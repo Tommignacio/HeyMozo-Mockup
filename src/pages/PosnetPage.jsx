@@ -86,7 +86,7 @@ export default function PosnetPage() {
             marginTop: '2rem',
             transition: 'transform 0.15s',
           }}
-          onClick={() => navigate('/cliente')}
+          onClick={() => navigate('/cliente/post-pago')}
         >
           Entendido, lo espero
         </button>
