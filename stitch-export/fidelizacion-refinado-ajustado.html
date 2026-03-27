@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeyMozo - Pago Confirmado</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed-variant": "#6800b4",
+              "error": "#ffb4ab",
+              "on-error": "#690005",
+              "on-primary": "#490080",
+              "error-container": "#93000a",
+              "surface-variant": "#323440",
+              "on-tertiary-container": "#4e3e00",
+              "secondary-fixed": "#ffe083",
+              "surface-container-lowest": "#0b0e18",
+              "primary-container": "#9333ea",
+              "surface-bright": "#373845",
+              "primary": "#ddb8ff",
+              "on-secondary-container": "#645000",
+              "surface-tint": "#ddb8ff",
+              "on-secondary-fixed-variant": "#574500",
+              "secondary": "#ffe083",
+              "tertiary-container": "#cea700",
+              "on-tertiary": "#3c2f00",
+              "surface-container-high": "#272935",
+              "on-background": "#e1e1f1",
+              "inverse-on-surface": "#2e303c",
+              "surface-container-low": "#191b26",
+              "on-primary-container": "#f6e6ff",
+              "secondary-container": "#eec200",
+              "tertiary": "#efc200",
+              "primary-fixed-dim": "#ddb8ff",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-error-container": "#ffdad6",
+              "surface": "#11131e",
+              "inverse-surface": "#e1e1f1",
+              "outline": "#988ca0",
+              "on-secondary-fixed": "#231b00",
+              "outline-variant": "#4d4354",
+              "on-primary-fixed": "#2c0051",
+              "surface-dim": "#11131e",
+              "on-secondary": "#3c2f00",
+              "surface-container-highest": "#323440",
+              "secondary-fixed-dim": "#eec200",
+              "tertiary-fixed-dim": "#eec200",
+              "inverse-primary": "#861fdd",
+              "surface-container": "#1d1f2a",
+              "on-surface": "#e1e1f1",
+              "on-tertiary-fixed": "#231b00",
+              "on-surface-variant": "#cfc2d7",
+              "background": "#11131e",
+              "primary-fixed": "#f0dbff",
+              "tertiary-fixed": "#ffe083"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #11131e;
+        font-family: 'Manrope', sans-serif;
+        color: #e1e1f1;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .obsidian-reveal {
+        background: radial-gradient(circle at center, rgba(147, 51, 234, 0.15) 0%, rgba(17, 19, 30, 0) 70%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+<main class="min-h-screen flex flex-col items-center px-6 py-12 obsidian-reveal max-w-md mx-auto">
+<!-- Section 1: THANK YOU -->
+<div class="flex flex-col items-center text-center animate-in fade-in slide-in-from-top-4 duration-700">
+<div class="w-24 h-24 bg-surface-container-high rounded-full flex items-center justify-center text-5xl shadow-2xl mb-6" style="">
+                🎉
+            </div>
+<h1 class="text-on-surface font-headline font-extrabold text-3xl tracking-tight" style="">¡Pago confirmado!</h1>
+<p class="text-on-surface-variant font-body mt-2 text-lg opacity-80" style="">Gracias por visitar Cervecería HeyMozo.</p>
+</div>
+<!-- Section 2: QUICK RATING -->
+<div class="w-full mt-12 bg-surface-container-low p-6 rounded-lg transition-all duration-300">
+<h2 class="text-on-surface font-headline font-bold text-center" style="">¿Cómo te atendimos hoy?</h2>
+<div class="flex items-center justify-center gap-3 mt-6"><span class="material-symbols-outlined text-yellow-400 text-3xl cursor-pointer hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-3xl cursor-pointer hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-3xl cursor-pointer hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-3xl cursor-pointer hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-4xl cursor-pointer hover:scale-125 transition-transform" style="font-variation-settings: 'FILL' 1;">star</span></div>
+</div>
+<!-- Section 3: DISCOUNT CLUB (The Obsidian Gift) -->
+<div class="w-full mt-6 bg-surface-container border border-primary/20 p-8 rounded-lg relative overflow-hidden group shadow-2xl">
+<!-- Subtle gradient glow -->
+<div class="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 blur-3xl rounded-full"></div>
+<div class="relative z-10">
+<h3 class="text-primary font-headline font-extrabold text-xl mb-3 flex items-center gap-2" style="">
+                    ¡Te regalamos Media Pinta! 🍺
+                </h3>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed mb-6" style="">
+                    Dejanos tu WhatsApp para sumarte al Club y reclamá tu premio en tu próxima visita.
+                </p>
+<div class="space-y-4">
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none text-on-surface placeholder:text-on-surface-variant/40 rounded-full py-4 px-6 focus:ring-2 focus:ring-primary transition-all font-body text-base" placeholder="Tu celular (ej: 11 1234 5678)" type="tel"/>
+</div>
+<button class="w-full text-on-primary-container font-headline font-black py-5 rounded-xl text-center shadow-lg hover:shadow-primary/20 active:scale-95 transition-all uppercase tracking-wider text-sm bg-primary-container" style="">
+                        ¡Quiero mi pinta de regalo!
+                    </button>
+</div>
+</div>
+</div>
+<!-- Decorative Image Context (Brand Aesthetic) -->
+<!-- Section 4: FOOTER -->
+<footer class="mt-12 mb-8 text-center flex flex-col items-center">
+<a class="text-gray-500 font-body text-sm hover:text-on-surface transition-colors duration-200 decoration-1 underline-offset-4" href="#" style="">
+                No gracias, volver al inicio
+            </a>
+<!-- Predicted Shared Component: Footer Logic (Minimal) -->
+</footer>
+</main>
+</body></html>

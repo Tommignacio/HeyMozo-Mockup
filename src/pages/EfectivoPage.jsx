@@ -79,7 +79,7 @@ export default function EfectivoPage() {
             marginTop: '2rem',
             transition: 'transform 0.15s',
           }}
-          onClick={() => navigate('/cliente')}
+          onClick={() => navigate('/cliente/post-pago')}
         >
           Entendido, lo espero
         </button>

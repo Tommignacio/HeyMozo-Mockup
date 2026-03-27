@@ -15,7 +15,7 @@ export default function TransferenciaPage() {
 
   function handleConfirm() {
     setSent(true);
-    setTimeout(() => navigate('/cliente'), 2000);
+    setTimeout(() => navigate('/cliente/validando-transferencia'), 2000);
   }
 
   /* ── SVG icons ── */

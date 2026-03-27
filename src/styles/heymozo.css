@@ -9,8 +9,14 @@
   width: 100%;
   min-height: 100vh;
   background: #1c1c1e;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone > * {
+  flex: 1;
 }
 
 /* STATUS BAR */

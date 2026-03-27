@@ -163,7 +163,7 @@ export default function PagarPage() {
               style={{ right: '-2.5rem', top: '-2.5rem', width: '6rem', height: '6rem', background: 'rgba(147,51,234,0.1)', filter: 'blur(48px)' }}
             />
             <h2 className="font-bold flex items-center" style={{ gap: '0.5rem', marginBottom: '1rem', color: '#e4e2e4' }}>
-              Agradece a tu mozo <span style={{ fontSize: '1.125rem' }}>💸</span>
+              Propina <span style={{ fontSize: '1.125rem' }}>💸</span>
             </h2>
             <div
               style={{
@@ -221,9 +221,6 @@ export default function PagarPage() {
               </div>
             )}
 
-            <p style={{ color: '#cfc2d7', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.7 }}>
-              Propina sugerida (10%): {fmt(Math.round(CONSUMO * 0.10))}
-            </p>
           </section>
 
           {/* ── Total ── */}
@@ -303,9 +300,9 @@ export default function PagarPage() {
                 boxShadow: '0 8px 24px rgba(0,158,227,0.1)',
                 transition: 'transform 0.15s',
               }}
-              onClick={() => navigate('/cliente/exito-mp')}
+              onClick={() => navigate('/cliente/post-pago')}
             >
-              Pagar con Mercado Pago
+              Mercado Pago
             </button>
 
             {/* Transferencia Bancaria */}
@@ -325,7 +322,7 @@ export default function PagarPage() {
               onClick={() => navigate('/cliente/transferencia')}
             >
               {iconBank}
-              Transferencia Bancaria (Alias)
+              Transferencia
             </button>
 
             {/* Posnet + Efectivo grid */}
