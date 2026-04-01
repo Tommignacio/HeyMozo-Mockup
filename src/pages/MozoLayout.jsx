@@ -13,6 +13,7 @@ export default function MozoLayout({
   mesa6Status, setMesa6Status,
 }) {
   const [activeTab, setActiveTab] = useState('alerts');
+  const [mesa5Done, setMesa5Done] = useState(false);
   const pageTitle = activeTab === 'alerts' ? 'Active Alerts' : 'Mis Mesas';
 
   return (
@@ -25,7 +26,7 @@ export default function MozoLayout({
         <main className="flex-1 overflow-y-auto">
           <div className="flex items-center justify-between px-4 pt-1 pb-3 lg:hidden">
             <h1 className="text-[28px] font-bold tracking-tight">{pageTitle}</h1>
-            {activeTab === 'alerts' && (
+            {activeTab === 'mesas' && (
               <span className="text-[14px] font-bold text-yellow-400">Total Turno: $15.400 💸</span>
             )}
           </div>
@@ -40,6 +41,8 @@ export default function MozoLayout({
               setMesa3Released={setMesa3Released}
               mesa4Status={mesa4Status}
               setMesa4Status={setMesa4Status}
+              mesa5Done={mesa5Done}
+              setMesa5Done={setMesa5Done}
               mesa6Status={mesa6Status}
               setMesa6Status={setMesa6Status}
             />
@@ -54,6 +57,9 @@ export default function MozoLayout({
               setMesa3Released={setMesa3Released}
               mesa4Status={mesa4Status}
               setMesa4Status={setMesa4Status}
+              mesa5Done={mesa5Done}
+              mesa6Status={mesa6Status}
+              setMesa6Status={setMesa6Status}
             />
           </div>
         </main>

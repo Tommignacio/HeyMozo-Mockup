@@ -10,7 +10,7 @@ const mesa4Items = [
   { qty: 1, name: 'Papas Fritas', description: 'Porción grande', modifier: 'SIN SAL' },
 ];
 
-export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status, mesa6Status, setMesa6Status }) {
+export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Status, setMesa2Status, mesa3Released, setMesa3Released, mesa4Status, setMesa4Status, mesa5Done, setMesa5Done, mesa6Status, setMesa6Status }) {
   const [modalData, setModalData] = useState(null);
   const [orderModal, setOrderModal] = useState(false);
 
@@ -20,7 +20,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
         tableName: 'MESA 1',
         variant: 'red',
         waitTime: '2 MIN',
-        title: 'Llevar Posnet (Tarjeta)',
+        title: 'Cuenta: Tarjeta',
         subtitle: '💸 + $2.000 Propina (Acreditada)',
         icon: 'credit_card',
         actionLabel: '¡LISTO!',
@@ -103,7 +103,7 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       onClick: () => setOrderModal(true),
       onActionClick: () => setMesa4Status('OCCUPIED'),
     }] : []),
-    {
+    ...(!mesa5Done ? [{
       id: 'mesa5',
       tableName: 'MESA 5',
       variant: 'orange',
@@ -112,7 +112,8 @@ export default function ActiveAlertsPage({ mesa1Status, setMesa1Status, mesa2Sta
       icon: 'notifications',
       actionLabel: '¡LISTO!',
       onClick: () => setModalData({ tableName: 'MESA 5', waitingTime: '4 MIN', billingEmoji: '🧊', billingLabel: 'LLEVAR HIELO', headerColor: '#f07020' }),
-    },
+      onActionClick: () => setMesa5Done(true),
+    }] : []),
     ...(!mesa3Released ? [{
       id: 'mesa3',
       tableName: 'MESA 3',

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import MesaCard from '../components/MesaCard';
 
 const staticMesasRest = [
-  { number: '6',  variant: 'libre',  icon: 'table', status: 'Libre'                                  },
   { number: '7',  variant: 'libre',  icon: 'table', status: 'Libre'                                  },
   { number: '8',  variant: 'libre',  icon: 'table', status: 'Libre'                                  },
   { number: '9',  variant: 'libre',  icon: 'table', status: 'Libre'                                  },
@@ -36,6 +35,11 @@ const mesaHistory = {
     { event: 'Nuevo pedido (x3)', time: 'Hace 1 min' },
     { event: 'Se sentó',          time: 'Hace 10 min' },
   ],
+  '6': [
+    { event: 'Pidió pagar por transferencia ($22.000)', time: 'Hace 1 min', icon: 'receipt' },
+    { event: 'Llamó al mozo',                           time: 'Hace 18 min', icon: 'bell' },
+    { event: 'Se sentó',                                time: 'Hace 52 min' },
+  ],
 };
 
 const variantHeaderColor = {
@@ -46,6 +50,13 @@ const variantHeaderColor = {
   occupied: '#0a84ff',
   purple:   '#9333ea',
 };
+
+function getMesa6Card(status) {
+  if (status === 'WAITING')  return { number: '6', variant: 'occupied', icon: 'bell', status: 'Pago Pendiente', time: '1 MIN' };
+  if (status === 'APPROVED') return { number: '6', variant: 'paid',     icon: 'check-circle', status: 'Aprobada' };
+  if (status === 'REJECTED') return { number: '6', variant: 'red',      icon: 'bell', status: 'Rechazada' };
+  return                            { number: '6', variant: 'libre',    icon: 'table', status: 'Libre' };
+}
 
 function getMesa3Card(released) {
   if (!released) return { number: '3', variant: 'paid',  icon: 'check-circle', status: 'Cobrado (MP)', time: '5 MIN' };
@@ -64,9 +75,10 @@ function getMesa2Card(status) {
   return                           { number: '2', variant: 'libre', icon: 'table',        status: 'Libre' };
 }
 
-function getMesa5Card(released) {
-  if (!released) return { number: '5', variant: 'orange', icon: 'bell', status: 'Llama Mozo', time: '4m', badgeCount: 1 };
-  return              { number: '5', variant: 'libre',  icon: 'table', status: 'Libre' };
+function getMesa5Card(done, released) {
+  if (released)  return { number: '5', variant: 'libre',    icon: 'table',      status: 'Libre' };
+  if (done)      return { number: '5', variant: 'occupied', icon: 'restaurant', status: 'Ocupada' };
+  return               { number: '5', variant: 'orange',   icon: 'bell',       status: 'Llama Mozo', time: '4m', badgeCount: 1 };
 }
 
 function getMesa4Card(status) {
@@ -139,10 +151,12 @@ export default function MisMesasPage({
   mesa2Status = 'PENDING', setMesa2Status,
   mesa3Released = false,   setMesa3Released,
   mesa4Status = 'NEW_ORDER', setMesa4Status,
+  mesa5Done = false,
+  mesa6Status = 'WAITING', setMesa6Status,
 }) {
   const [modal, setModal] = useState(null);
   const [mesa5Released, setMesa5Released] = useState(false);
-  const mesas = [getMesa1Card(mesa1Status), getMesa2Card(mesa2Status), getMesa3Card(mesa3Released), getMesa4Card(mesa4Status), getMesa5Card(mesa5Released), ...staticMesasRest];
+  const mesas = [getMesa1Card(mesa1Status), getMesa2Card(mesa2Status), getMesa3Card(mesa3Released), getMesa4Card(mesa4Status), getMesa5Card(mesa5Done, mesa5Released), getMesa6Card(mesa6Status), ...staticMesasRest];
 
   const getReleaseAction = (mesa) => {
     if (mesa.number === '1') return () => setMesa1Status?.('GONE');
@@ -150,6 +164,7 @@ export default function MisMesasPage({
     if (mesa.number === '3') return () => setMesa3Released?.(true);
     if (mesa.number === '4') return () => setMesa4Status?.('GONE');
     if (mesa.number === '5') return () => setMesa5Released(true);
+    if (mesa.number === '6') return () => setMesa6Status?.('GONE');
     return null;
   };
 

@@ -123,7 +123,23 @@ export default function TransferenciaPage() {
               className="font-extrabold"
               style={{ fontSize: '2.25rem', color: '#4edea3', letterSpacing: '-0.04em', marginTop: '0.5rem' }}
             >
-              $23.320
+              $21.200
+            </div>
+
+            {/* Aviso fiscal */}
+            <div
+              style={{
+                background: 'rgba(251,191,36,0.07)',
+                border: '1px solid rgba(251,191,36,0.25)',
+                borderRadius: '0.625rem',
+                padding: '0.625rem 0.75rem',
+                marginTop: '1rem',
+                textAlign: 'left',
+              }}
+            >
+              <p style={{ fontSize: '0.72rem', color: '#d4a800', lineHeight: 1.5, margin: 0 }}>
+                ⚠️ Por normativas fiscales, la transferencia no incluye la propina. Si querés, podés dejarle los <strong>$2.120</strong> al mozo en efectivo o usar el botón de Mercado Pago.
+              </p>
             </div>
 
             {/* Divider */}

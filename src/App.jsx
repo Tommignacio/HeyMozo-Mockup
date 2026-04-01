@@ -14,6 +14,7 @@ import PosnetPage from './pages/PosnetPage';
 import EfectivoPage from './pages/EfectivoPage';
 import PostPagoPage from './pages/PostPagoPage';
 import ValidandoTransferenciaPage from './pages/ValidandoTransferenciaPage';
+import ModoPagoLitePage from './pages/ModoPagoLitePage';
 
 /* ── Persist state in sessionStorage so it survives navigation / refresh ── */
 function usePersistedState(key, defaultValue) {
@@ -70,6 +71,7 @@ function App() {
           <Route path="/cliente/posnet" element={<PosnetPage />} />
           <Route path="/cliente/efectivo" element={<EfectivoPage />} />
           <Route path="/cliente/validando-transferencia" element={<ValidandoTransferenciaPage />} />
+          <Route path="/cliente/pago-lite" element={<ModoPagoLitePage />} />
           <Route path="/cliente/post-pago" element={<PostPagoPage />} />
           <Route path="/mozo/*" element={<MozoLayout {...mesaState} />} />
           <Route path="/cajero" element={<CajeroLayout {...mesaState} />} />
