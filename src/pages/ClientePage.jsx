@@ -15,6 +15,7 @@ export default function ClientePage() {
   const [mozoSent, setMozoSent] = useState(null);
   const [vipSheetOpen, setVipSheetOpen] = useState(false);
   const [vipPhone, setVipPhone] = useState('');
+  const [navOpen, setNavOpen] = useState(false);
 
   return (
     <Phone>
@@ -25,6 +26,61 @@ export default function ClientePage() {
         <div className="flex-1 flex flex-col">
           {/* Header — Logo del restaurante */}
           <header className="flex flex-col items-center justify-center" style={{ paddingTop: '3rem', paddingBottom: '1rem' }}>
+            {/* Nav gear — top right */}
+            <div className="absolute top-3 right-3 z-20">
+              <button
+                type="button"
+                className="text-[#8e8e93] hover:text-white transition-colors bg-transparent border-none p-2 cursor-pointer"
+                onClick={() => setNavOpen((v) => !v)}
+              >
+                <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, fill: 'currentColor' }}>
+                  <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.63-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.03-1.58zm-7.14 2.66c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                </svg>
+              </button>
+              {navOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setNavOpen(false)} />
+                  <div className="absolute right-0 top-full mt-1 z-50 rounded-2xl overflow-hidden" style={{ background: '#2c2c2e', border: '1px solid #3a3a3c', minWidth: 170, boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+                    <button
+                      type="button"
+                      className="w-full px-4 py-3 text-left text-[13px] font-semibold text-white flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none font-[inherit]"
+                      style={{ transition: 'background 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background='#3a3a3c'}
+                      onMouseLeave={e => e.currentTarget.style.background='transparent'}
+                      onClick={() => { setNavOpen(false); navigate('/mozo'); }}
+                    >
+                      Vista Mozo
+                      <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, fill: '#aaa', flexShrink: 0 }}><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    </button>
+                    <div style={{ borderTop: '1px solid #3a3a3c' }} />
+                    <button
+                      type="button"
+                      className="w-full px-4 py-3 text-left text-[13px] font-semibold text-white flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none font-[inherit]"
+                      style={{ transition: 'background 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background='#3a3a3c'}
+                      onMouseLeave={e => e.currentTarget.style.background='transparent'}
+                      onClick={() => { setNavOpen(false); navigate('/cajero'); }}
+                    >
+                      Dashboard Cajero
+                      <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, fill: '#aaa', flexShrink: 0 }}><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    </button>
+                    <div style={{ borderTop: '1px solid #3a3a3c' }} />
+                    <button
+                      type="button"
+                      className="w-full px-4 py-3 text-left text-[13px] font-semibold flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none font-[inherit]"
+                      style={{ color: '#ef4444', transition: 'background 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background='#3a3a3c'}
+                      onMouseLeave={e => e.currentTarget.style.background='transparent'}
+                      onClick={() => { setNavOpen(false); sessionStorage.clear(); window.location.reload(); }}
+                    >
+                      Reiniciar Demo
+                      <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, fill: 'currentColor', flexShrink: 0 }}><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+
             <div className="flex items-center gap-3" style={{ marginBottom: '2.5rem' }}>
               <div
                 className="flex items-center justify-center rounded-full"
@@ -53,7 +109,7 @@ export default function ClientePage() {
                 style={{
                   background: '#9333ea',
                   padding: '1.25rem 1.5rem',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+                  boxShadow: '0 10px 25px rgba(147, 51, 234, 0.4)',
                   border: 'none',
                   cursor: 'pointer',
                   fontSize: '1.125rem',
@@ -64,14 +120,13 @@ export default function ClientePage() {
                 <span>Ver Menú y Pedir</span>
               </button>
 
-              {/* Llamar al Mozo — Amber llamativo */}
+              {/* Llamar al Mozo */}
               <button
-                className="w-full flex items-center justify-center gap-3 font-extrabold uppercase tracking-tight rounded-2xl active:scale-95 transition-transform duration-100 relative overflow-hidden"
+                className="w-full flex items-center justify-center gap-3 text-white font-bold rounded-2xl active:scale-95 transition-transform duration-100"
                 style={{
-                  background: '#f59e0b',
-                  color: '#1c1c1e',
+                  background: '#e07b00',
                   padding: '1.25rem 1.5rem',
-                  boxShadow: '0 10px 25px rgba(245, 158, 11, 0.35)',
+                  boxShadow: '0 10px 25px rgba(224, 123, 0, 0.4)',
                   border: 'none',
                   cursor: 'pointer',
                   fontSize: '1.125rem',
@@ -88,7 +143,7 @@ export default function ClientePage() {
                 style={{
                   background: '#16a34a',
                   padding: '1.25rem 1.5rem',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+                  boxShadow: '0 10px 25px rgba(22, 163, 74, 0.4)',
                   border: 'none',
                   cursor: 'pointer',
                   fontSize: '1.125rem',

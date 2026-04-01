@@ -19,6 +19,12 @@ const CAJERO_ICON = (
   </svg>
 );
 
+const CLIENTE_ICON = (
+  <svg viewBox="0 0 24 24" className="w-[14px] h-[14px] fill-current">
+    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+  </svg>
+);
+
 export default function Header({ pageTitle }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -90,6 +96,15 @@ export default function Header({ pageTitle }) {
                 >
                   Dashboard Cajero
                   {CAJERO_ICON}
+                </button>
+                <div className="border-t border-[#3a3a3c]" />
+                <button
+                  type="button"
+                  className="w-full px-4 py-3 text-[13px] font-medium text-white flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none hover:bg-[#3a3a3c] transition-colors font-[inherit]"
+                  onClick={() => { setSettingsOpen(false); navigate('/cliente'); }}
+                >
+                  Vista Cliente
+                  {CLIENTE_ICON}
                 </button>
                 <div className="border-t border-[#3a3a3c]" />
                 <button

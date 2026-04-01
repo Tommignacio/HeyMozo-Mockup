@@ -69,6 +69,18 @@ export default function PosnetPage() {
           >
             $23.320
           </span>
+          <span
+            className="block"
+            style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.5rem' }}
+          >
+            Consumo: $21.200&nbsp;&nbsp;|&nbsp;&nbsp;Propina: $2.120
+          </span>
+          <p
+            className="text-center"
+            style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', fontStyle: 'italic' }}
+          >
+            El mozo ingresará los montos por separado en el Posnet.
+          </p>
         </div>
 
         {/* ── Action button ── */}
