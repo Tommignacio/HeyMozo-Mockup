@@ -523,7 +523,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
               style={{
                 background: '#1a1c29',
                 borderRadius: '20px 20px 0 0',
-                padding: '1.5rem 1.25rem 2rem',
+                padding: '1.5rem 1.25rem',
+                paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))',
                 border: '1px solid rgba(245,158,11,0.15)',
                 borderBottom: 'none',
               }}
