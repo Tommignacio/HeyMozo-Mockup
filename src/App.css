@@ -3,6 +3,7 @@
 .app-container {
   background: #1a1a1a;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
 }
@@ -23,6 +24,7 @@
   justify-content: stretch;
   align-items: stretch;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .cliente-header {

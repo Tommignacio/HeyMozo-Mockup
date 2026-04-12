@@ -15,7 +15,7 @@ export default function MozoLayout({
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#1c1c1e] font-sans text-white">
+    <div className="flex flex-col h-screen bg-[#1c1c1e] font-sans text-white" style={{ height: '100dvh' }}>
       <div className="flex-1 flex flex-col min-h-0">
         <Header pageTitle="Alertas" />
 

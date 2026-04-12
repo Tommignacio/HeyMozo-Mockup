@@ -1078,7 +1078,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
   );
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden font-['Inter',sans-serif] text-slate-100" style={{ background: '#0f111a' }}>
+    <div className="h-screen flex flex-col overflow-hidden font-['Inter',sans-serif] text-slate-100" style={{ background: '#0f111a', height: '100dvh' }}>
 
       {/* ── pulse-green animation (matches Stitch CSS) ── */}
       <style>{`
@@ -1300,6 +1300,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           <div
             className="fixed top-0 right-0 h-screen flex flex-col"
             style={{
+              height: '100dvh',
               width: '24rem',
               background: '#1a1c29',
               boxShadow: '-10px 0 40px rgba(0,0,0,0.5)',

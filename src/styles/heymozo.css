@@ -8,6 +8,7 @@
 .phone {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   background: #1c1c1e;
   overflow-y: auto;
   position: relative;
