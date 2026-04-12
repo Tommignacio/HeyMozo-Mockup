@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { getCajaAlerts, addCajaAlert } from './lib/cajaStore';
 import './App.css';
 import './styles/heymozo.css';
 import ClientePage from './pages/ClientePage';
@@ -16,16 +17,16 @@ import PostPagoPage from './pages/PostPagoPage';
 import ValidandoTransferenciaPage from './pages/ValidandoTransferenciaPage';
 import ModoPagoLitePage from './pages/ModoPagoLitePage';
 
-/* ── Persist state in sessionStorage so it survives navigation / refresh ── */
+/* ── Persist state in localStorage so it survives navigation / refresh and syncs across tabs ── */
 function usePersistedState(key, defaultValue) {
   const [value, setValue] = useState(() => {
-    const saved = sessionStorage.getItem(key);
+    const saved = localStorage.getItem(key);
     if (saved === null) return defaultValue;
     try { return JSON.parse(saved); } catch { return defaultValue; }
   });
 
   useEffect(() => {
-    sessionStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
   // Listen for changes from other tabs
@@ -45,15 +46,20 @@ function usePersistedState(key, defaultValue) {
 function App() {
   const [mesa1Status, setMesa1Status] = usePersistedState('mesa1Status', 'PENDING');
   const [mesa2Status, setMesa2Status] = usePersistedState('mesa2Status', 'PENDING');
-  const [mesa3Released, setMesa3Released] = usePersistedState('mesa3Released', false);
-  const [mesa4Status, setMesa4Status] = usePersistedState('mesa4Status', 'NEW_ORDER');
-  const [mesa6Status, setMesa6Status] = usePersistedState('mesa6Status', 'WAITING');
+  const [mesa6Status, setMesa6Status] = usePersistedState('mesa6Status', 'NONE');
+
+  // Seed cajero feed with demo billing alerts if empty on app start
+  useEffect(() => {
+    if (getCajaAlerts().length === 0) {
+      if (mesa1Status === 'PENDING') addCajaAlert({ mesa: 'MESA 1', metodo: 'Tarjeta', monto: '$24.000', tipoPago: 'PAGO TOTAL', propina: '$2.000' });
+      if (mesa2Status === 'PENDING') addCajaAlert({ mesa: 'MESA 2', metodo: 'Efectivo', monto: '$18.500', tipoPago: 'PAGO TOTAL', propina: null });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const mesaState = {
     mesa1Status, setMesa1Status,
     mesa2Status, setMesa2Status,
-    mesa3Released, setMesa3Released,
-    mesa4Status, setMesa4Status,
     mesa6Status, setMesa6Status,
   };
 

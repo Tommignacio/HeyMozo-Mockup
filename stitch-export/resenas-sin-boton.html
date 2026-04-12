@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed-variant": "#006544",
+                        "tertiary": "#ff716a",
+                        "on-secondary-container": "#f7f7ff",
+                        "on-surface": "#f0f0fd",
+                        "on-tertiary-fixed": "#3a0003",
+                        "error-container": "#9f0519",
+                        "surface-dim": "#0c0e17",
+                        "secondary-fixed": "#bfd1ff",
+                        "on-error": "#490006",
+                        "primary-fixed-dim": "#58e7ab",
+                        "on-background": "#f0f0fd",
+                        "primary-fixed": "#69f6b8",
+                        "error": "#ff716c",
+                        "on-primary": "#005a3c",
+                        "surface-container-low": "#11131d",
+                        "surface-container": "#171924",
+                        "on-secondary-fixed": "#003271",
+                        "inverse-on-surface": "#53545f",
+                        "on-tertiary-fixed-variant": "#79000e",
+                        "tertiary-fixed-dim": "#ff7b74",
+                        "error-dim": "#d7383b",
+                        "outline": "#737580",
+                        "surface": "#0c0e17",
+                        "tertiary-dim": "#ff716a",
+                        "background": "#0c0e17",
+                        "on-secondary-fixed-variant": "#004da8",
+                        "secondary-container": "#005ac2",
+                        "surface-tint": "#69f6b8",
+                        "surface-container-high": "#1c1f2b",
+                        "on-tertiary": "#490005",
+                        "secondary": "#699cff",
+                        "secondary-dim": "#699cff",
+                        "primary": "#69f6b8",
+                        "surface-bright": "#282b3a",
+                        "inverse-surface": "#faf8ff",
+                        "on-error-container": "#ffa8a3",
+                        "on-primary-fixed": "#00452d",
+                        "secondary-fixed-dim": "#a9c4ff",
+                        "inverse-primary": "#006d4a",
+                        "surface-variant": "#222532",
+                        "outline-variant": "#464752",
+                        "tertiary-fixed": "#ff928b",
+                        "surface-container-lowest": "#000000",
+                        "on-tertiary-container": "#1f0001",
+                        "on-secondary": "#001e4a",
+                        "primary-container": "#06b77f",
+                        "surface-container-highest": "#222532",
+                        "primary-dim": "#58e7ab",
+                        "on-primary-container": "#002919",
+                        "tertiary-container": "#fd4e4d",
+                        "on-surface-variant": "#aaaab7"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #464752; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#0c0e17] text-on-surface antialiased overflow-hidden">
+<!-- SideNavBar -->
+<aside class="h-screen w-72 fixed left-0 top-0 bg-[#171924] dark:bg-[#13151f] flex flex-col py-8 shadow-2xl dark:shadow-none font-inter antialiased tracking-tight z-50">
+<div class="px-8 mb-12">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-container to-primary flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div>
+<h1 class="text-xl font-black tracking-tighter text-slate-50 uppercase">HeyMozo</h1>
+<p class="text-[10px] font-bold text-primary tracking-[0.2em] uppercase opacity-80">B2B Cashier</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-6 py-4 text-slate-400 hover:text-slate-100 transition-colors hover:bg-[#222532] duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="text-sm font-medium">Monitor en Vivo</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-slate-400 hover:text-slate-100 transition-colors hover:bg-[#222532] duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-sm font-medium">Historial de Pagos</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 bg-[#282b3a] text-[#10b981] border-l-4 border-[#10b981] font-bold transition-transform active:scale-[0.99]" href="#">
+<span class="material-symbols-outlined" data-icon="notification_important" style="font-variation-settings: 'FILL' 1;">notification_important</span>
+<span class="text-sm">Reseñas y Alertas</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-slate-400 hover:text-slate-100 transition-colors hover:bg-[#222532] duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-sm font-medium">Club de Clientes</span>
+</a>
+</nav>
+<div class="mt-auto px-6">
+<div class="p-4 rounded-2xl bg-surface-variant flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center border border-outline-variant/20 overflow-hidden">
+<img alt="Manager Portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDngUHzTqp5L4orQNSp5VA9-L4YXkHM7Aj3Kz8um3OovA23FelS83ZARxe0hH2HioSTpeTpdq-Yssdx5OiNya3fEeI0mMXejx-T5bFXLBlKGlEUrt-IukYaCMQ2APK10x97HHOujT_Gx1bM0JYgwtFL8LrGndxaeQXWfaEuxS7bcaK2aPtcgT3xFtaBRVCYv3HywLToNI-JzvhhMX2UfiwefUXu5kQbJB2SckfpWPpFVuJhtiu3YgB47d1jBUGMSUlaCMFHtL3Xiq_o"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-sm font-bold text-slate-50 truncate">Restaurant Logo</p>
+<p class="text-[11px] text-on-surface-variant truncate">Premium Admin</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-72 min-h-screen bg-[#0f111a] flex flex-col">
+<header class="sticky top-0 w-full z-40 h-20 bg-[#0c0e17] dark:bg-[#0f111a] flex justify-between items-center px-10">
+<div class="flex flex-col">
+<h2 class="text-2xl font-bold tracking-tight text-slate-50">Reseñas y Alertas</h2>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary-dim uppercase tracking-widest">Sentinel Insight</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1 bg-surface-variant px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">calendar_today</span>
+<span class="text-[10px] font-semibold text-on-surface-variant">Filtro: Este Mes</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+</div>
+<input class="bg-surface-container-lowest border-none focus:ring-1 focus:ring-primary/20 rounded-xl py-2 pl-10 pr-4 text-sm w-64 placeholder:text-on-surface-variant/50 transition-all" placeholder="Buscar alerta..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center text-slate-400 hover:bg-slate-800/50 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-slate-400 hover:bg-slate-800/50 rounded-lg transition-all relative">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-tertiary rounded-full border-2 border-[#0f111a]"></span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-slate-400 hover:bg-slate-800/50 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-10 space-y-10 custom-scrollbar overflow-y-auto max-h-[calc(100vh-5rem)]">
+<!-- Metric Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-[#1a1c29] p-8 rounded-2xl relative overflow-hidden group transition-all duration-300 hover:bg-[#222532]">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">Promedio General</p>
+<div class="flex items-end gap-3">
+<span class="text-5xl font-black text-slate-50 leading-none">4.6</span>
+<div class="flex flex-col mb-1">
+<div class="flex gap-0.5 text-[#fbbf24]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star_half</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400">+0.2 vs mes anterior</span>
+</div>
+</div>
+</div>
+<div class="bg-[#1a1c29] p-8 rounded-2xl relative overflow-hidden group transition-all duration-300 hover:bg-[#222532]">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-2xl group-hover:bg-secondary/10 transition-colors"></div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">Derivados a Google Maps</p>
+<div class="flex items-end gap-3">
+<span class="text-5xl font-black text-secondary-dim leading-none">45</span>
+<div class="flex flex-col mb-1">
+<span class="material-symbols-outlined text-secondary-dim">map</span>
+<span class="text-[10px] font-bold text-slate-400">Reviews públicas</span>
+</div>
+</div>
+</div>
+<div class="bg-[#1a1c29] p-8 rounded-2xl relative overflow-hidden group transition-all duration-300 hover:bg-[#222532]">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-tertiary/5 rounded-full blur-2xl group-hover:bg-tertiary/10 transition-colors"></div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">Alertas Críticas</p>
+<div class="flex items-end gap-3">
+<span class="text-5xl font-black text-tertiary leading-none">3</span>
+<div class="flex flex-col mb-1">
+<div class="w-2 h-2 bg-tertiary rounded-full animate-pulse shadow-[0_0_12px_#fd4e4d]"></div>
+<span class="text-[10px] font-bold text-slate-400">Acción inmediata</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Panels Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Panel: Desempeño por Mozo -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="flex items-center justify-between mb-2 px-2">
+<h3 class="text-lg font-bold text-slate-50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">badge</span>
+                            Desempeño por Mozo
+                        </h3>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase bg-surface-container-high px-2 py-1 rounded">Ranking Live</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-highest p-5 rounded-2xl flex flex-col gap-3 group">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8LdL-DiTz6ajiPU6sRXFVyOkCBRVBetvSjarF1QqQi0tJVp1VqLwMiCDyon-l_D3ICoo2plmcJmtBSGSkqSShMfnK6HRyETxh94RNpYr3ogrq3RO2Nky2KqJIwfuK-lerx22IFczNy2WhDzAHV0GbwznjE883paqKR0TKc1IN4qZw0e_xGBYt_L9uhkDETRzF4P0dBD92DNVFCk-qN-gbs6sZo44hCbQdtoj-d3Pnkv-L5n1aHnHupxeWnTXzOwOzxY0GhYwGhmay"/>
+</div>
+<div>
+<p class="font-bold text-slate-50">Carlos</p>
+<p class="text-[11px] text-[#fbbf24] flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.8 Estrellas
+                                        </p>
+</div>
+</div>
+<span class="text-sm font-black text-primary">96%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-bright rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary-container to-primary-fixed w-[96%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-highest p-5 rounded-2xl flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkkKN8Zydm99dyYgDHHoODuc6mnHWbaIntFWIjIGxNmvxMIdDVax6ioePk1xBfVsSjSOEPg4DyEMG4evCXJxVRj0ikn8f7RAiLi1wcfjIiriF2Igbadx9W7I9FN5ap4UWAtYYdxdnxYN_LgVFn0jQhvVzlUWUf17vR1GD3JcKBS2Q9XJ3zDDVEUum6Ey3WY3zml69w7Y67rtn7ZB5dYl10CpEle7x36IRLpSjgXZIva_NZdvr2lRkjlBTHYCLcZbfbIy_B8K6KZesi"/>
+</div>
+<div>
+<p class="font-bold text-slate-50">Ana</p>
+<p class="text-[11px] text-[#fbbf24] flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.5 Estrellas
+                                        </p>
+</div>
+</div>
+<span class="text-sm font-black text-primary">90%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-bright rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary-container to-primary-fixed w-[90%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-highest p-5 rounded-2xl flex flex-col gap-3 ring-1 ring-tertiary/20">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8OzaNfO5q8tbjjli7u6tj3B3497TVuIGmL9tr-rQ3L-_HNCJIaFUksFHhYpbRGlULXrOf-jkfIVE8lWQ14FVBI9GE82I4llM1q_h81hkGPTvo9on-ZNS1iUVu0qLnjB1stDb-fbokKTe1WFXdVzOo3RxvDFMBD-tpfxfI18DOWbdqij5ype6S4BhVw2LVpUOw7_8XS8tCckW2DcUOgZW8PhVk_Qj1VCeICrdSWMrTp_baHJj066pBNJuZUdggAX6Be5ndqLpyvVx8"/>
+</div>
+<div>
+<p class="font-bold text-slate-50">Marcos</p>
+<p class="text-[11px] text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span> 3.2 Estrellas
+                                        </p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-sm font-black text-tertiary">64%</span>
+<span class="text-[9px] font-bold text-tertiary bg-tertiary/10 px-2 py-0.5 rounded uppercase border border-tertiary/20">Requiere atención</span>
+</div>
+</div>
+<div class="w-full h-1.5 bg-surface-bright rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[64%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Últimos Comentarios -->
+<div class="lg:col-span-7">
+<div class="bg-[#1a1c29] rounded-xl p-5 h-full flex flex-col">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<h3 class="text-lg font-bold text-slate-50 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+                                ÚLTIMOS COMENTARIOS (Feed Activo)
+                            </h3>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full text-[11px] font-bold bg-primary text-on-primary shadow-lg shadow-primary/20 transition-all">Todos</button>
+<button class="px-4 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-bright transition-colors">⭐⭐⭐⭐⭐ (Buenas)</button>
+<button class="px-4 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-bright transition-colors">⭐ (Quejas)</button>
+</div>
+</div>
+<div class="space-y-5 custom-scrollbar overflow-y-auto pr-1">
+<!-- Card 1 (Positive) -->
+<div class="bg-surface-variant/40 p-5 rounded-xl border border-outline-variant/10 transition-all hover:bg-surface-variant/60">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1">
+<div class="flex gap-1 text-[#fbbf24]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] text-on-surface-variant uppercase font-bold tracking-wider">
+<span>Hoy 21:30</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Mozo: <strong class="text-slate-50">Ana</strong></span>
+</div>
+</div>
+<button class="text-[10px] font-bold text-on-surface-variant/70 hover:text-secondary flex items-center gap-1 bg-surface-container-high/50 px-2 py-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Google Maps (Ver original)
+                                    </button>
+</div>
+<div class="flex justify-between items-end gap-4">
+<p class="text-slate-300 italic text-sm font-medium leading-relaxed flex-1">"Excelente la atención"</p>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 bg-primary text-on-primary text-[10px] font-black px-4 py-2 rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform uppercase tracking-tighter">
+<span class="material-symbols-outlined text-[16px]">campaign</span>
+                                            Crear Promo Social
+                                        </button>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-high text-on-surface-variant rounded-lg hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 (Negative) -->
+<div class="bg-surface-variant/40 p-5 rounded-xl border border-outline-variant/10 transition-all hover:bg-surface-variant/60">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1">
+<div class="flex gap-1 text-tertiary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] text-on-surface-variant uppercase font-bold tracking-wider">
+<span>Ayer 20:15</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Mozo: <strong class="text-slate-50">Marcos</strong></span>
+</div>
+</div>
+<span class="text-[10px] font-black text-tertiary bg-tertiary/10 px-2 py-1 rounded border border-tertiary/20 uppercase tracking-tighter">
+                                        ⚠️ Feedback Privado
+                                    </span>
+</div>
+<div class="flex justify-between items-end gap-4">
+<p class="text-slate-300 italic text-sm font-medium leading-relaxed flex-1">"La hamburguesa estaba fría"</p>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 bg-tertiary text-on-tertiary text-[10px] font-black px-4 py-2 rounded-lg shadow-lg shadow-tertiary/20 hover:scale-[1.02] transition-transform uppercase tracking-tighter">
+<span class="material-symbols-outlined text-[16px]">reply</span>
+                                            Gestionar Queja
+                                        </button>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-high text-on-surface-variant rounded-lg hover:bg-surface-bright transition-colors" title="Asignar">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 (Neutral/Scoring Only) -->
+<div class="bg-surface-variant/40 p-5 rounded-xl border border-outline-variant/10 opacity-70">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1">
+<div class="flex gap-1 text-[#fbbf24]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
+<span>Ayer 19:45</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Mozo: <strong class="text-slate-50">Carlos</strong></span>
+</div>
+</div>
+<span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-high px-2 py-1 rounded">Solo Puntuación</span>
+</div>
+<p class="text-on-surface-variant italic text-sm font-medium">(Sin comentario)</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Purple Administrative FAB -->
+</body></html>

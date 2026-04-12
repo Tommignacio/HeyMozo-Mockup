@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { getOrderTotal, getOrder } from '../lib/cartStore';
+import { addAlert } from '../lib/alertStore';
+import { addCajaAlert } from '../lib/cajaStore';
 
-const CONSUMO = 21200;
 const TIP_OPTIONS = [
   { label: '10%', sub: 'Sugerido', pct: 0.10 },
   { label: '15%', sub: 'Excelente', pct: 0.15 },
@@ -16,11 +18,16 @@ function fmt(n) {
 
 export default function PagarPage() {
   const navigate = useNavigate();
-  const [selectedTip, setSelectedTip] = useState(0); // index
+  const CONSUMO = getOrderTotal();
+  const noOrder = CONSUMO === 0;
+  // Sin pedido: forzar modo "Otro" (index 2) para que solo se ingrese propina manual
+  const [selectedTip, setSelectedTip] = useState(noOrder ? 2 : 0);
   const [customTip, setCustomTip] = useState('');
-  const [showCustom, setShowCustom] = useState(false);
+  const [showCustom, setShowCustom] = useState(noOrder);
   const [splitOpen, setSplitOpen] = useState(false);
   const [splitCount, setSplitCount] = useState(2);
+  const [mpAmountModal, setMpAmountModal] = useState(false);
+  const [mpCustomAmount, setMpCustomAmount] = useState('');
 
   const opt = TIP_OPTIONS[selectedTip];
   const tipAmount =
@@ -41,7 +48,7 @@ export default function PagarPage() {
 
   /* ── SVG icons ── */
   const chevronLeft = (
-    <svg width="20" height="20" fill="none" stroke="#ddb8ff" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" fill="none" stroke="#86efac" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 19l-7-7 7-7" />
     </svg>
   );
@@ -92,7 +99,7 @@ export default function PagarPage() {
         >
           <div
             className="flex items-center gap-1 cursor-pointer"
-            style={{ color: '#cfc2d7', fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}
+            style={{ color: '#86efac', fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}
             onClick={() => navigate(-1)}
           >
             {chevronLeft}
@@ -125,22 +132,22 @@ export default function PagarPage() {
             style={{ background: '#1f1f21', padding: '1.25rem', marginBottom: '1rem' }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* Item 1 */}
-              <div className="flex justify-between items-start">
-                <div className="flex" style={{ gap: '0.75rem' }}>
-                  <span className="font-bold" style={{ color: '#ddb8ff' }}>2x</span>
-                  <span className="font-medium" style={{ color: '#e4e2e4' }}>Doble Smash Burger</span>
-                </div>
-                <span className="font-semibold" style={{ color: '#e4e2e4' }}>$17.000</span>
-              </div>
-              {/* Item 2 */}
-              <div className="flex justify-between items-start">
-                <div className="flex" style={{ gap: '0.75rem' }}>
-                  <span className="font-bold" style={{ color: '#ddb8ff' }}>1x</span>
-                  <span className="font-medium" style={{ color: '#e4e2e4' }}>Limonada</span>
-                </div>
-                <span className="font-semibold" style={{ color: '#e4e2e4' }}>$4.200</span>
-              </div>
+              {getOrder().length > 0
+                ? getOrder().map((item, idx) => (
+                  <div key={idx} className="flex justify-between items-start">
+                    <div className="flex" style={{ gap: '0.75rem' }}>
+                      <span className="font-bold" style={{ color: '#ddb8ff' }}>{item.qty}x</span>
+                      <span className="font-medium" style={{ color: '#e4e2e4' }}>{item.title || item.name}</span>
+                    </div>
+                    <span className="font-semibold" style={{ color: '#e4e2e4' }}>{fmt(item.unitPrice * item.qty)}</span>
+                  </div>
+                ))
+                : (
+                  <p style={{ color: '#636366', fontSize: '0.85rem', textAlign: 'center', padding: '0.5rem 0' }}>
+                    Sin ítems confirmados
+                  </p>
+                )
+              }
               {/* Divider + Subtotal */}
               <div
                 className="flex justify-between items-center"
@@ -159,7 +166,7 @@ export default function PagarPage() {
             className="rounded-2xl relative overflow-hidden"
             style={{
               background: '#1b1b1d',
-              border: '1px solid rgba(147,51,234,0.3)',
+              border: '1px solid rgba(22,163,74,0.3)',
               padding: '1.25rem',
               marginBottom: '2rem',
             }}
@@ -167,7 +174,7 @@ export default function PagarPage() {
             {/* Background glow */}
             <div
               className="absolute rounded-full"
-              style={{ right: '-2.5rem', top: '-2.5rem', width: '6rem', height: '6rem', background: 'rgba(147,51,234,0.1)', filter: 'blur(48px)' }}
+              style={{ right: '-2.5rem', top: '-2.5rem', width: '6rem', height: '6rem', background: 'rgba(22,163,74,0.1)', filter: 'blur(48px)' }}
             />
             <h2 className="font-bold flex items-center" style={{ gap: '0.5rem', marginBottom: '1rem', color: '#e4e2e4' }}>
               Propina <span style={{ fontSize: '1.125rem' }}>💸</span>
@@ -182,18 +189,20 @@ export default function PagarPage() {
             >
               {TIP_OPTIONS.map((opt, idx) => {
                 const isActive = selectedTip === idx;
+                // Sin pedido: solo "Otro" (idx 2) disponible
+                const isDisabled = noOrder && opt.pct !== null;
                 return (
                   <button
                     key={idx}
-                    onClick={() => handleTipSelect(idx)}
+                    onClick={() => !isDisabled && handleTipSelect(idx)}
                     className="font-bold text-sm"
                     style={{
-                      background: isActive ? '#9333ea' : '#2a2a2c',
-                      color: isActive ? '#fff' : '#e4e2e4',
+                      background: isDisabled ? '#1a1a1c' : isActive ? '#16a34a' : '#2a2a2c',
+                      color: isDisabled ? '#3a3a3c' : isActive ? '#fff' : '#e4e2e4',
                       padding: '0.75rem 0',
                       borderRadius: '1rem',
                       border: 'none',
-                      cursor: 'pointer',
+                      cursor: isDisabled ? 'not-allowed' : 'pointer',
                       transition: 'transform 0.15s, background 0.2s',
                       fontSize: '0.875rem',
                     }}
@@ -202,6 +211,11 @@ export default function PagarPage() {
                   </button>
                 );
               })}
+              {noOrder && (
+                <p style={{ gridColumn: '1 / -1', fontSize: '0.68rem', color: '#6b7280', textAlign: 'center', marginTop: '0.25rem', lineHeight: 1.4 }}>
+                  Sin pedido activo — solo podés ingresar un monto de propina a mano
+                </p>
+              )}
             </div>
 
             {/* Custom tip input */}
@@ -216,7 +230,7 @@ export default function PagarPage() {
                   className="w-full"
                   style={{
                     background: '#2a2a2c',
-                    border: '1px solid rgba(147,51,234,0.3)',
+                    border: '1px solid rgba(22,163,74,0.3)',
                     borderRadius: '0.75rem',
                     padding: '0.75rem 1rem',
                     color: '#e4e2e4',
@@ -247,25 +261,27 @@ export default function PagarPage() {
             <p className="font-medium" style={{ color: '#cfc2d7', fontSize: '0.875rem', marginTop: '0.5rem' }}>
               Total a pagar (Consumo + Propina)
             </p>
-            <div style={{ paddingTop: '1rem' }}>
-              <button
-                className="inline-flex items-center font-medium"
-                style={{
-                  gap: '0.5rem',
-                  padding: '0.5rem 1.5rem',
-                  background: '#2a2a2c',
-                  borderRadius: '9999px',
-                  color: '#e4e2e4',
-                  fontSize: '0.875rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setSplitOpen(true)}
-              >
-                {iconCalc}
-                Dividir cuenta
-              </button>
-            </div>
+            {!noOrder && (
+              <div style={{ paddingTop: '1rem' }}>
+                <button
+                  className="inline-flex items-center font-medium"
+                  style={{
+                    gap: '0.5rem',
+                    padding: '0.5rem 1.5rem',
+                    background: '#2a2a2c',
+                    borderRadius: '9999px',
+                    color: '#e4e2e4',
+                    fontSize: '0.875rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => setSplitOpen(true)}
+                >
+                  {iconCalc}
+                  Dividir cuenta
+                </button>
+              </div>
+            )}
           </section>
 
           {/* ── Payment Methods ── */}
@@ -273,104 +289,131 @@ export default function PagarPage() {
             className="rounded-2xl relative overflow-hidden"
             style={{
               background: '#1b1b1d',
-              border: '1px solid rgba(147,51,234,0.3)',
+              border: '1px solid rgba(22,163,74,0.3)',
               padding: '1.25rem',
               marginBottom: '2rem',
             }}
           >
-            <label
-              className="block text-center font-bold"
-              style={{
-                color: '#cfc2d7',
-                fontSize: '0.625rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                marginBottom: '1rem',
-              }}
-            >
-              ¿Como queres pagar?
-            </label>
-
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {/* Mercado Pago */}
-            <button
-              className="w-full font-bold flex items-center justify-center"
-              style={{
-                background: '#009EE3',
-                color: '#fff',
-                padding: '1rem',
-                borderRadius: '0.75rem',
-                border: 'none',
-                cursor: 'pointer',
-                gap: '0.5rem',
-                fontSize: '1rem',
-                boxShadow: '0 8px 24px rgba(0,158,227,0.1)',
-                transition: 'transform 0.15s',
-              }}
-              onClick={() => navigate('/cliente/post-pago')}
-            >
-              Mercado Pago
-            </button>
+            {(() => {
+              const mpEnabled = !noOrder || tipAmount > 0;
+              return (
+                <button
+                  className="w-full font-bold flex items-center justify-center"
+                  style={{
+                    background: mpEnabled ? '#009EE3' : '#0a3a50',
+                    color: mpEnabled ? '#fff' : '#4b5563',
+                    padding: '1rem',
+                    borderRadius: '0.75rem',
+                    border: 'none',
+                    cursor: mpEnabled ? 'pointer' : 'not-allowed',
+                    gap: '0.5rem',
+                    fontSize: '1rem',
+                    boxShadow: mpEnabled ? '0 8px 24px rgba(0,158,227,0.1)' : 'none',
+                    transition: 'transform 0.15s',
+                  }}
+                  disabled={!mpEnabled}
+                  onClick={() => {
+                    if (!mpEnabled) return;
+                    if (noOrder) {
+                      // Sin pedido: propina directa, sin preguntar monto
+                      addAlert({ mesa: 'MESA 6', variant: 'paid', title: 'Propina: Mercado Pago', subtitle: `💸 ${fmt(tipAmount)} propina`, icon: 'check_circle', emoji: '✅' });
+                      addCajaAlert({ mesa: 'MESA 6', metodo: 'Mercado Pago', monto: fmt(tipAmount), tipoPago: 'PROPINA', propina: fmt(tipAmount) });
+                      navigate('/cliente/post-pago');
+                    } else {
+                      setMpCustomAmount('');
+                      setMpAmountModal(true);
+                    }
+                  }}
+                >
+                  {noOrder ? 'Dejar Propina con Mercado Pago' : 'Mercado Pago'}
+                </button>
+              );
+            })()}
 
-            {/* Transferencia Bancaria */}
-            <button
-              className="w-full font-bold flex items-center justify-center"
-              style={{
-                background: '#1f1f21',
-                border: '1px solid rgba(0,165,114,0.3)',
-                color: '#e4e2e4',
-                padding: '1rem',
-                borderRadius: '0.75rem',
-                cursor: 'pointer',
-                gap: '0.5rem',
-                fontSize: '1rem',
-                transition: 'transform 0.15s',
-              }}
-              onClick={() => navigate('/cliente/transferencia')}
-            >
-              {iconBank}
-              Transferencia
-            </button>
+            {/* Transferencia, Posnet, Efectivo — solo si hay pedido */}
+            {!noOrder && (
+              <>
+                <button
+                  className="w-full font-bold flex items-center justify-center"
+                  style={{
+                    background: '#1f1f21',
+                    border: '1px solid rgba(0,165,114,0.3)',
+                    color: '#e4e2e4',
+                    padding: '1rem',
+                    borderRadius: '0.75rem',
+                    cursor: 'pointer',
+                    gap: '0.5rem',
+                    fontSize: '1rem',
+                    transition: 'transform 0.15s',
+                  }}
+                  onClick={() => navigate('/cliente/transferencia')}
+                >
+                  {iconBank}
+                  Transferencia
+                </button>
 
-            {/* Posnet + Efectivo grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <button
-                className="font-semibold flex items-center justify-center"
-                style={{
-                  background: '#1f1f21',
-                  color: '#e4e2e4',
-                  padding: '1rem',
-                  borderRadius: '0.75rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  gap: '0.5rem',
-                  fontSize: '0.875rem',
-                  transition: 'transform 0.15s',
-                }}
-                onClick={() => navigate('/cliente/posnet')}
-              >
-                {iconPOS}
-                Tarjeta / MODO
-              </button>
-              <button
-                className="font-semibold flex items-center justify-center"
-                style={{
-                  background: '#1f1f21',
-                  color: '#e4e2e4',
-                  padding: '1rem',
-                  borderRadius: '0.75rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  gap: '0.5rem',
-                  fontSize: '0.875rem',
-                  transition: 'transform 0.15s',
-                }}
-                onClick={() => navigate('/cliente/efectivo')}
-              >
-                {iconWallet}
-                Efectivo
-              </button>
-            </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <button
+                    className="font-semibold flex items-center justify-center"
+                    style={{
+                      background: '#1f1f21',
+                      color: '#e4e2e4',
+                      padding: '1rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      gap: '0.5rem',
+                      fontSize: '0.875rem',
+                      transition: 'transform 0.15s',
+                    }}
+                    onClick={() => {
+                      addAlert({
+                        mesa: 'MESA 6',
+                        variant: 'red',
+                        title: 'Cuenta: Tarjeta / MODO',
+                        subtitle: tipAmount > 0 ? `💸 + ${fmt(tipAmount)} propina — cargar en posnet` : undefined,
+                        icon: 'credit_card',
+                        emoji: '💳',
+                      });
+                      navigate('/cliente/posnet');
+                    }}
+                  >
+                    {iconPOS}
+                    Tarjeta / MODO
+                  </button>
+                  <button
+                    className="font-semibold flex items-center justify-center"
+                    style={{
+                      background: '#1f1f21',
+                      color: '#e4e2e4',
+                      padding: '1rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      gap: '0.5rem',
+                      fontSize: '0.875rem',
+                      transition: 'transform 0.15s',
+                    }}
+                    onClick={() => {
+                      addAlert({
+                        mesa: 'MESA 6',
+                        variant: 'red',
+                        title: 'Cuenta: Efectivo',
+                        subtitle: tipAmount > 0 ? `💸 + ${fmt(tipAmount)} propina en efectivo` : undefined,
+                        icon: 'credit_card',
+                        emoji: '💵',
+                      });
+                      navigate('/cliente/efectivo');
+                    }}
+                  >
+                    {iconWallet}
+                    Efectivo
+                  </button>
+                </div>
+              </>
+            )}
             </div>
           </section>
         </main>
@@ -378,7 +421,7 @@ export default function PagarPage() {
         {/* ── Background glow decoration ── */}
         <div
           className="fixed rounded-full pointer-events-none"
-          style={{ top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(147,51,234,0.04)', filter: 'blur(100px)' }}
+          style={{ top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'rgba(22,163,74,0.04)', filter: 'blur(100px)' }}
         />
         <div
           className="fixed rounded-full pointer-events-none"
@@ -479,11 +522,29 @@ export default function PagarPage() {
                 </div>
               </div>
 
+              {/* Aviso: carácter informativo */}
+              <div
+                className="flex items-start"
+                style={{
+                  gap: '0.5rem',
+                  background: 'rgba(250,204,21,0.08)',
+                  border: '1px solid rgba(250,204,21,0.2)',
+                  borderRadius: '0.75rem',
+                  padding: '0.75rem 0.875rem',
+                  marginTop: '1rem',
+                }}
+              >
+                <span style={{ fontSize: '0.95rem', lineHeight: 1.2, flexShrink: 0 }}>ℹ️</span>
+                <p style={{ color: '#cbd5e1', fontSize: '0.72rem', lineHeight: 1.45, margin: 0 }}>
+                  <strong style={{ color: '#facc15' }}>Es solo un cálculo informativo.</strong> El pago sigue siendo uno solo: arreglen entre ustedes quién lo hace, o que cada uno escanee el QR y pague su parte por separado.
+                </p>
+              </div>
+
               {/* CTA button */}
               <button
                 className="w-full font-bold text-white text-center"
                 style={{
-                  background: '#9333ea',
+                  background: '#16a34a',
                   padding: '1rem',
                   borderRadius: '0.75rem',
                   border: 'none',
@@ -506,6 +567,119 @@ export default function PagarPage() {
           </div>
         );
       })()}
+
+      {/* ── Modal: ¿Cuánto vas a pagar con MP? ── */}
+      {mpAmountModal && (
+        <div
+          className="absolute inset-0 z-50 flex items-end"
+          style={{ background: 'rgba(0,0,0,0.72)' }}
+          onClick={() => setMpAmountModal(false)}
+        >
+          <div
+            className="w-full"
+            style={{
+              background: '#1a1c29',
+              borderRadius: '24px 24px 0 0',
+              padding: '1.5rem 1.5rem 2rem',
+              animation: 'split-slide-up 0.3s ease-out forwards',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
+              <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#374151' }} />
+            </div>
+
+            <h2 className="text-white font-bold text-center" style={{ fontSize: '1.1rem', marginBottom: '0.375rem' }}>
+              ¿Cuánto vas a pagar?
+            </h2>
+            <p className="text-center" style={{ color: '#6b7280', fontSize: '0.78rem', marginBottom: '1.5rem', lineHeight: 1.4 }}>
+              Total de la mesa: <strong style={{ color: '#e4e4e7' }}>{fmt(total)}</strong>
+            </p>
+
+            <div className="flex flex-col" style={{ gap: '0.75rem' }}>
+              {/* Opción: El total completo */}
+              <button
+                className="w-full font-bold flex items-center justify-between rounded-xl"
+                style={{
+                  background: 'rgba(0,158,227,0.12)',
+                  border: '1px solid rgba(0,158,227,0.3)',
+                  color: '#fff',
+                  padding: '1rem 1.25rem',
+                  cursor: 'pointer',
+                  fontSize: '0.95rem',
+                }}
+                onClick={() => {
+                  addAlert({ mesa: 'MESA 6', variant: 'paid', title: 'Pagado: Mercado Pago', subtitle: tipAmount > 0 ? `💸 + ${fmt(tipAmount)} propina` : undefined, icon: 'check_circle', emoji: '✅' });
+                  addCajaAlert({ mesa: 'MESA 6', metodo: 'Mercado Pago', monto: fmt(total), tipoPago: 'PAGO TOTAL', propina: tipAmount > 0 ? fmt(tipAmount) : null });
+                  setMpAmountModal(false);
+                  navigate('/cliente/post-pago');
+                }}
+              >
+                <span>El total completo</span>
+                <span style={{ color: '#38bdf8', fontWeight: 900 }}>{fmt(total)}</span>
+              </button>
+
+              {/* Opción: Otro monto */}
+              <div
+                className="rounded-xl"
+                style={{ background: '#13151f', border: '1px solid #1e293b', padding: '1rem 1.25rem' }}
+              >
+                <p className="font-semibold text-white" style={{ fontSize: '0.875rem', marginBottom: '0.625rem' }}>
+                  Solo mi parte
+                </p>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={mpCustomAmount}
+                  onChange={(e) => setMpCustomAmount(e.target.value)}
+                  placeholder="Ingresá el monto a pagar"
+                  className="w-full"
+                  style={{
+                    background: '#1a1c29',
+                    border: '1px solid #2d3748',
+                    borderRadius: '0.625rem',
+                    padding: '0.75rem 1rem',
+                    color: '#fff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                  }}
+                />
+                <button
+                  className="w-full font-bold text-white"
+                  style={{
+                    background: mpCustomAmount ? '#009EE3' : '#0a3a50',
+                    color: mpCustomAmount ? '#fff' : '#4b5563',
+                    padding: '0.875rem',
+                    borderRadius: '0.625rem',
+                    border: 'none',
+                    cursor: mpCustomAmount ? 'pointer' : 'not-allowed',
+                    fontSize: '0.9rem',
+                    marginTop: '0.625rem',
+                  }}
+                  disabled={!mpCustomAmount}
+                  onClick={() => {
+                    if (!mpCustomAmount) return;
+                    addAlert({ mesa: 'MESA 6', variant: 'paid', title: `Pagado: MP Parcial — ${fmt(Number(mpCustomAmount))}`, subtitle: tipAmount > 0 ? `💸 + ${fmt(tipAmount)} propina` : undefined, icon: 'check_circle', emoji: '✅' });
+                    addCajaAlert({ mesa: 'MESA 6', metodo: 'Mercado Pago', monto: fmt(Number(mpCustomAmount)), tipoPago: 'PAGO PARCIAL', propina: tipAmount > 0 ? fmt(tipAmount) : null });
+                    setMpAmountModal(false);
+                    navigate('/cliente/post-pago');
+                  }}
+                >
+                  Pagar {mpCustomAmount ? fmt(Number(mpCustomAmount)) : ''}
+                </button>
+              </div>
+
+              <button
+                style={{ background: 'transparent', color: '#6b7280', border: 'none', padding: '0.5rem', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500 }}
+                onClick={() => setMpAmountModal(false)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Phone>
   );
 }

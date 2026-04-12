@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { getOrderTotal } from '../lib/cartStore';
+
+function fmt(n) {
+  return '$' + n.toLocaleString('es-CL');
+}
 
 export default function TransferenciaPage() {
   const navigate = useNavigate();
+  const orderTotal = getOrderTotal();
+  // En modo Lite (sin pedido por app), el total viene guardado por ModoPagoLitePage
+  const CONSUMO = orderTotal > 0 ? orderTotal : Number(localStorage.getItem('hm_lite_total') || 0);
+  const LITE_TIP = orderTotal === 0 ? Number(localStorage.getItem('hm_lite_tip') || 0) : 0;
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -15,6 +24,11 @@ export default function TransferenciaPage() {
 
   function handleConfirm() {
     setSent(true);
+    // Set transfer status to WAITING so CajeroLayout shows it
+    localStorage.setItem('mesa6Status', JSON.stringify('WAITING'));
+    // Persist the actual amount so cajero can display it
+    localStorage.setItem('hm_mesa6_transfer_amount', String(CONSUMO));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'mesa6Status', newValue: JSON.stringify('WAITING') }));
     setTimeout(() => navigate('/cliente/validando-transferencia'), 2000);
   }
 
@@ -78,7 +92,7 @@ export default function TransferenciaPage() {
               letterSpacing: '0.08em',
             }}
           >
-            Transferencia - Mesa 4
+            Transferencia - Mesa 6
           </h1>
           <div style={{ width: '24px' }} />
         </header>
@@ -123,7 +137,7 @@ export default function TransferenciaPage() {
               className="font-extrabold"
               style={{ fontSize: '2.25rem', color: '#4edea3', letterSpacing: '-0.04em', marginTop: '0.5rem' }}
             >
-              $21.200
+              {fmt(CONSUMO)}
             </div>
 
             {/* Aviso fiscal */}
@@ -138,7 +152,7 @@ export default function TransferenciaPage() {
               }}
             >
               <p style={{ fontSize: '0.72rem', color: '#d4a800', lineHeight: 1.5, margin: 0 }}>
-                ⚠️ Por normativas fiscales, la transferencia no incluye la propina. Si querés, podés dejarle los <strong>$2.120</strong> al mozo en efectivo o usar el botón de Mercado Pago.
+                ⚠️ Por normativas fiscales, la transferencia no incluye la propina.{LITE_TIP > 0 ? <> Si querés, podés dejarle los <strong>{fmt(LITE_TIP)}</strong> al mozo en efectivo.</> : <> Si querés, podés dejarle los <strong>{fmt(Math.round(CONSUMO * 0.1))}</strong> al mozo en efectivo o usar el botón de Mercado Pago.</>}
               </p>
             </div>
 

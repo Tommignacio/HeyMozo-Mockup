@@ -6,12 +6,6 @@ const ALERTS_ICON = (
   </svg>
 );
 
-const MESAS_ICON = (
-  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0">
-    <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z" />
-  </svg>
-);
-
 const CHEVRON_LEFT = (
   <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
     <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
@@ -26,7 +20,6 @@ const CHEVRON_RIGHT = (
 
 const tabs = [
   { id: 'alerts', label: 'Alertas', icon: ALERTS_ICON },
-  { id: 'mesas',  label: 'Mis Mesas', icon: MESAS_ICON },
 ];
 
 export default function Sidebar({ activeTab, onTabChange }) {
@@ -76,8 +69,6 @@ export default function Sidebar({ activeTab, onTabChange }) {
           </button>
         ))}
       </nav>
-
-
     </aside>
   );
 }

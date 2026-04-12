@@ -1,8 +1,16 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { getOrderTotal } from '../lib/cartStore';
+import { addAlert } from '../lib/alertStore';
+
+function fmt(n) {
+  return '$' + n.toLocaleString('es-CL');
+}
 
 export default function ConfirmadoPage() {
   const navigate = useNavigate();
+  const [mistakeSent, setMistakeSent] = useState(false);
 
   return (
     <Phone>
@@ -86,7 +94,7 @@ export default function ConfirmadoPage() {
             <span style={{ color: '#9ca3af', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Mesa
             </span>
-            <span className="font-semibold text-white">Mesa 4</span>
+            <span className="font-semibold text-white">Mesa 6</span>
           </div>
 
           {/* Divider */}
@@ -95,7 +103,7 @@ export default function ConfirmadoPage() {
           {/* Total row */}
           <div className="flex justify-between items-center" style={{ padding: '4px 0' }}>
             <span style={{ color: '#9ca3af', fontSize: '0.875rem' }}>Total</span>
-            <span className="font-bold text-white" style={{ fontSize: '1.25rem' }}>$21.200</span>
+            <span className="font-bold text-white" style={{ fontSize: '1.25rem' }}>{fmt(getOrderTotal())}</span>
           </div>
 
           {/* Status indicator */}
@@ -134,6 +142,25 @@ export default function ConfirmadoPage() {
         >
           Volver a mi mesa
         </button>
+
+        {/* ── "Me equivoqué" — texto discreto ── */}
+        <div style={{ maxWidth: '380px', width: '100%', marginTop: '1rem', textAlign: 'center' }}>
+          {mistakeSent ? (
+            <span style={{ fontSize: '0.78rem', color: '#fb923c' }}>
+              ✓ Mozo avisado — viene a ayudarte
+            </span>
+          ) : (
+            <button
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4b5563', fontSize: '0.78rem', padding: '0.25rem' }}
+              onClick={() => {
+                addAlert({ mesa: 'MESA 6', variant: 'orange', title: 'Corrección de Pedido', subtitle: 'El cliente se equivocó en un ítem', icon: 'notifications', emoji: '🙋' });
+                setMistakeSent(true);
+              }}
+            >
+              Me equivoqué en el pedido — llamar al mozo
+            </button>
+          )}
+        </div>
 
         {/* ── Background glow decoration ── */}
         <div

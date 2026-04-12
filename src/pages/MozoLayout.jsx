@@ -1,70 +1,38 @@
-import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import BottomNav from '../components/BottomNav';
 import ActiveAlertsPage from './ActiveAlertsPage';
-import MisMesasPage from './MisMesasPage';
+import { useState } from 'react';
 
 export default function MozoLayout({
   mesa1Status, setMesa1Status,
   mesa2Status, setMesa2Status,
-  mesa3Released, setMesa3Released,
-  mesa4Status, setMesa4Status,
-  mesa6Status, setMesa6Status,
 }) {
-  const [activeTab, setActiveTab] = useState('alerts');
-  const [mesa5Done, setMesa5Done] = useState(false);
-  const pageTitle = activeTab === 'alerts' ? 'Active Alerts' : 'Mis Mesas';
+  const [mesa5Done, setMesa5Done] = useState(() => localStorage.getItem('hm_mesa5_done') === '1');
+
+  function handleMesa5Done(val) {
+    setMesa5Done(val);
+    if (val) localStorage.setItem('hm_mesa5_done', '1');
+    else localStorage.removeItem('hm_mesa5_done');
+  }
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-[#1c1c1e] font-sans text-white">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-
+    <div className="flex flex-col h-screen bg-[#1c1c1e] font-sans text-white">
       <div className="flex-1 flex flex-col min-h-0">
-        <Header pageTitle={pageTitle} />
+        <Header pageTitle="Alertas" />
 
         <main className="flex-1 overflow-y-auto">
-          <div className="flex items-center justify-between px-4 pt-1 pb-3 lg:hidden">
-            <h1 className="text-[28px] font-bold tracking-tight">{pageTitle}</h1>
-            {activeTab === 'mesas' && (
-              <span className="text-[14px] font-bold text-yellow-400">Total Turno: $15.400 💸</span>
-            )}
+          <div className="px-4 pt-1 pb-3 lg:hidden">
+            <h1 className="text-[28px] font-bold tracking-tight">Alertas</h1>
           </div>
 
-          <div className={activeTab !== 'alerts' ? 'hidden' : undefined}>
-            <ActiveAlertsPage
-              mesa1Status={mesa1Status}
-              setMesa1Status={setMesa1Status}
-              mesa2Status={mesa2Status}
-              setMesa2Status={setMesa2Status}
-              mesa3Released={mesa3Released}
-              setMesa3Released={setMesa3Released}
-              mesa4Status={mesa4Status}
-              setMesa4Status={setMesa4Status}
-              mesa5Done={mesa5Done}
-              setMesa5Done={setMesa5Done}
-              mesa6Status={mesa6Status}
-              setMesa6Status={setMesa6Status}
-            />
-          </div>
-          <div className={activeTab !== 'mesas' ? 'hidden' : undefined}>
-            <MisMesasPage
-              mesa1Status={mesa1Status}
-              setMesa1Status={setMesa1Status}
-              mesa2Status={mesa2Status}
-              setMesa2Status={setMesa2Status}
-              mesa3Released={mesa3Released}
-              setMesa3Released={setMesa3Released}
-              mesa4Status={mesa4Status}
-              setMesa4Status={setMesa4Status}
-              mesa5Done={mesa5Done}
-              mesa6Status={mesa6Status}
-              setMesa6Status={setMesa6Status}
-            />
-          </div>
+          <ActiveAlertsPage
+            mesa1Status={mesa1Status}
+            setMesa1Status={setMesa1Status}
+            mesa2Status={mesa2Status}
+            setMesa2Status={setMesa2Status}
+            mesa5Done={mesa5Done}
+            setMesa5Done={handleMesa5Done}
+          />
         </main>
-
-        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
       {/* ── Background glow decoration ── */}
