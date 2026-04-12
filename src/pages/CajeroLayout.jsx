@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { addAlert } from '../lib/alertStore';
+import { useCajaAlerts, removeCajaAlert, clearCajaAlerts } from '../lib/cajaStore';
 
 function getCurrentTime() {
   return new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -39,124 +41,182 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
   }, []);
 
   const hasPending = mesa6Status === 'WAITING';
-  const pendingCount = hasPending ? 1 : 0;
-/* ── Acciones: Transferencias pendientes + métricas del turno ── */
+
+  // ── Monto dinámico de transferencia (guardado por TransferenciaPage) ──
+  const transferAmount = Number(localStorage.getItem('hm_mesa6_transfer_amount') || 0);
+  function fmtPeso(n) { return '$' + n.toLocaleString('es-CL'); }
+
+  // ── Feed de alertas del cajero — reactivo via cajaStore ──
+  const cajaAlerts = useCajaAlerts();
+
+  // Tipo A: transferencia en espera; Tipo B: pagos confirmados (más reciente primero)
+  const feedCards = [
+    ...(hasPending ? [{ type: 'transfer', id: 'transfer-mesa6' }] : []),
+    ...[...cajaAlerts].sort((a, b) => b.createdAt - a.createdAt).map((n) => ({ type: 'mp', ...n })),
+  ];
+
+  const pendingCount = feedCards.length;
+
+  function fmtHora(ts) {
+    return new Date(ts).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) + ' hs';
+  }
+
+/* ── Acciones: Feed de alertas accionables ── */
   const monitorEnVivoContent = (
-    <div className="flex flex-col" style={{ gap: '2rem' }}>
-      <h2 className="text-lg font-bold flex items-center gap-2">
-        <span>⏳ Transferencias Pendientes</span>
-      </h2>
-
-      {/* Metric strip mobile — compact 3-col */}
-      <div className="md:hidden grid grid-cols-3 gap-2">
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(19,236,167,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#13eca7', fontSize: '16px' }}>payments</span>
-          </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Total Caja</p>
-            <p className="text-base font-black leading-tight" style={{ color: '#13eca7' }}>$142.500</p>
-          </div>
-        </div>
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(59,130,246,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#60a5fa', fontSize: '16px' }}>receipt_long</span>
-          </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Transacciones</p>
-            <p className="text-base font-black text-white leading-tight">24</p>
-          </div>
-        </div>
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(168,85,247,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#a855f7', fontSize: '16px' }}>table_bar</span>
-          </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Mesas Activas</p>
-            <p className="text-base font-black text-white leading-tight">4 / 6</p>
-          </div>
-        </div>
-      </div>
-      {/* Metric strip desktop — large cards */}
-      <div className="hidden md:grid grid-cols-3" style={{ gap: '1.5rem' }}>
-        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(19,236,167,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Total Caja</p>
-          <div className="flex items-end gap-3">
-            <span className="text-5xl font-black leading-none" style={{ color: '#13eca7' }}>$142.500</span>
-            <div className="flex flex-col mb-1">
-              <span className="material-symbols-outlined" style={{ color: '#13eca7' }}>payments</span>
-              <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>Del turno</span>
-            </div>
-          </div>
-        </div>
-        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(59,130,246,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Transacciones</p>
-          <div className="flex items-end gap-3">
-            <span className="text-5xl font-black text-white leading-none">24</span>
-            <div className="flex flex-col mb-1">
-              <span className="material-symbols-outlined" style={{ color: '#60a5fa' }}>receipt_long</span>
-              <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>Pagos procesados</span>
-            </div>
-          </div>
-        </div>
-        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(168,85,247,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Mesas Activas</p>
-          <div className="flex items-end gap-3">
-            <span className="text-5xl font-black text-white leading-none">4</span>
-            <div className="flex flex-col mb-1">
-              <span className="material-symbols-outlined" style={{ color: '#a855f7' }}>table_bar</span>
-              <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>de 6 totales</span>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col" style={{ gap: '1.25rem' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold text-white">Bandeja de Entrada</h2>
+        {pendingCount > 0 && (
+          <span
+            className="text-xs font-bold rounded-full"
+            style={{ background: 'rgba(251,191,36,0.15)', color: '#fbbf24', padding: '0.25rem 0.75rem', border: '1px solid rgba(251,191,36,0.25)' }}
+          >
+            {pendingCount} pendiente{pendingCount !== 1 ? 's' : ''}
+          </span>
+        )}
       </div>
 
-      {/* Transferencias Pendientes content */}
-      <div>
-
-        {hasPending ? (
+      {/* Feed */}
+      <div className="flex flex-col" style={{ gap: '0.875rem' }}>
+        {feedCards.length === 0 && (
           <div
-            className="rounded-xl transition-transform hover:translate-x-1"
-            style={{ background: '#1a1c29', borderLeft: '4px solid #3b82f6', boxShadow: '0 10px 20px rgba(0,0,0,0.2)', padding: '1.25rem' }}
+            className="rounded-2xl flex flex-col items-center justify-center gap-3 text-center"
+            style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '3rem 1.5rem' }}
           >
-            <div className="flex justify-between items-start" style={{ marginBottom: '1rem' }}>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#60a5fa' }}>Mesa 6</span>
-                <h3 className="text-base font-bold text-white" style={{ marginTop: '0.25rem' }}>Validación de Pago</h3>
-              </div>
-              <span className="text-lg font-black text-white">$42.500</span>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 font-bold rounded-xl text-sm border-none cursor-pointer hover:brightness-110 transition-all"
-                style={{ background: '#13eca7', color: '#1c1c1e', padding: '0.6rem' }}
-                onClick={() => setMesa6Status('APPROVED')}
-              >
-                Aprobar
-              </button>
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 font-bold rounded-xl text-sm cursor-pointer hover:bg-red-500 hover:text-white transition-all"
-                style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', padding: '0.6rem' }}
-                onClick={() => setMesa6Status('REJECTED')}
-              >
-                Rechazar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div
-            className="rounded-xl flex flex-col items-center justify-center gap-3 text-center"
-            style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '2rem', minHeight: '120px' }}
-          >
-            <span className="material-symbols-outlined text-3xl" style={{ color: '#13eca7' }}>check_circle</span>
-            <span className="text-sm font-medium text-slate-500">Sin transferencias pendientes</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: '#13eca7', opacity: 0.6 }}>inbox</span>
+            <p className="text-sm font-semibold" style={{ color: '#64748b' }}>Todo al día — sin alertas pendientes</p>
           </div>
         )}
+
+        {feedCards.map((card) => {
+          if (card.type === 'transfer') {
+            // ── Tarjeta Tipo A: Validación de Transferencia (Naranja) ──
+            return (
+              <div
+                key={card.id}
+                className="rounded-2xl overflow-hidden"
+                style={{ background: '#1a1c29', border: '1px solid rgba(251,146,60,0.3)', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}
+              >
+                {/* Barra de color */}
+                <div style={{ height: '4px', background: 'linear-gradient(90deg, #f97316, #fb923c)' }} />
+                <div style={{ padding: '1.25rem' }}>
+                  {/* Encabezado */}
+                  <div className="flex items-start justify-between" style={{ marginBottom: '0.75rem' }}>
+                    <div className="flex items-center" style={{ gap: '0.75rem' }}>
+                      <div
+                        className="flex items-center justify-center rounded-xl"
+                        style={{ width: '42px', height: '42px', background: 'rgba(249,115,22,0.15)' }}
+                      >
+                        <span className="material-symbols-outlined" style={{ color: '#fb923c', fontSize: '22px' }}>account_balance</span>
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#fb923c' }}>Transferencia</span>
+                        <h3 className="text-base font-bold text-white" style={{ marginTop: '2px' }}>Mesa 6 — PAGO TOTAL</h3>
+                      </div>
+                    </div>
+                    <span className="text-xl font-black text-white">{fmtPeso(transferAmount)}</span>
+                  </div>
+                  {/* Info */}
+                  <p className="text-xs" style={{ color: '#94a3b8', marginBottom: '1rem' }}>
+                    Verificá en tu banco que la transferencia fue acreditada antes de aprobar.
+                  </p>
+                  {/* Botones */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      className="flex items-center justify-center gap-2 font-bold rounded-xl text-sm border-none cursor-pointer hover:brightness-110 transition-all"
+                      style={{ background: '#13eca7', color: '#0f172a', padding: '0.75rem' }}
+                      onClick={() => {
+                        setMesa6Status('APPROVED');
+                        addAlert({
+                          mesa: 'MESA 6',
+                          variant: 'paid',
+                          title: 'Transferencia Aprobada',
+                          subtitle: `✅ Pago verificado por caja — ${fmtPeso(transferAmount)}`,
+                          icon: 'check_circle',
+                          emoji: '✅',
+                        });
+                      }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check_circle</span>
+                      Validar Pago
+                    </button>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center gap-2 font-bold rounded-xl text-sm cursor-pointer hover:bg-red-500 hover:text-white transition-all"
+                      style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', padding: '0.75rem' }}
+                      onClick={() => {
+                        setMesa6Status('REJECTED');
+                        addAlert({
+                          mesa: 'MESA 6',
+                          variant: 'red',
+                          title: 'Transferencia Rechazada',
+                          subtitle: 'Avisá al cliente e intentá otro método',
+                          icon: 'notifications',
+                          emoji: '❌',
+                        });
+                      }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>cancel</span>
+                      Rechazar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // ── Tarjeta Tipo B: Pago con Mercado Pago (Verde) ──
+          return (
+            <div
+              key={card.id}
+              className="rounded-2xl overflow-hidden"
+              style={{ background: '#1a1c29', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}
+            >
+              {/* Barra de color */}
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, #10b981, #34d399)' }} />
+              <div style={{ padding: '1.25rem' }}>
+                {/* Encabezado */}
+                <div className="flex items-start justify-between" style={{ marginBottom: '0.75rem' }}>
+                  <div className="flex items-center" style={{ gap: '0.75rem' }}>
+                    <div
+                      className="flex items-center justify-center rounded-xl"
+                      style={{ width: '42px', height: '42px', background: 'rgba(16,185,129,0.15)' }}
+                    >
+                      <span className="material-symbols-outlined" style={{ color: '#34d399', fontSize: '22px' }}>verified</span>
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#34d399' }}>{card.metodo}</span>
+                      <h3 className="text-base font-bold text-white" style={{ marginTop: '2px' }}>{card.mesa} — {card.tipoPago}</h3>
+                    </div>
+                  </div>
+                  <span className="text-xl font-black text-white">{card.monto}</span>
+                </div>
+                {/* Propina + hora */}
+                <div className="flex items-center" style={{ gap: '0.5rem', marginBottom: '1rem' }}>
+                  <span className="text-xs" style={{ color: '#64748b' }}>{fmtHora(card.createdAt)}</span>
+                  {card.propina && (
+                    <>
+                      <span style={{ color: '#334155' }}>·</span>
+                      <span className="text-xs font-semibold" style={{ color: '#fbbf24' }}>💸 {card.propina} propina</span>
+                    </>
+                  )}
+                </div>
+                {/* Botón de acuse */}
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-center gap-2 font-bold rounded-xl text-sm border-none cursor-pointer transition-all"
+                  style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.25)', color: '#34d399', padding: '0.75rem' }}
+                  onClick={() => removeCajaAlert(card.id)}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>check</span>
+                  Entendido
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -418,13 +478,13 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
   /* ── Historial de Pagos section ── */
   const PAGOS_DATA = [
     { hora: '21:14 hs', mesa: 'Mesa 4', metodo: 'Mercado Pago', metodoIcon: 'credit_card', metodoColor: '#60a5fa', consumo: '$20.000', propina: '$2.000', propinaColor: '#f59e0b', total: '$22.000', estado: 'Pagado', estadoColor: 'emerald' },
-    { hora: '20:50 hs', mesa: 'Mesa 6', metodo: 'Transferencia', metodoIcon: 'account_balance', metodoColor: '#a78bfa', consumo: '$42.500', propina: '$0', propinaColor: '#475569', total: '$42.500', estado: 'Pagado', estadoColor: 'emerald' },
+    { hora: '20:50 hs', mesa: 'Mesa 6', metodo: 'Transferencia', metodoIcon: 'account_balance', metodoColor: '#a78bfa', consumo: transferAmount ? fmtPeso(transferAmount) : '$42.500', propina: '$0', propinaColor: '#475569', total: transferAmount ? fmtPeso(transferAmount) : '$42.500', estado: 'Pagado', estadoColor: 'emerald' },
     { hora: '20:15 hs', mesa: 'Mesa 1', metodo: 'Efectivo', metodoIcon: 'payments', metodoColor: '#34d399', consumo: '$15.000', propina: '$1.500', propinaColor: '#f59e0b', total: '$16.500', estado: 'Pagado', estadoColor: 'emerald' },
     { hora: '19:40 hs', mesa: 'Mesa 8', metodo: 'Mercado Pago', metodoIcon: 'credit_card', metodoColor: '#60a5fa', consumo: '$12.000', propina: '$0', propinaColor: '#475569', total: '$12.000', estado: 'Reembolsado', estadoColor: 'red' },
   ];
   const [historialFilter, setHistorialFilter] = useState('todos');
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
-  const [showCierreCaja, setShowCierreCaja] = useState(false);
+  const [tipsPopupOpen, setTipsPopupOpen] = useState(false);
   const [drawerPago, setDrawerPago] = useState(null);
   const [promoReview, setPromoReview] = useState(null);
   const [quejaReview, setQuejaReview] = useState(null);
@@ -438,36 +498,90 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         </div>
       </div>
 
-      {/* Totales del Turno — mobile only, 3 cards */}
-      <div className="md:hidden grid grid-cols-3 gap-2">
-        {/* Consumo */}
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(96,165,250,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#60a5fa', fontSize: '16px' }}>restaurant_menu</span>
+      {/* Propinas del turno por mozo — mobile: chip colapsado */}
+      <div className="md:hidden" style={{ marginBottom: '0.5rem' }}>
+        <button
+          type="button"
+          onClick={() => setTipsPopupOpen(true)}
+          className="w-full flex items-center justify-between rounded-xl"
+          style={{
+            background: 'rgba(245,158,11,0.08)',
+            border: '1px solid rgba(245,158,11,0.2)',
+            padding: '0.65rem 1rem',
+            cursor: 'pointer',
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: '1rem' }}>💸</span>
+            <span className="text-sm font-semibold text-white">Propinas del turno</span>
           </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Consumo</p>
-            <p className="text-base font-black text-white leading-tight">$89.500</p>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-black" style={{ color: '#f59e0b' }}>$3.500</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#f59e0b' }}>expand_more</span>
           </div>
-        </div>
-        {/* Propinas */}
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(245,158,11,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#f59e0b', fontSize: '16px' }}>volunteer_activism</span>
+        </button>
+
+        {/* Popup desglose */}
+        {tipsPopupOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-end"
+            style={{ background: 'rgba(0,0,0,0.65)' }}
+            onClick={() => setTipsPopupOpen(false)}
+          >
+            <div
+              className="w-full"
+              style={{
+                background: '#1a1c29',
+                borderRadius: '20px 20px 0 0',
+                padding: '1.5rem 1.25rem 2rem',
+                border: '1px solid rgba(245,158,11,0.15)',
+                borderBottom: 'none',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
+                <div className="rounded-full" style={{ width: '40px', height: '5px', background: '#374151' }} />
+              </div>
+              <div className="flex items-center justify-between" style={{ marginBottom: '1.25rem' }}>
+                <p className="text-sm font-bold text-white">Propinas del turno</p>
+                <span className="text-xs font-bold" style={{ color: '#64748b' }}>por mozo</span>
+              </div>
+              <div className="flex flex-col" style={{ gap: '0.5rem' }}>
+                {[{ name: 'Carlos', tip: '$2.000' }, { name: 'Ana', tip: '$1.000' }, { name: 'Marcos', tip: '$500' }].map((m) => (
+                  <div key={m.name} className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '0.7rem 1rem' }}>
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined" style={{ color: '#64748b', fontSize: '16px' }}>person</span>
+                      <span className="text-sm font-medium text-white">{m.name}</span>
+                    </div>
+                    <span className="text-sm font-black" style={{ color: '#f59e0b' }}>{m.tip}</span>
+                  </div>
+                ))}
+                <div className="flex items-center justify-between rounded-xl" style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', padding: '0.7rem 1rem', marginTop: '0.25rem' }}>
+                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#f59e0b' }}>Total</span>
+                  <span className="font-black" style={{ color: '#f59e0b', fontSize: '1rem' }}>$3.500</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Propinas</p>
-            <p className="text-base font-black leading-tight" style={{ color: '#f59e0b' }}>$3.500</p>
-          </div>
-        </div>
-        {/* Total Caja */}
-        <div className="rounded-xl flex flex-col items-center gap-1" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '0.65rem 0.5rem' }}>
-          <div className="flex items-center justify-center rounded-full" style={{ width: '32px', height: '32px', background: 'rgba(52,211,153,0.2)', flexShrink: 0 }}>
-            <span className="material-symbols-outlined" style={{ color: '#34d399', fontSize: '16px' }}>payments</span>
-          </div>
-          <div className="text-center">
-            <p className="text-[9px] font-medium leading-tight" style={{ color: '#94a3b8' }}>Total Caja</p>
-            <p className="text-base font-black leading-tight" style={{ color: '#34d399' }}>$93.000</p>
+        )}
+      </div>
+
+      {/* Propinas del turno por mozo — desktop */}
+      <div className="hidden md:block rounded-2xl" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.5rem' }}>
+        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Propinas del turno por mozo</p>
+        <div className="grid grid-cols-4" style={{ gap: '1rem' }}>
+          {[{ name: 'Carlos', tip: '$2.000' }, { name: 'Ana', tip: '$1.000' }, { name: 'Marcos', tip: '$500' }].map((m) => (
+            <div key={m.name} className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '0.875rem 1rem' }}>
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined" style={{ color: '#64748b', fontSize: '18px' }}>person</span>
+                <span className="text-sm font-semibold text-white">{m.name}</span>
+              </div>
+              <span className="text-sm font-black" style={{ color: '#f59e0b' }}>{m.tip}</span>
+            </div>
+          ))}
+          <div className="flex items-center justify-between rounded-xl" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', padding: '0.875rem 1rem' }}>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#f59e0b' }}>Total</span>
+            <span className="text-sm font-black" style={{ color: '#f59e0b' }}>$3.500</span>
           </div>
         </div>
       </div>
@@ -619,7 +733,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>Totales del Turno:</span>
           <span className="text-sm font-bold text-white">Consumo: $89.500</span>
           <span className="text-sm font-bold" style={{ color: '#f59e0b' }}>Propinas: $3.500</span>
-          <span className="text-sm font-black" style={{ color: '#34d399' }}>Total Caja: $93.000</span>
+          <span className="text-sm font-black" style={{ color: '#34d399' }}>Total vía HeyMozo: $93.000</span>
         </div>
       </div>
 
@@ -678,54 +792,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           </div>
         ))}
 
-        {/* Desktop Totals — large cards */}
-        <div className="hidden md:grid grid-cols-3" style={{ gap: '1.5rem' }}>
-          <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-            <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(96,165,250,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Consumo</p>
-            <div className="flex items-end gap-3">
-              <span className="text-5xl font-black text-white leading-none">$89.500</span>
-              <div className="flex flex-col mb-1">
-                <span className="material-symbols-outlined" style={{ color: '#60a5fa' }}>restaurant_menu</span>
-                <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>Del turno</span>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-            <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(245,158,11,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Propinas</p>
-            <div className="flex items-end gap-3">
-              <span className="text-5xl font-black leading-none" style={{ color: '#f59e0b' }}>$3.500</span>
-              <div className="flex flex-col mb-1">
-                <span className="material-symbols-outlined" style={{ color: '#f59e0b' }}>volunteer_activism</span>
-                <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>Del turno</span>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', padding: '2rem' }}>
-            <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(52,211,153,0.05)', borderRadius: '50%', filter: 'blur(16px)' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '1rem' }}>Total Caja</p>
-            <div className="flex items-end gap-3">
-              <span className="text-5xl font-black leading-none" style={{ color: '#34d399' }}>$93.000</span>
-              <div className="flex flex-col mb-1">
-                <span className="material-symbols-outlined" style={{ color: '#34d399' }}>payments</span>
-                <span className="text-[10px] font-bold" style={{ color: '#64748b' }}>Caja final</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-
-      {/* Cerrar Turno y Caja button — Bottom */}
-      <button
-        type="button"
-        className="flex items-center justify-center gap-2 font-bold text-sm rounded-xl border-none cursor-pointer hover:brightness-110 transition-all w-full"
-        style={{ background: '#dc2626', color: '#fff', padding: '0.75rem 1.25rem', marginTop: '2rem' }}
-        onClick={() => setShowCierreCaja(true)}
-      >
-        <span className="material-symbols-outlined text-sm">lock</span>
-        Cerrar Turno y Caja
-      </button>
     </div>
   );
 
@@ -1033,7 +1100,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
             </div>
             <div>
               <h1 className="text-xl font-extrabold tracking-tight text-white">HeyMozo</h1>
-              <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(19,236,167,0.7)' }}>Dashboard Cajero</p>
+              <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(19,236,167,0.7)' }}>Panel del Restaurante</p>
             </div>
           </div>
           {/* Right: turno badge + clock + avatar */}
@@ -1103,7 +1170,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
                       style={{ color: '#ef4444', transition: 'background 0.15s' }}
                       onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
                       onMouseLeave={e => e.currentTarget.style.background='transparent'}
-                      onClick={() => { setAvatarOpen(false); sessionStorage.clear(); window.location.reload(); }}
+                      onClick={() => { setAvatarOpen(false); sessionStorage.clear(); clearCajaAlerts(); localStorage.removeItem('hm_mesa6_transfer_amount'); window.location.reload(); }}
                     >
                       Reiniciar Demo
                       <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#ef4444' }}>restart_alt</span>
@@ -1160,7 +1227,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
             icon="restart_alt"
             label="Reiniciar Demo"
             active={false}
-            onClick={() => { sessionStorage.clear(); window.location.reload(); }}
+            onClick={() => { sessionStorage.clear(); clearCajaAlerts(); localStorage.removeItem('hm_mesa6_transfer_amount'); window.location.reload(); }}
           />
         </aside>
 
@@ -1342,90 +1409,6 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
               >
                 <span className="material-symbols-outlined text-sm">undo</span>
                 Reembolsar / Anular Pago
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Modal: Cierre de Caja ── */}
-      {showCierreCaja && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)' }}
-          onClick={() => setShowCierreCaja(false)}
-        >
-          <div
-            className="rounded-2xl w-full flex flex-col"
-            style={{ background: '#1a1c29', maxWidth: '28rem', padding: '2rem', border: '1px solid #2a2c3a' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 className="text-xl font-extrabold text-white">Resumen de Arqueo</h2>
-            </div>
-
-            {/* Totals cards */}
-            <div className="flex flex-col" style={{ gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <div className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '1rem 1.25rem' }}>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined" style={{ color: '#34d399', fontSize: '22px' }}>payments</span>
-                  <span className="text-sm font-medium" style={{ color: '#cbd5e1' }}>Efectivo a rendir (Caja Física)</span>
-                </div>
-                <span className="text-lg font-black" style={{ color: '#34d399' }}>$15.000</span>
-              </div>
-
-              <div className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '1rem 1.25rem' }}>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined" style={{ color: '#60a5fa', fontSize: '22px' }}>credit_card</span>
-                  <span className="text-sm font-medium" style={{ color: '#cbd5e1' }}>Digital (Mercado Pago / Transf)</span>
-                </div>
-                <span className="text-lg font-black text-white">$74.500</span>
-              </div>
-
-              <div className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '1rem 1.25rem' }}>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined" style={{ color: '#f59e0b', fontSize: '22px' }}>volunteer_activism</span>
-                  <span className="text-sm font-medium" style={{ color: '#cbd5e1' }}>Propinas a repartir</span>
-                </div>
-                <span className="text-lg font-black" style={{ color: '#f59e0b' }}>$3.500</span>
-              </div>
-
-              <div className="flex items-center justify-between rounded-xl" style={{ background: '#13151f', padding: '1rem 1.25rem', border: '1px solid rgba(19,236,167,0.2)' }}>
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined" style={{ color: '#13eca7', fontSize: '22px' }}>account_balance_wallet</span>
-                  <span className="text-sm font-bold text-white">Total Facturado</span>
-                </div>
-                <span className="text-xl font-black" style={{ color: '#13eca7' }}>$93.000</span>
-              </div>
-            </div>
-
-            {/* Info alert */}
-            <div className="rounded-xl" style={{ background: 'rgba(30,58,138,0.2)', border: '1px solid rgba(59,130,246,0.2)', padding: '1rem', marginBottom: '1.75rem' }}>
-              <p className="text-xs leading-relaxed" style={{ color: '#93c5fd' }}>
-                <span className="material-symbols-outlined align-middle" style={{ fontSize: '16px', marginRight: '0.4rem' }}>info</span>
-                Al confirmar, se cerrará la sesión actual y se enviará un reporte automático de WhatsApp al administrador.
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex justify-end gap-3">
-              <button
-                type="button"
-                className="text-sm font-bold rounded-xl border-none cursor-pointer transition-all hover:brightness-125"
-                style={{ background: 'transparent', color: '#94a3b8', padding: '0.7rem 1.25rem' }}
-                onClick={() => setShowCierreCaja(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="flex items-center gap-2 text-sm font-bold rounded-xl border-none cursor-pointer transition-all hover:brightness-110"
-                style={{ background: '#dc2626', color: '#fff', padding: '0.7rem 1.25rem' }}
-                onClick={() => setShowCierreCaja(false)}
-              >
-                <span className="material-symbols-outlined text-sm">lock</span>
-                Confirmar Cierre e Imprimir
               </button>
             </div>
           </div>

@@ -94,7 +94,7 @@ export default function Header({ pageTitle }) {
                   className="w-full px-4 py-3 text-[13px] font-medium text-white flex items-center justify-between gap-3 cursor-pointer bg-transparent border-none hover:bg-[#3a3a3c] transition-colors font-[inherit]"
                   onClick={() => { setSettingsOpen(false); navigate('/cajero'); }}
                 >
-                  Dashboard Cajero
+                  Panel del Restaurante
                   {CAJERO_ICON}
                 </button>
                 <div className="border-t border-[#3a3a3c]" />

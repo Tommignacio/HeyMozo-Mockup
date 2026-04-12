@@ -1,8 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { getOrderTotal } from '../lib/cartStore';
+
+function fmt(n) {
+  return '$' + n.toLocaleString('es-CL');
+}
 
 export default function EfectivoPage() {
   const navigate = useNavigate();
+  const TOTAL = getOrderTotal();
 
   return (
     <Phone>
@@ -50,18 +56,32 @@ export default function EfectivoPage() {
             marginTop: '1.5rem',
           }}
         >
-          <span
-            className="font-bold block"
-            style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#988ca0' }}
-          >
-            Total a pagar
-          </span>
-          <span
-            className="font-extrabold block"
-            style={{ fontSize: '1.5rem', color: '#e1e1f1', marginTop: '0.25rem', letterSpacing: '-0.02em' }}
-          >
-            $23.320
-          </span>
+          {TOTAL > 0 ? (
+            <>
+              <span
+                className="font-bold block"
+                style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#988ca0' }}
+              >
+                Total a pagar
+              </span>
+              <span
+                className="font-extrabold block"
+                style={{ fontSize: '1.5rem', color: '#e1e1f1', marginTop: '0.25rem', letterSpacing: '-0.02em' }}
+              >
+                {fmt(TOTAL)}
+              </span>
+            </>
+          ) : (
+            <>
+              <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>🧾</span>
+              <p style={{ fontSize: '0.82rem', color: '#e1e1f1', fontWeight: 600, marginTop: '0.5rem', lineHeight: 1.4 }}>
+                El mozo te lleva el ticket a la mesa
+              </p>
+              <p style={{ fontSize: '0.72rem', color: '#988ca0', marginTop: '0.375rem', lineHeight: 1.4 }}>
+                Prepará el efectivo según el total del ticket.
+              </p>
+            </>
+          )}
         </div>
 
         {/* ── Action button ── */}

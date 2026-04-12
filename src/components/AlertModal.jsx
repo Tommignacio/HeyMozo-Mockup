@@ -1,4 +1,4 @@
-export default function AlertModal({ tableName, waitingTime, onClose, onAction, actionLabel = '¡VOY!', billingEmoji = '💳', billingLabel = 'PAGA CON TARJETA', headerColor = '#d62d20' }) {
+export default function AlertModal({ tableName, waitingTime, onClose, onAction, actionLabel = '¡VOY!', billingEmoji = '💳', billingLabel = 'PAGA CON TARJETA', billingDesc, headerColor = '#d62d20' }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
@@ -29,6 +29,9 @@ export default function AlertModal({ tableName, waitingTime, onClose, onAction, 
         <div className="flex flex-col items-center gap-5" style={{ padding: '40px 24px' }}>
           <div className="text-[80px] leading-none">{billingEmoji}</div>
           <div className="text-[24px] font-bold text-white tracking-wide text-center">{billingLabel}</div>
+          {billingDesc && (
+            <div className="text-sm text-center" style={{ color: '#9ca3af', marginTop: '-0.5rem', lineHeight: 1.4 }}>{billingDesc}</div>
+          )}
         </div>
 
         {/* Action button */}

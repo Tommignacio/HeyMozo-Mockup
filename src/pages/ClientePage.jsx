@@ -1,6 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { addAlert } from '../lib/alertStore';
+import { getOrderTotal } from '../lib/cartStore';
+import { useLoyalty, redeemVoucher, VISITS_FOR_VOUCHER } from '../lib/loyaltyStore';
+
+// Persiste durante la sesión SPA; se resetea solo en recarga de página (nuevo QR scan)
+let _sessionVisited = false;
+
+function fmt(n) { return '$' + n.toLocaleString('es-CL'); }
 
 const QUICK_ACTIONS = [
   { emoji: '🧊', label: 'Hielo' },
@@ -13,9 +21,26 @@ export default function ClientePage() {
   const navigate = useNavigate();
   const [mozoSheetOpen, setMozoSheetOpen] = useState(false);
   const [mozoSent, setMozoSent] = useState(null);
-  const [vipSheetOpen, setVipSheetOpen] = useState(false);
-  const [vipPhone, setVipPhone] = useState('');
   const [navOpen, setNavOpen] = useState(false);
+  const [sessionModal, setSessionModal] = useState(false);
+  const [confirmNewSession, setConfirmNewSession] = useState(false);
+  const [voucherModal, setVoucherModal] = useState(false);
+
+  const { phone: vipPhone, visits: vipVisits, hasVoucher } = useLoyalty();
+
+  useEffect(() => {
+    const hadSession = localStorage.getItem('hm_mesa6_session');
+    if (hadSession && !_sessionVisited) {
+      setSessionModal(true);
+    }
+    // Si al escanear ya hay un voucher activo, mostrar el modal de bienvenida
+    if (!_sessionVisited && localStorage.getItem('hm_vip_voucher') === '1' && !sessionStorage.getItem('hm_voucher_shown')) {
+      setVoucherModal(true);
+      sessionStorage.setItem('hm_voucher_shown', '1');
+    }
+    _sessionVisited = true;
+    localStorage.setItem('hm_mesa6_session', '1');
+  }, []);
 
   return (
     <Phone>
@@ -61,7 +86,7 @@ export default function ClientePage() {
                       onMouseLeave={e => e.currentTarget.style.background='transparent'}
                       onClick={() => { setNavOpen(false); navigate('/cajero'); }}
                     >
-                      Dashboard Cajero
+                      Panel del Restaurante
                       <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, fill: '#aaa', flexShrink: 0 }}><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     </button>
                     <div style={{ borderTop: '1px solid #3a3a3c' }} />
@@ -71,7 +96,7 @@ export default function ClientePage() {
                       style={{ color: '#ef4444', transition: 'background 0.15s' }}
                       onMouseEnter={e => e.currentTarget.style.background='#3a3a3c'}
                       onMouseLeave={e => e.currentTarget.style.background='transparent'}
-                      onClick={() => { setNavOpen(false); sessionStorage.clear(); window.location.reload(); }}
+                      onClick={() => { setNavOpen(false); sessionStorage.clear(); ['hm_mesa6_session','hm_vip_phone','hm_vip_visits','hm_vip_voucher','hm_vip_registry','hm_alerts','hm_cart','hm_order','mesa1Status','mesa2Status','mesa6Status','hm_mesa5_done','hm_caja_alerts','hm_mesa6_transfer_amount'].forEach(k => localStorage.removeItem(k)); window.location.reload(); }}
                     >
                       Reiniciar Demo
                       <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, fill: 'currentColor', flexShrink: 0 }}><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
@@ -97,7 +122,7 @@ export default function ClientePage() {
             <div className="text-center space-y-1" style={{ marginBottom: '3rem' }}>
               <h1 className="text-white font-extrabold tracking-tight" style={{ fontSize: '3.75rem' }}>¡Hola!</h1>
               <p className="text-gray-400 text-sm font-medium" style={{ paddingTop: '0.5rem' }}>
-                Estás en la&nbsp;<span style={{ fontSize: '0.875rem' }}>Mesa 4</span>
+                Estás en la&nbsp;<span style={{ fontSize: '0.875rem' }}>Mesa 6</span>
               </p>
             </div>
 
@@ -155,15 +180,42 @@ export default function ClientePage() {
               </button>
             </div>
 
-            {/* Botón VIP Club */}
-            <div className="text-center" style={{ marginTop: '3rem', marginBottom: '3rem' }}>
-              <button
-                style={{ background: 'none', border: 'none', color: '#9ca3af', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer', padding: 0 }}
-                onClick={() => setVipSheetOpen(true)}
-              >
-                🎁 ¿Ya sos del Club? Recuperá tu regalo acá
-              </button>
-            </div>
+            {/* Badge VIP Club — muestra voucher si está activo, o contador de visitas */}
+            {vipPhone && (
+              <div className="text-center" style={{ marginTop: '3rem', marginBottom: '3rem' }}>
+                {hasVoucher ? (
+                  <button
+                    onClick={() => setVoucherModal(true)}
+                    className="inline-flex items-center gap-2 rounded-2xl cursor-pointer"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(147,51,234,0.22), rgba(221,184,255,0.12))',
+                      border: '1px dashed rgba(221,184,255,0.6)',
+                      padding: '0.625rem 1.1rem',
+                      boxShadow: '0 8px 24px rgba(147,51,234,0.25)',
+                    }}
+                  >
+                    <span style={{ fontSize: '1.1rem' }}>🎟️</span>
+                    <span style={{ color: '#ddb8ff', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.04em' }}>
+                      TENÉS 1 PINTA GRATIS · Tocá para canjear
+                    </span>
+                  </button>
+                ) : (
+                  <div
+                    className="inline-flex items-center gap-2 rounded-2xl"
+                    style={{
+                      background: 'rgba(147,51,234,0.1)',
+                      border: '1px solid rgba(147,51,234,0.25)',
+                      padding: '0.5rem 1rem',
+                    }}
+                  >
+                    <span style={{ fontSize: '1rem' }}>🎁</span>
+                    <span style={{ color: '#ddb8ff', fontSize: '0.8rem', fontWeight: 700 }}>
+                      Club · {vipVisits} {vipVisits === 1 ? 'visita' : 'visitas'}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
           </main>
         </div>
 
@@ -194,81 +246,264 @@ export default function ClientePage() {
         />
       </div>
 
-      {/* ── Bottom Sheet: VIP Club ── */}
-      {vipSheetOpen && (
+      {/* ── Modal: Sesión activa en la mesa ── */}
+      {sessionModal && (
         <div
           className="absolute inset-0 z-50 flex items-end"
-          style={{ background: 'rgba(0, 0, 0, 0.70)' }}
-          onClick={() => setVipSheetOpen(false)}
+          style={{ background: 'rgba(0,0,0,0.75)' }}
         >
           <div
             className="w-full"
             style={{
-              background: '#1a1c29',
+              background: '#1c1c24',
               borderRadius: '24px 24px 0 0',
-              padding: '1.5rem',
+              padding: '1.75rem 1.5rem 2rem',
               animation: 'mozo-slide-up 0.3s ease-out forwards',
             }}
-            onClick={(e) => e.stopPropagation()}
           >
             {/* Drag handle */}
-            <div className="flex justify-center" style={{ marginBottom: '1.5rem' }}>
+            <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
               <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#4b5563' }} />
             </div>
 
-            {/* Title */}
-            <h2 className="text-white text-xl font-bold text-center">¡Hola de nuevo! 👑</h2>
-            <p className="text-center text-sm" style={{ color: '#9ca3af', marginTop: '0.5rem', padding: '0 0.5rem' }}>
-              Ingresá tu celular para activar tus beneficios exclusivos en el menú de hoy.
+            {/* Icono */}
+            <div className="flex justify-center" style={{ marginBottom: '1rem' }}>
+              <div
+                className="flex items-center justify-center rounded-full"
+                style={{ background: 'rgba(147,51,234,0.15)', width: '56px', height: '56px' }}
+              >
+                <span className="material-symbols-outlined" style={{ color: '#a855f7', fontSize: '28px' }}>table_restaurant</span>
+              </div>
+            </div>
+
+            <h2 className="text-white text-xl font-bold text-center">Esta mesa tiene una sesión activa</h2>
+            <p className="text-center text-sm" style={{ color: '#9ca3af', marginTop: '0.5rem', padding: '0 0.5rem', lineHeight: 1.5 }}>
+              ¿Sos parte de este grupo o estás empezando una nueva sesión?
             </p>
 
-            {/* Phone input */}
-            <input
-              type="tel"
-              inputMode="numeric"
-              placeholder="Tu WhatsApp (ej: 11 1234 5678)"
-              value={vipPhone}
-              onChange={(e) => setVipPhone(e.target.value)}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.75rem' }}>
+              {/* Unirme */}
+              <button
+                className="w-full font-bold text-white"
+                style={{
+                  background: '#9333ea',
+                  padding: '1rem',
+                  borderRadius: '0.875rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  boxShadow: '0 8px 24px rgba(147,51,234,0.25)',
+                }}
+                onClick={() => setSessionModal(false)}
+              >
+                Unirme a esta mesa
+              </button>
+
+              {/* Nueva mesa — ahora con confirmación de 2 pasos */}
+              <button
+                className="w-full font-bold"
+                style={{
+                  background: '#2c2c2e',
+                  color: '#e4e4e7',
+                  padding: '1rem',
+                  borderRadius: '0.875rem',
+                  border: '1px solid #3a3a3c',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                }}
+                onClick={() => { setSessionModal(false); setConfirmNewSession(true); }}
+              >
+                Empezar nueva sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Confirmar NUEVA SESIÓN (2º paso, destructivo) ── */}
+      {confirmNewSession && (() => {
+        const currentTotal = getOrderTotal();
+        return (
+          <div className="absolute inset-0 z-50 flex items-end" style={{ background: 'rgba(0,0,0,0.78)' }}>
+            <div
               className="w-full"
               style={{
-                background: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '0.75rem',
-                padding: '1rem',
-                color: '#e1e1f1',
-                fontSize: '1rem',
-                outline: 'none',
-                marginTop: '1.5rem',
-                fontFamily: 'Inter, sans-serif',
+                background: '#1c1c24',
+                borderRadius: '24px 24px 0 0',
+                padding: '1.75rem 1.5rem 2rem',
+                animation: 'mozo-slide-up 0.3s ease-out forwards',
               }}
-            />
-
-            {/* CTA button */}
-            <button
-              className="w-full font-bold text-white"
-              style={{
-                background: '#9333ea',
-                padding: '1rem',
-                borderRadius: '0.75rem',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                marginTop: '1rem',
-                boxShadow: '0 10px 25px rgba(147,51,234,0.2)',
-              }}
-              onClick={() => setVipSheetOpen(false)}
             >
-              Activar mis beneficios
-            </button>
+              <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
+                <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#4b5563' }} />
+              </div>
 
-            {/* Cancel */}
-            <div className="flex justify-center" style={{ marginTop: '1rem', marginBottom: '0.25rem' }}>
-              <button
-                className="text-sm"
-                style={{ color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer' }}
-                onClick={() => setVipSheetOpen(false)}
+              <div className="flex justify-center" style={{ marginBottom: '1rem' }}>
+                <div
+                  className="flex items-center justify-center rounded-full"
+                  style={{ background: 'rgba(239,68,68,0.15)', width: '56px', height: '56px' }}
+                >
+                  <span className="material-symbols-outlined" style={{ color: '#ef4444', fontSize: '28px' }}>warning</span>
+                </div>
+              </div>
+
+              <h2 className="text-white text-xl font-bold text-center">¿Seguro querés empezar de cero?</h2>
+              <p className="text-center text-sm" style={{ color: '#9ca3af', marginTop: '0.75rem', padding: '0 0.5rem', lineHeight: 1.5 }}>
+                Esto va a borrar{currentTotal > 0 ? <> el pedido actual de <strong style={{ color: '#fca5a5' }}>{fmt(currentTotal)}</strong> y</> : ''} todo lo que tu grupo ya cargó en la mesa. No se puede deshacer.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.75rem' }}>
+                {/* Volver — prominente, primario */}
+                <button
+                  className="w-full font-bold text-white"
+                  style={{
+                    background: '#9333ea',
+                    padding: '1rem',
+                    borderRadius: '0.875rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    boxShadow: '0 8px 24px rgba(147,51,234,0.25)',
+                  }}
+                  onClick={() => { setConfirmNewSession(false); setSessionModal(true); }}
+                >
+                  ← Volver, me confundí
+                </button>
+
+                {/* Confirmar destructivo */}
+                <button
+                  className="w-full font-bold"
+                  style={{
+                    background: 'transparent',
+                    color: '#ef4444',
+                    padding: '0.875rem',
+                    borderRadius: '0.875rem',
+                    border: '1px solid rgba(239,68,68,0.35)',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                  }}
+                  onClick={() => {
+                    ['hm_mesa6_session','hm_alerts','hm_cart','hm_order'].forEach(k => localStorage.removeItem(k));
+                    sessionStorage.removeItem('hm_visit_counted');
+                    sessionStorage.removeItem('hm_voucher_shown');
+                    localStorage.setItem('hm_mesa6_session', '1');
+                    setConfirmNewSession(false);
+                  }}
+                >
+                  Sí, borrar y empezar nueva
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Modal: Voucher activo (canje en próxima visita) ── */}
+      {voucherModal && (
+        <div
+          className="absolute inset-0 z-50 flex items-end"
+          style={{ background: 'rgba(0,0,0,0.80)' }}
+          onClick={() => setVoucherModal(false)}
+        >
+          <div
+            className="w-full"
+            style={{
+              background: 'linear-gradient(180deg, #2a1a3d 0%, #1c1c24 100%)',
+              borderRadius: '24px 24px 0 0',
+              padding: '1.75rem 1.5rem 2rem',
+              animation: 'mozo-slide-up 0.3s ease-out forwards',
+              border: '1px solid rgba(221,184,255,0.25)',
+              borderBottom: 'none',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
+              <div className="rounded-full" style={{ width: '48px', height: '6px', background: '#4b5563' }} />
+            </div>
+
+            {/* Icono grande */}
+            <div className="flex justify-center" style={{ marginBottom: '1rem' }}>
+              <div
+                className="flex items-center justify-center rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(147,51,234,0.35), rgba(147,51,234,0.05))',
+                  width: '88px',
+                  height: '88px',
+                }}
               >
-                Cancelar
+                <span style={{ fontSize: '3rem', lineHeight: 1 }}>🍺</span>
+              </div>
+            </div>
+
+            <h2 className="text-white font-extrabold text-center" style={{ fontSize: '1.375rem' }}>
+              ¡Tenés una Pinta Gratis!
+            </h2>
+            <p className="text-center" style={{ color: '#cfc2d7', marginTop: '0.5rem', padding: '0 0.25rem', lineHeight: 1.5, fontSize: '0.875rem' }}>
+              Completaste <strong style={{ color: '#ddb8ff' }}>{VISITS_FOR_VOUCHER} visitas</strong> en tu última venida. Mostrále esta pantalla al mozo y te la canjea ahora mismo 🎉
+            </p>
+
+            {/* Ticket del voucher */}
+            <div
+              className="text-center"
+              style={{
+                marginTop: '1.5rem',
+                padding: '1rem 1.25rem',
+                background: 'rgba(147,51,234,0.15)',
+                border: '1px dashed rgba(221,184,255,0.5)',
+                borderRadius: '0.875rem',
+              }}
+            >
+              <p style={{ color: '#988ca0', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                Voucher HeyMozo
+              </p>
+              <p className="font-black" style={{ color: '#ddb8ff', fontSize: '1.125rem', marginTop: '0.25rem' }}>
+                1× Pinta Gratis 🍺
+              </p>
+              <p style={{ color: '#988ca0', fontSize: '0.7rem', marginTop: '0.375rem' }}>
+                Asociado a {vipPhone || 'tu número'}
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.5rem' }}>
+              <button
+                className="w-full font-bold text-white"
+                style={{
+                  background: '#9333ea',
+                  padding: '1rem',
+                  borderRadius: '0.875rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.95rem',
+                  boxShadow: '0 8px 24px rgba(147,51,234,0.3)',
+                }}
+                onClick={() => {
+                  redeemVoucher();
+                  addAlert({
+                    mesa: 'MESA 6',
+                    variant: 'purple',
+                    title: 'Canje de Voucher',
+                    subtitle: '1× Pinta Gratis del Club',
+                    icon: 'redeem',
+                    emoji: '🎟️',
+                  });
+                  setVoucherModal(false);
+                }}
+              >
+                Canjear ahora — Avisar al mozo
+              </button>
+              <button
+                className="w-full font-medium"
+                style={{
+                  background: 'transparent',
+                  color: '#988ca0',
+                  border: 'none',
+                  padding: '0.5rem',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                }}
+                onClick={() => setVoucherModal(false)}
+              >
+                Canjearlo más tarde
               </button>
             </div>
           </div>
@@ -313,6 +548,13 @@ export default function ClientePage() {
                     cursor: 'pointer',
                   }}
                   onClick={() => {
+                    addAlert({
+                      mesa: 'MESA 6',
+                      variant: 'orange',
+                      title: `Llevar ${action.label}`,
+                      icon: 'notifications',
+                      emoji: action.emoji,
+                    });
                     setMozoSent(action.label);
                     setTimeout(() => { setMozoSheetOpen(false); setMozoSent(null); }, 1200);
                   }}
@@ -337,6 +579,14 @@ export default function ClientePage() {
                 boxShadow: '0 10px 25px rgba(249,115,22,0.2)',
               }}
               onClick={() => {
+                addAlert({
+                  mesa: 'MESA 6',
+                  variant: 'orange',
+                  title: 'Llamar al Mozo',
+                  subtitle: 'El cliente necesita asistencia',
+                  icon: 'notifications',
+                  emoji: '🙋‍♂️',
+                });
                 setMozoSent('Mozo en camino');
                 setTimeout(() => { setMozoSheetOpen(false); setMozoSent(null); }, 1200);
               }}

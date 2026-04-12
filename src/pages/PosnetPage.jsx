@@ -1,8 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
+import { getOrderTotal } from '../lib/cartStore';
+
+function fmt(n) {
+  return '$' + n.toLocaleString('es-CL');
+}
 
 export default function PosnetPage() {
   const navigate = useNavigate();
+  const CONSUMO = getOrderTotal();
 
   const iconCard = (
     <svg width="48" height="48" fill="none" stroke="#9333ea" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
@@ -57,30 +63,44 @@ export default function PosnetPage() {
             marginTop: '1.5rem',
           }}
         >
-          <span
-            className="font-bold block"
-            style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#988ca0' }}
-          >
-            Total a cobrar
-          </span>
-          <span
-            className="font-extrabold block"
-            style={{ fontSize: '1.5rem', color: '#e1e1f1', marginTop: '0.25rem', letterSpacing: '-0.02em' }}
-          >
-            $23.320
-          </span>
-          <span
-            className="block"
-            style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.5rem' }}
-          >
-            Consumo: $21.200&nbsp;&nbsp;|&nbsp;&nbsp;Propina: $2.120
-          </span>
-          <p
-            className="text-center"
-            style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', fontStyle: 'italic' }}
-          >
-            El mozo ingresará los montos por separado en el Posnet.
-          </p>
+          {CONSUMO > 0 ? (
+            <>
+              <span
+                className="font-bold block"
+                style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#988ca0' }}
+              >
+                Total a cobrar
+              </span>
+              <span
+                className="font-extrabold block"
+                style={{ fontSize: '1.5rem', color: '#e1e1f1', marginTop: '0.25rem', letterSpacing: '-0.02em' }}
+              >
+                {fmt(Math.round(CONSUMO * 1.1))}
+              </span>
+              <span
+                className="block"
+                style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.5rem' }}
+              >
+                Consumo: {fmt(CONSUMO)}&nbsp;&nbsp;|&nbsp;&nbsp;Propina: {fmt(Math.round(CONSUMO * 0.1))}
+              </span>
+              <p
+                className="text-center"
+                style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', fontStyle: 'italic' }}
+              >
+                El mozo ingresará los montos por separado en el Posnet.
+              </p>
+            </>
+          ) : (
+            <>
+              <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>💳</span>
+              <p style={{ fontSize: '0.82rem', color: '#e1e1f1', fontWeight: 600, marginTop: '0.5rem', lineHeight: 1.4 }}>
+                El mozo te lleva el Posnet + ticket a la mesa
+              </p>
+              <p style={{ fontSize: '0.72rem', color: '#988ca0', marginTop: '0.375rem', lineHeight: 1.4 }}>
+                Prepará tu tarjeta o la app MODO según el total del ticket.
+              </p>
+            </>
+          )}
         </div>
 
         {/* ── Action button ── */}
