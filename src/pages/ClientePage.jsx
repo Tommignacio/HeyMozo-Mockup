@@ -13,8 +13,8 @@ function fmt(n) { return '$' + n.toLocaleString('es-CL'); }
 const QUICK_ACTIONS = [
   { emoji: '🧊', label: 'Hielo' },
   { emoji: '🧂', label: 'Condimentos' },
-  { emoji: '🧻', label: 'Servilletas' },
-  { emoji: '🧹', label: 'Limpiar mesa' },
+  { emoji: '📄', label: 'Servilletas' },
+  { emoji: '🧽', label: 'Limpiar mesa' },
 ];
 
 export default function ClientePage() {

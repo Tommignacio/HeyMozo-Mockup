@@ -3,10 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { addAlert } from '../lib/alertStore';
 import { useCajaAlerts, removeCajaAlert, clearCajaAlerts } from '../lib/cajaStore';
 
-function getCurrentTime() {
-  return new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-}
-
 /* ── Sidebar nav item ── */
 function SidebarItem({ icon, label, active, badge, onClick }) {
   return (
@@ -31,14 +27,8 @@ function SidebarItem({ icon, label, active, badge, onClick }) {
 
 export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
   const navigate = useNavigate();
-  const [time, setTime] = useState(getCurrentTime);
   const [activeTab, setActiveTab] = useState('transferencias');
   const [avatarOpen, setAvatarOpen] = useState(false);
-
-  useEffect(() => {
-    const id = setInterval(() => setTime(getCurrentTime()), 30000);
-    return () => clearInterval(id);
-  }, []);
 
   const hasPending = mesa6Status === 'WAITING';
 
@@ -1103,25 +1093,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
               <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(19,236,167,0.7)' }}>Panel del Restaurante</p>
             </div>
           </div>
-          {/* Right: turno badge + clock + avatar */}
+          {/* Right: avatar */}
           <div className="flex items-center gap-2 md:gap-6">
-            <div
-              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full"
-              style={{ background: 'rgba(19,236,167,0.1)', border: '1px solid rgba(19,236,167,0.2)', padding: '0.5rem' }}
-            >
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#13eca7' }} />
-                <span className="relative inline-flex rounded-full h-3 w-3" style={{ background: '#13eca7' }} />
-              </span>
-              <span className="text-sm font-bold" style={{ color: '#13eca7' }}>Turno Activo</span>
-            </div>
-            <div
-              className="flex items-center gap-1 md:gap-3 text-slate-400 font-mono rounded-lg md:rounded-xl text-sm md:text-lg px-2.5 py-1.5 md:px-4 md:py-2"
-              style={{ background: '#1a1c29', border: '1px solid #1e293b' }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>schedule</span>
-              <span>{time}</span>
-            </div>
             {/* Avatar — nav dropdown */}
             <div className="relative shrink-0">
               <button
