@@ -84,14 +84,14 @@ export default function PagarPage() {
     <Phone>
       <div
         className="flex flex-col font-[Manrope,sans-serif] text-[#e4e2e4]"
-        style={{ background: '#131315', minHeight: '100%', paddingBottom: '7rem' }}
+        style={{ background: '#131315', minHeight: '100%', paddingBottom: 'env(safe-area-inset-bottom, 1rem)' }}
       >
         {/* ── Header ── */}
         <header
           className="sticky top-0 z-50"
           style={{
             background: '#131315',
-            padding: '1rem 1.25rem',
+            padding: '0.625rem 1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -124,12 +124,12 @@ export default function PagarPage() {
         </header>
 
         {/* ── Main content ── */}
-        <main style={{ padding: '0.5rem 1.25rem 0', maxWidth: '390px', margin: '0 auto', width: '100%' }}>
+        <main style={{ padding: '0.25rem 1.25rem 0', maxWidth: '390px', margin: '0 auto', width: '100%' }}>
 
           {/* ── Ticket Card ── */}
           <section
             className="rounded-2xl"
-            style={{ background: '#1f1f21', padding: '1.25rem', marginBottom: '1rem' }}
+            style={{ background: '#1f1f21', padding: '0.875rem 1.25rem', marginBottom: '0.625rem' }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {getOrder().length > 0
@@ -167,8 +167,8 @@ export default function PagarPage() {
             style={{
               background: '#1b1b1d',
               border: '1px solid rgba(22,163,74,0.3)',
-              padding: '1.25rem',
-              marginBottom: '2rem',
+              padding: '0.875rem 1.25rem',
+              marginBottom: '0.75rem',
             }}
           >
             {/* Background glow */}
@@ -176,7 +176,7 @@ export default function PagarPage() {
               className="absolute rounded-full"
               style={{ right: '-2.5rem', top: '-2.5rem', width: '6rem', height: '6rem', background: 'rgba(22,163,74,0.1)', filter: 'blur(48px)' }}
             />
-            <h2 className="font-bold flex items-center" style={{ gap: '0.5rem', marginBottom: '1rem', color: '#e4e2e4' }}>
+            <h2 className="font-bold flex items-center" style={{ gap: '0.5rem', marginBottom: '0.625rem', color: '#e4e2e4' }}>
               Propina <span style={{ fontSize: '1.125rem' }}>💸</span>
             </h2>
             <div
@@ -245,12 +245,12 @@ export default function PagarPage() {
           </section>
 
           {/* ── Total ── */}
-          <section className="text-center" style={{ marginBottom: '2rem' }}>
+          <section className="text-center" style={{ marginBottom: '0.75rem' }}>
             <h3
               className="font-extrabold"
               style={{
                 color: '#4edea3',
-                fontSize: '3rem',
+                fontSize: 'clamp(2rem, 10vw, 2.75rem)',
                 letterSpacing: '-0.04em',
                 lineHeight: 1,
                 textShadow: '0 0 20px rgba(78,222,163,0.15)',
@@ -258,7 +258,7 @@ export default function PagarPage() {
             >
               {fmt(total)}
             </h3>
-            <p className="font-medium" style={{ color: '#cfc2d7', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+            <p className="font-medium" style={{ color: '#cfc2d7', fontSize: '0.8rem', marginTop: '0.25rem' }}>
               Total a pagar (Consumo + Propina)
             </p>
             {!noOrder && (
@@ -290,11 +290,11 @@ export default function PagarPage() {
             style={{
               background: '#1b1b1d',
               border: '1px solid rgba(22,163,74,0.3)',
-              padding: '1.25rem',
-              marginBottom: '2rem',
+              padding: '0.875rem 1.25rem',
+              marginBottom: '1rem',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             {/* Mercado Pago */}
             {(() => {
               const mpEnabled = !noOrder || tipAmount > 0;
@@ -304,12 +304,12 @@ export default function PagarPage() {
                   style={{
                     background: mpEnabled ? '#009EE3' : '#0a3a50',
                     color: mpEnabled ? '#fff' : '#4b5563',
-                    padding: '1rem',
+                    padding: '0.875rem',
                     borderRadius: '0.75rem',
                     border: 'none',
                     cursor: mpEnabled ? 'pointer' : 'not-allowed',
                     gap: '0.5rem',
-                    fontSize: '1rem',
+                    fontSize: '0.95rem',
                     boxShadow: mpEnabled ? '0 8px 24px rgba(0,158,227,0.1)' : 'none',
                     transition: 'transform 0.15s',
                   }}
@@ -341,11 +341,11 @@ export default function PagarPage() {
                     background: '#1f1f21',
                     border: '1px solid rgba(0,165,114,0.3)',
                     color: '#e4e2e4',
-                    padding: '1rem',
+                    padding: '0.875rem',
                     borderRadius: '0.75rem',
                     cursor: 'pointer',
                     gap: '0.5rem',
-                    fontSize: '1rem',
+                    fontSize: '0.95rem',
                     transition: 'transform 0.15s',
                   }}
                   onClick={() => navigate('/cliente/transferencia')}
@@ -360,7 +360,7 @@ export default function PagarPage() {
                     style={{
                       background: '#1f1f21',
                       color: '#e4e2e4',
-                      padding: '1rem',
+                      padding: '0.875rem',
                       borderRadius: '0.75rem',
                       border: 'none',
                       cursor: 'pointer',
@@ -388,7 +388,7 @@ export default function PagarPage() {
                     style={{
                       background: '#1f1f21',
                       color: '#e4e2e4',
-                      padding: '1rem',
+                      padding: '0.875rem',
                       borderRadius: '0.75rem',
                       border: 'none',
                       cursor: 'pointer',
