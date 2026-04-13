@@ -1086,9 +1086,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         <div className="mx-auto flex items-center justify-between" style={{ padding: '1rem' }}>
           {/* Left: logo + title */}
           <div className="flex items-center gap-4">
-            <div className="p-2 rounded-lg" style={{ background: '#13eca7' }}>
-              <span className="material-symbols-outlined font-bold" style={{ color: '#1c1c1e' }}>restaurant</span>
-            </div>
+            <img src="/HeyMozo.jpeg" alt="HeyMozo" style={{ width: '38px', height: '38px', borderRadius: '8px', objectFit: 'cover' }} />
             <div>
               <h1 className="text-xl font-extrabold tracking-tight text-white">HeyMozo</h1>
               <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(19,236,167,0.7)' }}>Panel del Restaurante</p>
@@ -1488,9 +1486,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
 
               {/* Top: HeyMozo branding */}
               <div className="flex items-center gap-2 self-start relative z-10">
-                <div className="flex items-center justify-center rounded-lg" style={{ width: '28px', height: '28px', background: '#13eca7' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#003d28', fontVariationSettings: "'FILL' 1" }}>restaurant</span>
-                </div>
+                <img src="/HeyMozo.jpeg" alt="HeyMozo" style={{ width: '28px', height: '28px', borderRadius: '6px', objectFit: 'cover' }} />
                 <div>
                   <p className="text-xs font-black text-white uppercase tracking-tight leading-none">HeyMozo</p>
                   <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'rgba(19,236,167,0.7)' }}>Testimonio Verificado</p>

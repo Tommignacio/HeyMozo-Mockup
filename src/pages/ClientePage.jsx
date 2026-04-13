@@ -107,12 +107,7 @@ export default function ClientePage() {
             </div>
 
             <div className="flex items-center gap-3" style={{ marginBottom: '2.5rem' }}>
-              <div
-                className="flex items-center justify-center rounded-full"
-                style={{ background: '#e8362a', padding: '0.5rem' }}
-              >
-                <span className="material-symbols-outlined text-white text-2xl shrink-0">restaurant</span>
-              </div>
+              <img src="/HeyMozo.jpeg" alt="HeyMozo" style={{ width: '40px', height: '40px', borderRadius: '10px', objectFit: 'cover' }} />
               <span className="text-white text-xl font-black tracking-tight">Mi Resto</span>
             </div>
           </header>
@@ -229,7 +224,7 @@ export default function ClientePage() {
               className="flex items-center gap-1.5 font-medium"
               style={{ fontSize: '0.75rem', color: '#4b5563' }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#e8362a' }}>restaurant</span>
+              <img src="/HeyMozo.jpeg" alt="HeyMozo" style={{ width: '14px', height: '14px', borderRadius: '3px', objectFit: 'cover' }} />
               <span>Tecnología HeyMozo</span>
             </div>
           </div>

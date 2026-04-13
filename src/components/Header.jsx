@@ -34,9 +34,7 @@ export default function Header({ pageTitle }) {
     <header className="bg-[#1c1c1e] px-4 lg:px-8 py-2 lg:py-4 flex items-center justify-between border-b border-[#2c2c2e]">
       {/* Mobile: Logo */}
       <div className="flex items-center gap-2 lg:hidden">
-        <div className="w-[38px] h-[38px] bg-[#e8362a] rounded-[10px] flex items-center justify-center text-lg">
-          🍽️
-        </div>
+        <img src="/HeyMozo.jpeg" alt="HeyMozo" className="w-[38px] h-[38px] rounded-[10px] object-cover" />
         <span className="text-xl font-bold tracking-tight">HeyMozo</span>
       </div>
 
