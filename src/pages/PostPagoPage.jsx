@@ -188,25 +188,10 @@ export default function PostPagoPage() {
                       border: 'none',
                       cursor: 'pointer',
                       fontSize: '0.875rem',
-                      marginBottom: '0.5rem',
                     }}
                     onClick={() => setRatingSent(true)}
                   >
                     ⭐ Enviar calificación
-                  </button>
-                  <button
-                    className="w-full font-medium"
-                    style={{
-                      background: 'transparent',
-                      color: '#93c5fd',
-                      padding: '0.5rem',
-                      borderRadius: '0.75rem',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '0.8rem',
-                    }}
-                  >
-                    📍 Ir directo a Google Maps
                   </button>
                 </>
               )}
