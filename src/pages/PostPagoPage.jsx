@@ -381,21 +381,24 @@ export default function PostPagoPage() {
         </div>
 
         {/* ── Footer ── */}
-        <div className="relative z-10 text-center" style={{ marginTop: '1.25rem', marginBottom: '1rem' }}>
-          <a
-            href="#"
-            className="font-body"
+        <div className="relative z-10 w-full" style={{ marginTop: '1.25rem', marginBottom: '1rem' }}>
+          <button
+            className="w-full font-bold"
             style={{
-              color: '#6b7280',
-              fontSize: '0.875rem',
-              textDecoration: 'none',
+              background: 'transparent',
+              border: '1px solid rgba(147,51,234,0.35)',
+              color: '#ddb8ff',
+              borderRadius: '0.875rem',
+              padding: '0.875rem',
+              fontSize: '0.95rem',
               cursor: 'pointer',
-              transition: 'color 0.2s',
+              fontFamily: 'Manrope, sans-serif',
+              transition: 'background 0.2s',
             }}
-            onClick={(e) => { e.preventDefault(); navigate('/cliente'); }}
+            onClick={() => navigate('/cliente')}
           >
-            Volver al inicio
-          </a>
+            ← Volver al inicio
+          </button>
         </div>
       </div>
     </Phone>
