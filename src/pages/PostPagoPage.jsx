@@ -74,7 +74,7 @@ export default function PostPagoPage() {
     <Phone>
       <div
         className="flex flex-col items-center font-[Manrope,sans-serif] text-[#e1e1f1] relative"
-        style={{ background: '#11131e', minHeight: '100%', padding: '3rem 1.5rem 2rem' }}
+        style={{ background: '#11131e', minHeight: '100%', padding: '1.5rem 1.5rem 0.5rem' }}
       >
         {/* ── Radial glow background ── */}
         <div
@@ -87,24 +87,24 @@ export default function PostPagoPage() {
           <div
             className="flex items-center justify-center rounded-full"
             style={{
-              width: '96px',
-              height: '96px',
+              width: '64px',
+              height: '64px',
               background: '#272935',
               boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-              marginBottom: '1.5rem',
+              marginBottom: '0.75rem',
             }}
           >
-            <span style={{ fontSize: '3rem', lineHeight: 1 }}>🎉</span>
+            <span style={{ fontSize: '2rem', lineHeight: 1 }}>🎉</span>
           </div>
           <h1
             className="font-extrabold tracking-tight"
-            style={{ fontSize: '1.875rem', color: '#e1e1f1' }}
+            style={{ fontSize: '1.5rem', color: '#e1e1f1' }}
           >
             {pagoConfirmado ? '¡Pago confirmado!' : '¡Gracias por venir hoy!'}
           </h1>
           <p
             className="font-body"
-            style={{ color: '#cfc2d7', fontSize: '1.125rem', marginTop: '0.5rem', opacity: 0.8 }}
+            style={{ color: '#cfc2d7', fontSize: '0.9rem', marginTop: '0.25rem', opacity: 0.8 }}
           >
             {pagoConfirmado
               ? 'Tu transferencia fue verificada con éxito.'
@@ -115,14 +115,14 @@ export default function PostPagoPage() {
         {/* ── Section 2: Interactive Rating ── */}
         <div
           className="w-full relative z-10"
-          style={{ marginTop: '3rem', background: '#191b26', padding: '1.5rem', borderRadius: '1rem' }}
+          style={{ marginTop: '1.25rem', background: '#191b26', padding: '1rem', borderRadius: '1rem' }}
         >
           <h2 className="font-bold text-center" style={{ color: '#e1e1f1' }}>
             ¿Cómo te atendimos hoy?
           </h2>
 
           {/* Stars */}
-          <div className="flex items-center justify-center" style={{ gap: '0.75rem', marginTop: '1.25rem' }}>
+          <div className="flex items-center justify-center" style={{ gap: '0.75rem', marginTop: '0.75rem' }}>
             {[1, 2, 3, 4, 5].map((i) => (
               <span
                 key={i}
@@ -264,10 +264,10 @@ export default function PostPagoPage() {
         <div
           className="w-full relative overflow-hidden z-10"
           style={{
-            marginTop: '1.5rem',
+            marginTop: '0.875rem',
             background: '#1d1f2a',
             border: '1px solid rgba(147,51,234,0.2)',
-            padding: '1.75rem',
+            padding: '1.25rem',
             borderRadius: '1rem',
             boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
           }}
@@ -381,7 +381,7 @@ export default function PostPagoPage() {
         </div>
 
         {/* ── Footer ── */}
-        <div className="relative z-10 text-center" style={{ marginTop: '3rem', marginBottom: '2rem' }}>
+        <div className="relative z-10 text-center" style={{ marginTop: '1.25rem', marginBottom: '1rem' }}>
           <a
             href="#"
             className="font-body"
