@@ -495,8 +495,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           onClick={() => setTipsPopupOpen(true)}
           className="w-full flex items-center justify-between rounded-xl"
           style={{
-            background: 'rgba(245,158,11,0.08)',
-            border: '1px solid rgba(245,158,11,0.2)',
+            background: 'rgba(19,236,167,0.08)',
+            border: '1px solid rgba(19,236,167,0.2)',
             padding: '0.65rem 1rem',
             cursor: 'pointer',
           }}
@@ -506,8 +506,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
             <span className="text-sm font-semibold text-white">Propinas del turno</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-black" style={{ color: '#f59e0b' }}>$3.500</span>
-            <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#f59e0b' }}>expand_more</span>
+            <span className="text-sm font-black" style={{ color: '#13eca7' }}>$3.500</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#13eca7' }}>expand_more</span>
           </div>
         </button>
 
@@ -525,7 +525,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
                 borderRadius: '20px 20px 0 0',
                 padding: '1.5rem 1.25rem',
                 paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))',
-                border: '1px solid rgba(245,158,11,0.15)',
+                border: '1px solid rgba(19,236,167,0.15)',
                 borderBottom: 'none',
               }}
               onClick={(e) => e.stopPropagation()}
@@ -544,12 +544,12 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
                       <span className="material-symbols-outlined" style={{ color: '#64748b', fontSize: '16px' }}>person</span>
                       <span className="text-sm font-medium text-white">{m.name}</span>
                     </div>
-                    <span className="text-sm font-black" style={{ color: '#f59e0b' }}>{m.tip}</span>
+                    <span className="text-sm font-black" style={{ color: '#13eca7' }}>{m.tip}</span>
                   </div>
                 ))}
-                <div className="flex items-center justify-between rounded-xl" style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', padding: '0.7rem 1rem', marginTop: '0.25rem' }}>
-                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#f59e0b' }}>Total</span>
-                  <span className="font-black" style={{ color: '#f59e0b', fontSize: '1rem' }}>$3.500</span>
+                <div className="flex items-center justify-between rounded-xl" style={{ background: 'rgba(19,236,167,0.1)', border: '1px solid rgba(19,236,167,0.25)', padding: '0.7rem 1rem', marginTop: '0.25rem' }}>
+                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#13eca7' }}>Total</span>
+                  <span className="font-black" style={{ color: '#13eca7', fontSize: '1rem' }}>$3.500</span>
                 </div>
               </div>
             </div>
@@ -969,7 +969,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           >
             <div
               className="w-full"
-              style={{ background: '#1a1c29', borderRadius: '20px 20px 0 0', padding: '1.5rem 1.25rem', paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))', border: '1px solid rgba(19,236,167,0.1)', borderBottom: 'none' }}
+              style={{ background: '#1a1c29', borderRadius: '20px 20px 0 0', padding: '1.5rem 1.25rem', paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))', border: '1px solid rgba(19,236,167,0.1)', borderBottom: 'none' }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
