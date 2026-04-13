@@ -34,7 +34,7 @@ export default function TransferenciaPage() {
 
   /* ── SVG icons ── */
   const chevronLeft = (
-    <svg width="20" height="20" fill="none" stroke="#ddb8ff" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="20" height="20" fill="none" stroke="#86efac" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 19l-7-7 7-7" />
     </svg>
   );
@@ -70,8 +70,8 @@ export default function TransferenciaPage() {
         <header
           className="sticky top-0 z-50"
           style={{
-            background: '#11131e',
-            padding: '1rem 1.5rem',
+            background: '#131315',
+            padding: '0.75rem 1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -79,22 +79,17 @@ export default function TransferenciaPage() {
         >
           <button
             onClick={() => navigate(-1)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
           >
             {chevronLeft}
           </button>
           <h1
             className="font-bold"
-            style={{
-              color: '#ddb8ff',
-              fontSize: '0.85rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
+            style={{ color: '#e4e2e4', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}
           >
-            Transferencia - Mesa 6
+            Transferencia — Mesa 6
           </h1>
-          <div style={{ width: '24px' }} />
+          <div style={{ width: '28px' }} />
         </header>
 
         {/* ── Main ── */}

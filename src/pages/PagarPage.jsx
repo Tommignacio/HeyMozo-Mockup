@@ -91,23 +91,21 @@ export default function PagarPage() {
           className="sticky top-0 z-50"
           style={{
             background: '#131315',
-            padding: '0.625rem 1.25rem',
+            padding: '0.75rem 1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <div
-            className="flex items-center gap-1 cursor-pointer"
-            style={{ color: '#86efac', fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}
+          <button
             onClick={() => navigate(-1)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
           >
             {chevronLeft}
-            <span>Volver</span>
-          </div>
+          </button>
           <h1
-            className="font-bold tracking-tight text-[#e4e2e4]"
-            style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '-0.02em' }}
+            className="font-bold"
+            style={{ color: '#e4e2e4', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}
           >
             Pagar / Dejar Propina
           </h1>

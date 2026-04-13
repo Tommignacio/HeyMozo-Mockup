@@ -35,42 +35,45 @@ export default function MenuPage() {
       >
         {/* ── Sticky Header ── */}
         <header
-          className="sticky top-0 z-50 backdrop-blur-md"
+          className="sticky top-0 z-50"
           style={{
-            background: 'rgba(28,28,30,0.95)',
-            borderBottom: '1px solid #3a3a3c',
-            padding: '0.75rem 1rem',
+            background: '#131315',
+            padding: '0.75rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          <div className="flex items-center justify-between">
-            <div
-              className="flex items-center gap-1 cursor-pointer"
-              onClick={() => navigate('/cliente')}
-            >
-              <span className="material-symbols-outlined text-white">arrow_back_ios</span>
-              <span className="text-sm font-medium">Volver</span>
-            </div>
-            <h1 className="text-lg font-bold tracking-tight">
-              {menuCategories[activeCategory].category}
-            </h1>
-            {/* Cart icon — opens popup if items, does nothing if empty */}
-            <div
-              className="relative cursor-pointer"
-              onClick={() => totalCount > 0 ? setCartOpen(true) : undefined}
-            >
-              <span className="material-symbols-outlined text-2xl" style={{ opacity: totalCount > 0 ? 1 : 0.4 }}>
-                shopping_cart
+          <button
+            onClick={() => navigate('/cliente')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+          >
+            <svg width="20" height="20" fill="none" stroke="#86efac" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1 className="font-bold" style={{ color: '#e4e2e4', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            {menuCategories[activeCategory].category}
+          </h1>
+          {/* Cart icon — opens popup si hay items */}
+          <button
+            onClick={() => totalCount > 0 ? setCartOpen(true) : undefined}
+            style={{ background: 'none', border: 'none', cursor: totalCount > 0 ? 'pointer' : 'default', padding: '4px', position: 'relative', display: 'flex', alignItems: 'center' }}
+          >
+            <svg width="22" height="22" fill="none" stroke={totalCount > 0 ? '#e4e2e4' : '#4b5563'} strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            {totalCount > 0 && (
+              <span
+                className="absolute flex items-center justify-center font-bold rounded-full"
+                style={{ top: '0px', right: '0px', height: '15px', width: '15px', fontSize: '9px', background: '#ef4444', color: '#fff' }}
+              >
+                {totalCount}
               </span>
-              {totalCount > 0 && (
-                <span
-                  className="absolute flex items-center justify-center bg-red-500 text-white font-bold rounded-full"
-                  style={{ top: '-4px', right: '-4px', height: '16px', width: '16px', fontSize: '10px' }}
-                >
-                  {totalCount}
-                </span>
-              )}
-            </div>
-          </div>
+            )}
+          </button>
         </header>
 
         {/* ── Sticky Category Pills ── */}
