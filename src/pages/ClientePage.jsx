@@ -107,7 +107,9 @@ export default function ClientePage() {
             </div>
 
             <div className="flex items-center gap-3" style={{ marginBottom: '2.5rem' }}>
-              <img src="/HeyMozo.jpeg" alt="HeyMozo" style={{ width: '40px', height: '40px', borderRadius: '10px', objectFit: 'cover' }} />
+              <div className="flex items-center justify-center rounded-full" style={{ background: '#e8362a', padding: '0.5rem' }}>
+                <span className="material-symbols-outlined text-white text-2xl shrink-0">restaurant</span>
+              </div>
               <span className="text-white text-xl font-black tracking-tight">Mi Resto</span>
             </div>
           </header>
