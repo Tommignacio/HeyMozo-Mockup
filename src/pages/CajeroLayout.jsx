@@ -789,6 +789,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
 
   /* ── Reseñas section ── */
   const [resenasFilter, setResenasFilter] = useState('todos');
+  const [mozosSheetOpen, setMozosSheetOpen] = useState(false);
 
   const REVIEWS_DATA = [
     { stars: 5, time: 'Hoy 21:30', mozo: 'Ana', text: 'Excelente la atención y la birra tirada perfecta.', type: '5star', action: 'promo', platform: 'Google Maps' },
@@ -890,65 +891,135 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
       {/* ── Two-Column: Ranking (5 cols) + Feed (7 cols) ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12" style={{ gap: '2.5rem' }}>
 
-        {/* Left: Desempeño por Mozo */}
+        {/* Left: Desempeño por Mozo — chip en mobile, columna en desktop */}
         <div className="lg:col-span-5 flex flex-col" style={{ gap: '1.5rem', padding: '0.5rem' }}>
-          <div className="flex items-center justify-between" style={{ padding: '0 0.5rem' }}>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="material-symbols-outlined" style={{ color: '#13eca7', fontVariationSettings: "'FILL' 1" }}>badge</span>
-              Desempeño por Mozo
-            </h3>
-            <span className="text-[10px] font-bold uppercase rounded" style={{ background: '#1e293b', color: '#94a3b8', padding: '0.25rem 0.5rem' }}>Ranking Live</span>
-          </div>
-          <div className="flex flex-col" style={{ gap: '1rem' }}>
-            {MOZOS_DATA.map((mozo) => (
-              <div
-                key={mozo.name}
-                className="flex flex-col rounded-2xl py-3 px-4 md:py-5 md:px-5"
-                style={{
-                  background: '#222532',
-                  gap: '0.75rem',
-                  border: mozo.alert ? '1px solid rgba(255,113,106,0.2)' : '1px solid transparent',
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: '#282b3a', border: '1px solid rgba(70,71,82,0.1)', flexShrink: 0 }}>
-                      <span className="material-symbols-outlined" style={{ color: mozo.alert ? '#ff716a' : '#13eca7', fontSize: '20px' }}>person</span>
+
+          {/* Mobile: chip trigger */}
+          <button
+            type="button"
+            className="lg:hidden w-full flex items-center justify-between rounded-xl"
+            style={{ background: '#222532', border: '1px solid rgba(19,236,167,0.15)', padding: '0.875rem 1rem', cursor: 'pointer' }}
+            onClick={() => setMozosSheetOpen(true)}
+          >
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined" style={{ color: '#13eca7', fontSize: '20px', fontVariationSettings: "'FILL' 1" }}>badge</span>
+              <span className="text-sm font-bold text-white">Desempeño por Mozo</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {MOZOS_DATA.some(m => m.alert) && (
+                <span className="text-[10px] font-bold rounded-full" style={{ background: 'rgba(255,113,106,0.15)', color: '#ff716a', padding: '0.2rem 0.5rem' }}>⚠ Alerta</span>
+              )}
+              <span className="material-symbols-outlined" style={{ color: '#64748b', fontSize: '18px' }}>expand_more</span>
+            </div>
+          </button>
+
+          {/* Desktop: inline */}
+          <div className="hidden lg:flex flex-col" style={{ gap: '1.5rem' }}>
+            <div className="flex items-center justify-between" style={{ padding: '0 0.5rem' }}>
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <span className="material-symbols-outlined" style={{ color: '#13eca7', fontVariationSettings: "'FILL' 1" }}>badge</span>
+                Desempeño por Mozo
+              </h3>
+              <span className="text-[10px] font-bold uppercase rounded" style={{ background: '#1e293b', color: '#94a3b8', padding: '0.25rem 0.5rem' }}>Ranking Live</span>
+            </div>
+            <div className="flex flex-col" style={{ gap: '1rem' }}>
+              {MOZOS_DATA.map((mozo) => (
+                <div
+                  key={mozo.name}
+                  className="flex flex-col rounded-2xl py-3 px-4 md:py-5 md:px-5"
+                  style={{ background: '#222532', gap: '0.75rem', border: mozo.alert ? '1px solid rgba(255,113,106,0.2)' : '1px solid transparent' }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: '#282b3a', flexShrink: 0 }}>
+                        <span className="material-symbols-outlined" style={{ color: mozo.alert ? '#ff716a' : '#13eca7', fontSize: '20px' }}>person</span>
+                      </div>
+                      <div>
+                        <p className="font-bold text-white text-sm">{mozo.name}</p>
+                        <p className="text-[11px] flex items-center gap-1" style={{ color: mozo.alert ? '#ff716a' : '#fbbf24' }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: '12px', fontVariationSettings: "'FILL' 1" }}>star</span>
+                          {mozo.rating} Estrellas
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-bold text-white text-sm">{mozo.name}</p>
-                      <p className="text-[11px] flex items-center gap-1" style={{ color: mozo.alert ? '#ff716a' : '#fbbf24' }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '12px', fontVariationSettings: "'FILL' 1" }}>star</span>
-                        {mozo.rating} Estrellas
-                      </p>
-                    </div>
+                    {mozo.alert ? (
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-sm font-black" style={{ color: '#ff716a' }}>{mozo.fill}%</span>
+                        <span className="text-[9px] font-bold uppercase rounded border" style={{ padding: '0.1rem 0.4rem', color: '#ff716a', background: 'rgba(255,113,106,0.1)', borderColor: 'rgba(255,113,106,0.2)' }}>Requiere atención</span>
+                      </div>
+                    ) : (
+                      <span className="text-sm font-black" style={{ color: '#13eca7' }}>{mozo.fill}%</span>
+                    )}
                   </div>
-                  {mozo.alert ? (
-                    <div className="flex flex-col items-end gap-1">
-                      <span className="text-sm font-black" style={{ color: '#ff716a' }}>{mozo.fill}%</span>
-                      <span className="text-[9px] font-bold uppercase rounded border" style={{ padding: '0.1rem 0.4rem', color: '#ff716a', background: 'rgba(255,113,106,0.1)', borderColor: 'rgba(255,113,106,0.2)' }}>Requiere atención</span>
-                    </div>
-                  ) : (
-                    <span className="text-sm font-black" style={{ color: '#13eca7' }}>{mozo.fill}%</span>
-                  )}
+                  <div className="w-full rounded-full overflow-hidden" style={{ height: '6px', background: '#282b3a' }}>
+                    <div className="h-full rounded-full" style={{ width: `${mozo.fill}%`, background: mozo.alert ? '#ff716a' : mozo.fill >= 95 ? 'linear-gradient(to right, #06b77f, #13eca7)' : 'linear-gradient(to right, #06b77f, #58e7ab)' }} />
+                  </div>
                 </div>
-                <div className="w-full rounded-full overflow-hidden" style={{ height: '6px', background: '#282b3a' }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${mozo.fill}%`,
-                      background: mozo.alert
-                        ? '#ff716a'
-                        : mozo.fill >= 95
-                          ? 'linear-gradient(to right, #06b77f, #13eca7)'
-                          : 'linear-gradient(to right, #06b77f, #58e7ab)',
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Bottom Sheet: Desempeño por Mozo (mobile only) */}
+        {mozosSheetOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-end lg:hidden"
+            style={{ background: 'rgba(0,0,0,0.7)' }}
+            onClick={() => setMozosSheetOpen(false)}
+          >
+            <div
+              className="w-full"
+              style={{ background: '#1a1c29', borderRadius: '20px 20px 0 0', padding: '1.5rem 1.25rem', paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))', border: '1px solid rgba(19,236,167,0.1)', borderBottom: 'none' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-center" style={{ marginBottom: '1.25rem' }}>
+                <div className="rounded-full" style={{ width: '40px', height: '5px', background: '#374151' }} />
+              </div>
+              <div className="flex items-center justify-between" style={{ marginBottom: '1.25rem' }}>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <span className="material-symbols-outlined" style={{ color: '#13eca7', fontSize: '18px', fontVariationSettings: "'FILL' 1" }}>badge</span>
+                  Desempeño por Mozo
+                </h3>
+                <span className="text-[10px] font-bold uppercase rounded" style={{ background: '#1e293b', color: '#94a3b8', padding: '0.25rem 0.5rem' }}>Ranking Live</span>
+              </div>
+              <div className="flex flex-col" style={{ gap: '0.75rem' }}>
+                {MOZOS_DATA.map((mozo) => (
+                  <div
+                    key={mozo.name}
+                    className="flex flex-col rounded-xl px-4 py-3"
+                    style={{ background: '#222532', gap: '0.625rem', border: mozo.alert ? '1px solid rgba(255,113,106,0.2)' : '1px solid transparent' }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: '#282b3a', flexShrink: 0 }}>
+                          <span className="material-symbols-outlined" style={{ color: mozo.alert ? '#ff716a' : '#13eca7', fontSize: '18px' }}>person</span>
+                        </div>
+                        <div>
+                          <p className="font-bold text-white text-sm">{mozo.name}</p>
+                          <p className="text-[11px] flex items-center gap-1" style={{ color: mozo.alert ? '#ff716a' : '#fbbf24' }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: '11px', fontVariationSettings: "'FILL' 1" }}>star</span>
+                            {mozo.rating} Estrellas
+                          </p>
+                        </div>
+                      </div>
+                      {mozo.alert ? (
+                        <div className="flex flex-col items-end gap-1">
+                          <span className="text-sm font-black" style={{ color: '#ff716a' }}>{mozo.fill}%</span>
+                          <span className="text-[9px] font-bold uppercase rounded border" style={{ padding: '0.1rem 0.4rem', color: '#ff716a', background: 'rgba(255,113,106,0.1)', borderColor: 'rgba(255,113,106,0.2)' }}>Requiere atención</span>
+                        </div>
+                      ) : (
+                        <span className="text-sm font-black" style={{ color: '#13eca7' }}>{mozo.fill}%</span>
+                      )}
+                    </div>
+                    <div className="w-full rounded-full overflow-hidden" style={{ height: '5px', background: '#282b3a' }}>
+                      <div className="h-full rounded-full" style={{ width: `${mozo.fill}%`, background: mozo.alert ? '#ff716a' : 'linear-gradient(to right, #06b77f, #13eca7)' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Right: Últimos Comentarios */}
         <div className="lg:col-span-7 rounded-xl flex flex-col" style={{ background: '#1a1c29', padding: '1.25rem' }}>
