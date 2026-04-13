@@ -93,18 +93,39 @@ export default function ModoPagoLitePage() {
     </svg>
   );
 
+  const iconPOS = (
+    <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M7 15h0m5 0h0m5 0h0M7 11h10" />
+    </svg>
+  );
+
+  const iconWallet = (
+    <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <path d="M16 12h2" />
+    </svg>
+  );
+
+  const iconPhone = (
+    <svg width="20" height="20" fill="none" stroke="#86efac" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <path d="M12 18h.01" />
+    </svg>
+  );
+
   return (
     <Phone>
       <div
         className="flex flex-col font-[Manrope,sans-serif] text-[#e4e2e4]"
-        style={{ background: '#13151f', minHeight: '100%', paddingBottom: showAmountFlow ? '9rem' : '2rem' }}
+        style={{ background: '#131315', minHeight: '100%', paddingBottom: showAmountFlow ? '9rem' : '2rem' }}
       >
         {/* ── Header ── */}
         <header
           className="sticky top-0 z-40"
           style={{
-            background: '#13151f',
-            padding: '1rem 1.25rem',
+            background: '#131315',
+            padding: '0.75rem 1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -126,11 +147,11 @@ export default function ModoPagoLitePage() {
           </button>
           <h1
             className="font-bold"
-            style={{ color: '#86efac', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            style={{ color: '#e4e2e4', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}
           >
             Pago Rápido
           </h1>
-          <div style={{ color: '#cfc2d7', fontSize: '0.75rem', opacity: 0.6, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          <div style={{ color: '#988ca0', fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Mesa 6
           </div>
         </header>
@@ -177,24 +198,24 @@ export default function ModoPagoLitePage() {
               {/* Fila superior: Efectivo + Tarjeta (físicos, iguales) */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.625rem', marginBottom: '0.625rem' }}>
                 {[
-                  { method: 'efectivo', emoji: '💵', label: 'Efectivo' },
-                  { method: 'tarjeta', emoji: '💳', label: 'Tarjeta / MODO' },
-                ].map(({ method, emoji, label }) => (
+                  { method: 'efectivo', icon: iconWallet, label: 'Efectivo' },
+                  { method: 'tarjeta', icon: iconPOS, label: 'Tarjeta / MODO' },
+                ].map(({ method, icon, label }) => (
                   <button
                     key={method}
                     onClick={() => pickMethod(method)}
                     className="flex flex-col items-center justify-center font-bold"
                     style={{
-                      background: '#1a1c28',
+                      background: '#1f1f21',
                       color: '#e4e4e7',
                       padding: '1.25rem 0.5rem',
                       borderRadius: '1rem',
                       border: '1px solid rgba(255,255,255,0.06)',
                       cursor: 'pointer',
-                      gap: '0.5rem',
+                      gap: '0.625rem',
                     }}
                   >
-                    <span style={{ fontSize: '1.75rem', lineHeight: 1 }}>{emoji}</span>
+                    {icon}
                     <span style={{ fontSize: '0.82rem' }}>{label}</span>
                   </button>
                 ))}
@@ -202,11 +223,11 @@ export default function ModoPagoLitePage() {
 
               {/* Separador con etiqueta */}
               <div className="flex items-center" style={{ gap: '0.75rem', margin: '0.875rem 0' }}>
-                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
-                <span style={{ fontSize: '0.65rem', color: '#4b5563', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>
+                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.07)' }} />
+                <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>
                   o pagá desde tu celu
                 </span>
-                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
+                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.07)' }} />
               </div>
 
               {/* Fila inferior: Digital (destacado, ancho completo) */}
@@ -214,27 +235,28 @@ export default function ModoPagoLitePage() {
                 onClick={() => pickMethod('digital')}
                 className="w-full flex items-center font-bold"
                 style={{
-                  background: 'rgba(22,163,74,0.12)',
-                  color: '#fff',
+                  background: '#1f1f21',
+                  color: '#e4e2e4',
                   padding: '1.1rem 1.25rem',
                   borderRadius: '1rem',
-                  border: '1px solid rgba(22,163,74,0.35)',
+                  border: '1px solid rgba(0,165,114,0.3)',
                   cursor: 'pointer',
                   gap: '1rem',
+                  transition: 'border-color 0.2s',
                 }}
               >
-                <span style={{ fontSize: '1.75rem', lineHeight: 1 }}>📱</span>
+                {iconPhone}
                 <div style={{ flex: 1, textAlign: 'left' }}>
-                  <div style={{ fontSize: '0.9rem' }}>Mercado Pago / Transferencia</div>
-                  <div style={{ color: '#86efac', fontSize: '0.7rem', fontWeight: 500, marginTop: '2px' }}>Sin comisión con transferencia</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700 }}>Mercado Pago / Transferencia</div>
+                  <div style={{ color: '#6b7280', fontSize: '0.7rem', fontWeight: 500, marginTop: '2px' }}>Pagarás de forma digital — recomendado</div>
                 </div>
-                <svg width="16" height="16" fill="none" stroke="#86efac" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+                <svg width="16" height="16" fill="none" stroke="#6b7280" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 18l6-6-6-6" />
                 </svg>
               </button>
 
-              <p style={{ textAlign: 'center', fontSize: '0.67rem', color: '#4b5563', marginTop: '1.25rem', lineHeight: 1.5 }}>
-                El mozo te trae el ticket antes de cobrar
+              <p style={{ textAlign: 'center', fontSize: '0.67rem', color: '#6b7280', marginTop: '1.25rem', lineHeight: 1.5 }}>
+                El mozo te lleva el ticket. Elegí cómo querés abonar.
               </p>
             </div>
           )}
@@ -363,7 +385,7 @@ export default function ModoPagoLitePage() {
           <div
             className="fixed bottom-0 z-40"
             style={{
-              background: 'linear-gradient(to top, #13151f 70%, transparent)',
+              background: 'linear-gradient(to top, #131315 70%, transparent)',
               padding: '1.25rem 1.25rem 1.75rem',
               maxWidth: '390px',
               left: '50%',

@@ -68,26 +68,27 @@ export default function CartPage() {
       >
         {/* ── Header ── */}
         <header
-          className="sticky top-0 z-50 backdrop-blur-md"
+          className="sticky top-0 z-50"
           style={{
-            background: 'rgba(28,28,30,0.80)',
-            borderBottom: '1px solid #3a3a3c',
-            padding: '1rem',
+            background: '#131315',
+            padding: '0.75rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          <div className="flex items-center justify-between">
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => navigate('/cliente/menu')}
-            >
-              <svg className="h-6 w-6" fill="none" stroke="#9333ea" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M15 19l-7-7 7-7" />
-              </svg>
-              <span className="text-sm font-medium text-white">Menú</span>
-            </div>
-            <h1 className="text-lg font-bold tracking-tight">Tu Pedido</h1>
-            <div style={{ width: '60px' }} />
-          </div>
+          <button
+            onClick={() => navigate('/cliente/menu')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+          >
+            <svg width="20" height="20" fill="none" stroke="#86efac" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1 className="font-bold" style={{ color: '#e4e2e4', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            Tu Pedido
+          </h1>
+          <div style={{ width: '28px' }} />
         </header>
 
         <main className="flex flex-col" style={{ padding: '1.5rem 1rem 0', gap: '1rem' }}>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../components/Phone';
 import { addAlert } from '../lib/alertStore';
-import { getOrderTotal } from '../lib/cartStore';
+import { getOrder, getOrderTotal } from '../lib/cartStore';
 import { useLoyalty, redeemVoucher, VISITS_FOR_VOUCHER } from '../lib/loyaltyStore';
 
 // Persiste durante la sesión SPA; se resetea solo en recarga de página (nuevo QR scan)
@@ -30,7 +30,7 @@ export default function ClientePage() {
 
   useEffect(() => {
     const hadSession = localStorage.getItem('hm_mesa6_session');
-    if (hadSession && !_sessionVisited) {
+    if (hadSession && !_sessionVisited && getOrder().length > 0) {
       setSessionModal(true);
     }
     // Si al escanear ya hay un voucher activo, mostrar el modal de bienvenida
@@ -273,10 +273,7 @@ export default function ClientePage() {
               </div>
             </div>
 
-            <h2 className="text-white text-xl font-bold text-center">Esta mesa tiene una sesión activa</h2>
-            <p className="text-center text-sm" style={{ color: '#9ca3af', marginTop: '0.5rem', padding: '0 0.5rem', lineHeight: 1.5 }}>
-              ¿Sos parte de este grupo o estás empezando una nueva sesión?
-            </p>
+            <h2 className="text-white text-xl font-bold text-center">Parece que quedó una cuenta abierta</h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.75rem' }}>
               {/* Unirme */}
@@ -293,7 +290,7 @@ export default function ClientePage() {
                 }}
                 onClick={() => setSessionModal(false)}
               >
-                Unirme a esta mesa
+                🙋‍♂️ Unirme a la cuenta actual
               </button>
 
               {/* Nueva mesa — ahora con confirmación de 2 pasos */}
@@ -310,7 +307,7 @@ export default function ClientePage() {
                 }}
                 onClick={() => { setSessionModal(false); setConfirmNewSession(true); }}
               >
-                Empezar nueva sesión
+                🧹 Empezar una cuenta de cero
               </button>
             </div>
           </div>
