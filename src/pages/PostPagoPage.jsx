@@ -74,7 +74,7 @@ export default function PostPagoPage() {
     <Phone>
       <div
         className="flex flex-col items-center font-[Manrope,sans-serif] text-[#e1e1f1] relative"
-        style={{ background: '#11131e', minHeight: '100%', padding: '1.5rem 1.5rem 0.5rem' }}
+        style={{ background: '#11131e', minHeight: '100%', padding: '2rem 1.5rem 0.5rem' }}
       >
         {/* ── Radial glow background ── */}
         <div
@@ -87,35 +87,35 @@ export default function PostPagoPage() {
           <div
             className="flex items-center justify-center rounded-full"
             style={{
-              width: '64px',
-              height: '64px',
+              width: '72px',
+              height: '72px',
               background: '#272935',
               boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-              marginBottom: '0.75rem',
+              marginBottom: '0.875rem',
             }}
           >
-            <span style={{ fontSize: '2rem', lineHeight: 1 }}>🎉</span>
+            <span style={{ fontSize: '2.5rem', lineHeight: 1 }}>🎉</span>
           </div>
           <h1
             className="font-extrabold tracking-tight"
-            style={{ fontSize: '1.5rem', color: '#e1e1f1' }}
+            style={{ fontSize: '1.625rem', color: '#e1e1f1' }}
           >
             {pagoConfirmado ? '¡Pago confirmado!' : '¡Gracias por venir hoy!'}
           </h1>
-          <p
-            className="font-body"
-            style={{ color: '#cfc2d7', fontSize: '0.9rem', marginTop: '0.25rem', opacity: 0.8 }}
-          >
-            {pagoConfirmado
-              ? 'Tu transferencia fue verificada con éxito.'
-              : 'Gracias por visitar Cervecería HeyMozo.'}
-          </p>
+          {pagoConfirmado && (
+            <p
+              className="font-body"
+              style={{ color: '#cfc2d7', fontSize: '0.9rem', marginTop: '0.25rem', opacity: 0.8 }}
+            >
+              Tu transferencia fue verificada con éxito.
+            </p>
+          )}
         </div>
 
         {/* ── Section 2: Interactive Rating ── */}
         <div
           className="w-full relative z-10"
-          style={{ marginTop: '1.25rem', background: '#191b26', padding: '1rem', borderRadius: '1rem' }}
+          style={{ marginTop: '1.5rem', background: '#191b26', padding: '1.25rem', borderRadius: '1rem' }}
         >
           <h2 className="font-bold text-center" style={{ color: '#e1e1f1' }}>
             ¿Cómo te atendimos hoy?
