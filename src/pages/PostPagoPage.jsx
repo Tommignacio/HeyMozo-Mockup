@@ -17,6 +17,8 @@ export default function PostPagoPage() {
   const [phoneInput, setPhoneInput] = useState('');
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [ratingSent, setRatingSent] = useState(false);
+  const [feedbackSent, setFeedbackSent] = useState(false);
 
   // Estado club
   const [clubState, setClubState] = useState(() => ({
@@ -139,7 +141,7 @@ export default function PostPagoPage() {
             ))}
           </div>
 
-          {/* Contenedor A: 4-5 estrellas → Google */}
+          {/* Contenedor A: 4-5 estrellas → enviar + Google opcional */}
           {rating >= 4 && (
             <div
               style={{
@@ -151,23 +153,63 @@ export default function PostPagoPage() {
                 textAlign: 'center',
               }}
             >
-              <p style={{ color: '#d1d5db', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '0.875rem' }}>
-                ¡Gracias! 🙏 Ayúdanos con una reseña:
-              </p>
-              <button
-                className="w-full font-bold"
-                style={{
-                  background: '#2563eb',
-                  color: '#fff',
-                  padding: '0.875rem',
-                  borderRadius: '0.75rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                }}
-              >
-                📍 Reseñar en Google Maps
-              </button>
+              {ratingSent ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <p style={{ color: '#86efac', fontSize: '0.875rem', fontWeight: 700 }}>
+                    ✅ ¡Gracias! Tu calificación fue enviada.
+                  </p>
+                  <button
+                    className="w-full font-bold"
+                    style={{
+                      background: '#1d4ed8',
+                      color: '#fff',
+                      padding: '0.875rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    📍 También reseñar en Google Maps
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <p style={{ color: '#d1d5db', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '0.875rem' }}>
+                    ¡Gracias! 🙏 ¿Cómo fue tu experiencia?
+                  </p>
+                  <button
+                    className="w-full font-bold"
+                    style={{
+                      background: '#facc15',
+                      color: '#1a1a1a',
+                      padding: '0.875rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      marginBottom: '0.5rem',
+                    }}
+                    onClick={() => setRatingSent(true)}
+                  >
+                    ⭐ Enviar calificación
+                  </button>
+                  <button
+                    className="w-full font-medium"
+                    style={{
+                      background: 'transparent',
+                      color: '#93c5fd',
+                      padding: '0.5rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    📍 Ir directo a Google Maps
+                  </button>
+                </>
+              )}
             </div>
           )}
 
@@ -183,41 +225,52 @@ export default function PostPagoPage() {
                 textAlign: 'center',
               }}
             >
-              <p style={{ color: '#d1d5db', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                ¡Lo sentimos! 😞 Ayúdanos a mejorar. (Feedback privado)
-              </p>
-              <textarea
-                placeholder="Tu mensaje..."
-                value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
-                rows={3}
-                className="w-full"
-                style={{
-                  background: '#374151',
-                  border: 'none',
-                  color: '#e1e1f1',
-                  borderRadius: '0.5rem',
-                  padding: '0.75rem',
-                  fontSize: '0.875rem',
-                  outline: 'none',
-                  resize: 'none',
-                  marginBottom: '0.75rem',
-                }}
-              />
-              <button
-                className="w-full font-bold"
-                style={{
-                  background: '#4b5563',
-                  color: '#fff',
-                  padding: '0.875rem',
-                  borderRadius: '0.75rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem',
-                }}
-              >
-                Enviar feedback
-              </button>
+              {feedbackSent ? (
+                <p style={{ color: '#86efac', fontSize: '0.875rem', fontWeight: 700 }}>
+                  ✅ Feedback recibido. ¡Gracias por ayudarnos a mejorar!
+                </p>
+              ) : (
+                <>
+                  <p style={{ color: '#d1d5db', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
+                    ¡Lo sentimos! 😞 Contanos qué pasó (es privado):
+                  </p>
+                  <textarea
+                    placeholder="Tu mensaje..."
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    rows={3}
+                    className="w-full"
+                    style={{
+                      background: '#374151',
+                      border: 'none',
+                      color: '#e1e1f1',
+                      borderRadius: '0.5rem',
+                      padding: '0.75rem',
+                      fontSize: '0.875rem',
+                      outline: 'none',
+                      resize: 'none',
+                      marginBottom: '0.75rem',
+                      fontFamily: 'Manrope, sans-serif',
+                    }}
+                  />
+                  <button
+                    className="w-full font-bold"
+                    style={{
+                      background: feedback.trim() ? '#dc2626' : '#4b5563',
+                      color: '#fff',
+                      padding: '0.875rem',
+                      borderRadius: '0.75rem',
+                      border: 'none',
+                      cursor: feedback.trim() ? 'pointer' : 'default',
+                      fontSize: '0.875rem',
+                      transition: 'background 0.2s',
+                    }}
+                    onClick={() => { if (feedback.trim()) setFeedbackSent(true); }}
+                  >
+                    Enviar feedback
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
