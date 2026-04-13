@@ -68,7 +68,7 @@ export default function PagarPage() {
   );
 
   const iconCalc = (
-    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
       <rect x="4" y="2" width="16" height="20" rx="2" />
       <path d="M8 6h8M8 14h0m4 0h0m4 0h0M8 18h0m4 0h0m4 0h0M8 10h8" />
     </svg>
@@ -262,25 +262,23 @@ export default function PagarPage() {
               Total a pagar (Consumo + Propina)
             </p>
             {!noOrder && (
-              <div style={{ paddingTop: '1rem' }}>
-                <button
-                  className="inline-flex items-center font-medium"
-                  style={{
-                    gap: '0.5rem',
-                    padding: '0.5rem 1.5rem',
-                    background: '#2a2a2c',
-                    borderRadius: '9999px',
-                    color: '#e4e2e4',
-                    fontSize: '0.875rem',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => setSplitOpen(true)}
-                >
-                  {iconCalc}
-                  Dividir cuenta
-                </button>
-              </div>
+              <button
+                className="inline-flex items-center"
+                style={{
+                  gap: '0.375rem',
+                  marginTop: '0.375rem',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#6b7280',
+                  fontSize: '0.75rem',
+                  fontFamily: 'Manrope, sans-serif',
+                }}
+                onClick={() => setSplitOpen(true)}
+              >
+                {iconCalc}
+                Dividir cuenta
+              </button>
             )}
           </section>
 
