@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addAlert } from '../lib/alertStore';
 import { useCajaAlerts, removeCajaAlert, clearCajaAlerts } from '../lib/cajaStore';
@@ -27,8 +27,11 @@ function SidebarItem({ icon, label, active, badge, onClick }) {
 
 export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('transferencias');
+  const [activeTab, setActiveTab] = useState('pulso');
   const [avatarOpen, setAvatarOpen] = useState(false);
+  const [waModal, setWaModal] = useState(false); // modal de envío WhatsApp masivo
+  const [lapsedDays, setLapsedDays] = useState(30); // filtro dormidos en Club
+  const [wpMessage, setWpMessage] = useState('¡Hola! Te extrañamos en Mi Resto 🧡 Tenemos una pinta gratis esperándote. Mostranos este mensaje cuando vengas.');
 
   const hasPending = mesa6Status === 'WAITING';
 
@@ -213,10 +216,241 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
 
   /* ── Club de Clientes section ── */
   const CLUB_CLIENTS = [
-    { phone: '+54 9 11 4567-8901', lastVisit: 'Hoy, 20:15 hs', visits: '1 visita', status: 'Regalo Pendiente', statusColor: 'emerald' },
-    { phone: '+54 9 11 2233-4455', lastVisit: 'Ayer', visits: '4 visitas', status: 'Cliente Frecuente', statusColor: 'purple' },
-    { phone: '+54 9 11 9876-5432', lastVisit: 'Hace 3 días', visits: '2 visitas', status: 'Regalo Pendiente', statusColor: 'emerald' },
-    { phone: '+54 9 11 3344-5566', lastVisit: 'Hace 1 semana', visits: '10 visitas', status: 'Cliente Frecuente', statusColor: 'purple' },
+    { phone: '+54 9 11 4567-8901', lastVisit: 'Hoy, 20:15 hs', daysAgo: 0, visits: '1 visita', visitsCount: 1, status: 'Regalo Pendiente', statusColor: 'emerald' },
+    { phone: '+54 9 11 2233-4455', lastVisit: 'Ayer', daysAgo: 1, visits: '4 visitas', visitsCount: 4, status: 'Cliente Frecuente', statusColor: 'purple' },
+    { phone: '+54 9 11 9876-5432', lastVisit: 'Hace 3 días', daysAgo: 3, visits: '2 visitas', visitsCount: 2, status: 'Regalo Pendiente', statusColor: 'emerald' },
+    { phone: '+54 9 11 3344-5566', lastVisit: 'Hace 1 semana', daysAgo: 7, visits: '10 visitas', visitsCount: 10, status: 'Cliente Frecuente', statusColor: 'purple' },
+    { phone: '+54 9 11 5566-7788', lastVisit: 'Hace 35 días', daysAgo: 35, visits: '6 visitas', visitsCount: 6, status: 'A recuperar', statusColor: 'amber' },
+    { phone: '+54 9 11 8899-0011', lastVisit: 'Hace 47 días', daysAgo: 47, visits: '3 visitas', visitsCount: 3, status: 'A recuperar', statusColor: 'amber' },
+    { phone: '+54 9 11 7766-5544', lastVisit: 'Hace 52 días', daysAgo: 52, visits: '8 visitas', visitsCount: 8, status: 'A recuperar', statusColor: 'amber' },
+    { phone: '+54 9 11 1122-3344', lastVisit: 'Hace 38 días', daysAgo: 38, visits: '2 visitas', visitsCount: 2, status: 'A recuperar', statusColor: 'amber' },
+    { phone: '+54 9 11 2211-4433', lastVisit: 'Hace 44 días', daysAgo: 44, visits: '5 visitas', visitsCount: 5, status: 'A recuperar', statusColor: 'amber' },
+    { phone: '+54 9 11 9988-7766', lastVisit: 'Hace 31 días', daysAgo: 31, visits: '4 visitas', visitsCount: 4, status: 'A recuperar', statusColor: 'amber' },
+  ];
+  const lapsedClients = CLUB_CLIENTS.filter((c) => c.daysAgo >= lapsedDays);
+
+  /* ── Pulso — dashboard consolidado ── */
+  const TOP_PEDIDOS_APP = [
+    { name: 'Pinta IPA', count: 84, pct: 100, price: '$5.000', cat: 'Bebida' },
+    { name: 'Milanesa Napolitana', count: 62, pct: 74, price: '$18.500', cat: 'Principal' },
+    { name: 'Pizza Muzzarella', count: 55, pct: 65, price: '$14.000', cat: 'Principal' },
+    { name: 'Ensalada César', count: 38, pct: 45, price: '$8.500', cat: 'Entrada' },
+    { name: 'Flan casero', count: 27, pct: 32, price: '$4.800', cat: 'Postre' },
+  ];
+  const MOTIVOS_QUEJA = [
+    { id: 'fria', label: '🧊 Comida Fría', count: 8, color: '#ef4444', bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.3)' },
+    { id: 'demora', label: '⏳ Demora', count: 5, color: '#fb923c', bg: 'rgba(251,146,60,0.12)', border: 'rgba(251,146,60,0.3)' },
+    { id: 'atencion', label: '😠 Mala Atención', count: 3, color: '#fb923c', bg: 'rgba(251,146,60,0.12)', border: 'rgba(251,146,60,0.3)' },
+    { id: 'precio', label: '💵 Precios', count: 2, color: '#fbbf24', bg: 'rgba(251,191,36,0.12)', border: 'rgba(251,191,36,0.3)' },
+  ];
+
+  const pulsoContent = (
+    <div className="flex flex-col" style={{ gap: '1.5rem' }}>
+      {/* Header */}
+      <div style={{ padding: '1rem 1rem 0' }}>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-white">Pulso del Resto</h2>
+        <p className="text-xs font-medium" style={{ color: '#64748b', marginTop: '0.35rem' }}>Semana del 9 al 15 de abril · actualizado hace 4 min</p>
+      </div>
+
+      {/* ── Fila 1: 4 KPI cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '1rem', padding: '0 1rem' }}>
+        {/* Ticket promedio */}
+        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.25rem' }}>
+          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(239,68,68,0.08)', borderRadius: '50%', filter: 'blur(20px)' }} />
+          <div className="flex items-center justify-between" style={{ marginBottom: '0.625rem' }}>
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>Ticket prom.</p>
+            <span className="material-symbols-outlined" style={{ color: '#ef4444', fontSize: '18px' }}>trending_down</span>
+          </div>
+          <div className="flex items-end gap-1">
+            <span className="text-2xl font-black text-white leading-none">$18.500</span>
+            <span className="text-xs font-black" style={{ color: '#ef4444', marginBottom: '2px' }}>-12%</span>
+          </div>
+          <p className="text-xs" style={{ color: '#64748b', marginTop: '0.5rem' }}>vs. sem. ant. ($21.100)</p>
+        </div>
+
+        {/* Clientes nuevos */}
+        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.25rem' }}>
+          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(96,165,250,0.08)', borderRadius: '50%', filter: 'blur(20px)' }} />
+          <div className="flex items-center justify-between" style={{ marginBottom: '0.625rem' }}>
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>Clientes nuevos</p>
+            <span className="material-symbols-outlined" style={{ color: '#60a5fa', fontSize: '18px' }}>person_add</span>
+          </div>
+          <div className="flex items-end gap-1">
+            <span className="text-2xl font-black text-white leading-none">18</span>
+            <span className="text-xs font-black" style={{ color: '#34d399', marginBottom: '2px' }}>+28%</span>
+          </div>
+          <p className="text-xs" style={{ color: '#64748b', marginTop: '0.5rem' }}>registrados desde el QR</p>
+        </div>
+
+        {/* Valoración promedio */}
+        <div className="rounded-2xl relative overflow-hidden" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.25rem' }}>
+          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(251,191,36,0.06)', borderRadius: '50%', filter: 'blur(20px)' }} />
+          <div className="flex items-center justify-between" style={{ marginBottom: '0.625rem' }}>
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#94a3b8' }}>Valoración</p>
+            <span className="material-symbols-outlined" style={{ color: '#fbbf24', fontSize: '18px', fontVariationSettings: "'FILL' 1" }}>star</span>
+          </div>
+          <div className="flex items-end gap-1">
+            <span className="text-2xl font-black text-white leading-none">4.2</span>
+            <span className="text-sm font-black" style={{ color: '#fbbf24', marginBottom: '2px' }}>⭐</span>
+          </div>
+          <p className="text-xs" style={{ color: '#64748b', marginTop: '0.5rem' }}>promedio esta semana</p>
+        </div>
+
+        {/* Clientes a recuperar + botón WA */}
+        <div
+          className="rounded-2xl relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, rgba(251,191,36,0.12), rgba(245,158,11,0.04))', border: '1px solid rgba(251,191,36,0.3)', padding: '1.25rem' }}
+        >
+          <div className="absolute" style={{ right: '-1rem', top: '-1rem', width: '6rem', height: '6rem', background: 'rgba(251,191,36,0.15)', borderRadius: '50%', filter: 'blur(20px)' }} />
+          <div className="flex items-start justify-between" style={{ marginBottom: '0.625rem', gap: '0.5rem' }}>
+            <p className="text-[11px] font-bold uppercase leading-tight" style={{ color: '#fbbf24', letterSpacing: '0.05em' }}>Clientes a recuperar</p>
+            <span className="material-symbols-outlined shrink-0" style={{ color: '#fbbf24', fontSize: '18px' }}>bed</span>
+          </div>
+          <div className="flex items-end gap-1">
+            <span className="text-2xl font-black text-white leading-none">6</span>
+            <span className="text-xs font-bold" style={{ color: '#fbbf24', marginBottom: '2px' }}>+30 días</span>
+          </div>
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-1 font-bold rounded-xl border-none cursor-pointer hover:brightness-110 transition-all"
+            style={{ background: '#25d366', color: '#052e16', padding: '0.5rem', fontSize: '0.72rem', marginTop: '0.75rem' }}
+            onClick={() => { setLapsedDays(30); setWaModal(true); }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>chat</span>
+            Mandar WhatsApp
+          </button>
+        </div>
+      </div>
+
+      {/* ── Fila 2: Dato Clave (con acciones embebidas) ── */}
+      <div style={{ padding: '0 1rem' }}>
+        <div
+          className="rounded-2xl relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(147,51,234,0.1), rgba(251,146,60,0.08))',
+            border: '1px solid rgba(147,51,234,0.25)',
+            padding: '1.25rem',
+          }}
+        >
+          <div className="flex items-start" style={{ gap: '0.875rem' }}>
+            <div className="flex items-center justify-center rounded-2xl shrink-0" style={{ width: '44px', height: '44px', background: 'rgba(147,51,234,0.2)' }}>
+              <span style={{ fontSize: '1.35rem' }}>💡</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#c084fc', marginBottom: '0.5rem' }}>Dato Clave</p>
+              <p className="text-white font-bold" style={{ fontSize: '0.95rem', lineHeight: 1.5 }}>
+                Tu promedio bajó a <span style={{ color: '#fbbf24' }}>4.2⭐</span>. El <span style={{ color: '#ef4444' }}>80% de las quejas</span> (8 clientes) fueron por <span style={{ color: '#fb923c' }}>"Comida Fría"</span>.
+              </p>
+              <p className="text-sm" style={{ color: '#94a3b8', marginTop: '0.75rem', lineHeight: 1.5 }}>
+                <strong style={{ color: '#e2e8f0' }}>Sugerencia:</strong> Revisá los tiempos entre la cocina y el mozo.
+              </p>
+            </div>
+          </div>
+
+          {/* Divider + acciones */}
+          <div style={{ borderTop: '1px solid rgba(147,51,234,0.2)', marginTop: '1.1rem', paddingTop: '0.9rem' }}>
+            <div className="flex flex-col sm:flex-row flex-wrap" style={{ gap: '0.5rem' }}>
+              {[
+                { icon: 'restaurant_menu', label: 'Revisar tiempos de cocina', color: '#ef4444' },
+                { icon: 'local_offer', label: 'Ofrecer combo pinta + picada', color: '#13eca7' },
+                { icon: 'people', label: 'Recuperar 6 dormidos', color: '#fbbf24' },
+              ].map((a) => (
+                <button
+                  key={a.label}
+                  type="button"
+                  className="flex items-center gap-2 rounded-xl border-none cursor-pointer hover:brightness-125 transition-all"
+                  style={{ background: 'rgba(19,21,31,0.6)', padding: '0.55rem 0.85rem' }}
+                >
+                  <span className="material-symbols-outlined shrink-0" style={{ color: a.color, fontSize: '16px' }}>{a.icon}</span>
+                  <span className="text-xs font-semibold" style={{ color: '#cbd5e1' }}>{a.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Fila 3: Top pedidos + Motivos de queja ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '1rem', padding: '0 1rem 1.5rem' }}>
+        {/* Top pedidos desde la app */}
+        <div className="rounded-2xl" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.25rem' }}>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#34d399' }}>🔥 Top pedidos desde la app</p>
+            <p className="text-xs" style={{ color: '#64748b', marginTop: '0.25rem' }}>266 pedidos digitales esta semana</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '0.875rem' }}>
+            {TOP_PEDIDOS_APP.map((item, i) => (
+              <div key={item.name}>
+                <div className="flex items-center justify-between" style={{ marginBottom: '0.4rem' }}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black" style={{ color: i === 0 ? '#34d399' : '#64748b', width: '22px' }}>#{i + 1}</span>
+                    <span className="text-sm font-bold text-white">{item.name}</span>
+                    <span className="text-[10px] font-bold uppercase rounded-full" style={{ color: '#64748b', background: '#13151f', padding: '0.15rem 0.5rem' }}>{item.cat}</span>
+                  </div>
+                  <span className="text-sm font-black" style={{ color: '#13eca7' }}>{item.count}</span>
+                </div>
+                <div className="rounded-full overflow-hidden" style={{ background: '#13151f', height: '6px' }}>
+                  <div
+                    className="rounded-full h-full"
+                    style={{
+                      width: `${item.pct}%`,
+                      background: i === 0 ? 'linear-gradient(90deg, #13eca7, #34d399)' : 'linear-gradient(90deg, rgba(19,236,167,0.5), rgba(52,211,153,0.3))',
+                      transition: 'width 0.4s ease',
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs" style={{ color: '#64748b', marginTop: '1.25rem', fontStyle: 'italic' }}>
+            💡 La pinta IPA es tu ancla. Pensá un combo "Pinta + picada" para subir ticket.
+          </p>
+        </div>
+
+        {/* Motivos de queja */}
+        <div className="rounded-2xl" style={{ background: '#1a1c29', border: '1px solid #1e293b', padding: '1.25rem' }}>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#ef4444' }}>⚠️ Motivos de queja</p>
+            <p className="text-xs" style={{ color: '#64748b', marginTop: '0.25rem' }}>18 clientes seleccionaron un motivo esta semana</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '0.75rem' }}>
+            {MOTIVOS_QUEJA.map((item) => {
+              const maxCount = MOTIVOS_QUEJA[0].count;
+              const pct = Math.round((item.count / maxCount) * 100);
+              return (
+                <div key={item.id}>
+                  <div className="flex items-center justify-between" style={{ marginBottom: '0.4rem' }}>
+                    <span className="text-sm font-bold" style={{ color: '#e2e8f0' }}>{item.label}</span>
+                    <span className="text-xs font-black rounded-full" style={{ color: item.color, background: 'rgba(0,0,0,0.25)', padding: '0.15rem 0.6rem' }}>
+                      {item.count} respuestas
+                    </span>
+                  </div>
+                  <div className="rounded-full overflow-hidden" style={{ background: '#13151f', height: '6px' }}>
+                    <div
+                      className="rounded-full h-full"
+                      style={{ width: `${pct}%`, background: item.color, opacity: 0.7, transition: 'width 0.4s ease' }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="rounded-xl" style={{ marginTop: '1rem', background: '#13151f', padding: '0.875rem 1rem' }}>
+            <p className="text-xs" style={{ color: '#94a3b8' }}>
+              <strong style={{ color: '#fca5a5' }}>Acción urgente:</strong> 8 clientes marcaron "Comida Fría". Revisá el tiempo entre cocina y mesa.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const LAPSED_OPTIONS = [
+    { value: 0, label: 'Todos' },
+    { value: 7, label: '+7d' },
+    { value: 15, label: '+15d' },
+    { value: 30, label: '+30d' },
+    { value: 45, label: '+45d' },
   ];
 
   const clubContent = (
@@ -303,7 +537,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         </div>
       </div>
 
-      {/* Search + Export mobile */}
+      {/* Search */}
       <div className="flex flex-col" style={{ gap: '0.5rem', padding: '0rem 1rem' }}>
         <div className="relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#64748b', fontSize: '20px' }}>search</span>
@@ -321,6 +555,67 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         </div>
       </div>
 
+      {/* ── Filtro de última visita + WhatsApp masivo ── */}
+      <div
+        className="rounded-2xl"
+        style={{
+          margin: '0 1rem',
+          background: lapsedDays >= 30 ? 'linear-gradient(135deg, rgba(37,211,102,0.08), rgba(16,185,129,0.02))' : '#1a1c29',
+          border: lapsedDays >= 30 ? '1px solid rgba(37,211,102,0.25)' : '1px solid #1e293b',
+          padding: '1.25rem',
+          transition: 'all 0.3s',
+        }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between" style={{ gap: '1rem' }}>
+          <div className="flex-1">
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '0.6rem' }}>Filtrar por última visita</p>
+            <div className="flex flex-wrap" style={{ gap: '0.5rem' }}>
+              {LAPSED_OPTIONS.map((opt) => {
+                const active = lapsedDays === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setLapsedDays(opt.value)}
+                    className="text-xs font-bold rounded-full border-none cursor-pointer transition-all"
+                    style={{
+                      padding: '0.45rem 0.95rem',
+                      background: active ? '#13eca7' : '#13151f',
+                      color: active ? '#003d28' : '#94a3b8',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-xs" style={{ color: '#64748b', marginTop: '0.7rem' }}>
+              {lapsedDays === 0
+                ? `Mostrando todos los clientes (${CLUB_CLIENTS.length})`
+                : <><strong style={{ color: '#fbbf24' }}>{lapsedClients.length}</strong> clientes no volvieron en +{lapsedDays} días</>}
+            </p>
+          </div>
+
+          {lapsedDays >= 15 && lapsedClients.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setWaModal(true)}
+              className="flex items-center justify-center gap-2 font-black rounded-xl border-none cursor-pointer transition-all hover:brightness-110 shrink-0"
+              style={{
+                background: '#25d366',
+                color: '#052e16',
+                padding: '0.85rem 1.25rem',
+                boxShadow: '0 6px 20px rgba(37,211,102,0.3)',
+                fontSize: '0.85rem',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
+              Enviar WhatsApp a los {lapsedClients.length}
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* ── Desktop Table (hidden on mobile) ── */}
       <div className="hidden md:block rounded-2xl overflow-hidden flex-1" style={{ background: '#1a1c29', border: '1px solid #1e293b' }}>
         {/* Table header */}
@@ -332,11 +627,11 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         </div>
 
         {/* Table rows */}
-        {CLUB_CLIENTS.map((client, i) => (
+        {lapsedClients.map((client, i) => (
           <div
             key={i}
             className="grid grid-cols-4 items-center transition-colors hover:bg-white/[0.02]"
-            style={{ padding: '1rem 1.5rem', borderBottom: i < CLUB_CLIENTS.length - 1 ? '1px solid rgba(58,58,60,0.5)' : 'none' }}
+            style={{ padding: '1rem 1.5rem', borderBottom: i < lapsedClients.length - 1 ? '1px solid rgba(58,58,60,0.5)' : 'none' }}
           >
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined" style={{ color: '#25d366', fontSize: '18px' }}>chat</span>
@@ -349,8 +644,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
                 className="text-xs font-bold rounded-full"
                 style={{
                   padding: '0.3rem 0.75rem',
-                  background: client.statusColor === 'emerald' ? 'rgba(16,185,129,0.15)' : 'rgba(168,85,247,0.15)',
-                  color: client.statusColor === 'emerald' ? '#34d399' : '#a855f7',
+                  background: client.statusColor === 'emerald' ? 'rgba(16,185,129,0.15)' : client.statusColor === 'amber' ? 'rgba(251,191,36,0.15)' : 'rgba(168,85,247,0.15)',
+                  color: client.statusColor === 'emerald' ? '#34d399' : client.statusColor === 'amber' ? '#fbbf24' : '#a855f7',
                 }}
               >
                 {client.status}
@@ -391,7 +686,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
 
       {/* ── Mobile Client Cards (visible only on mobile) ── */}
       <div className="block md:hidden flex flex-col" style={{ gap: '1rem', padding: '1rem' }}>
-        {CLUB_CLIENTS.map((client, i) => (
+        {lapsedClients.map((client, i) => (
           <div
             key={i}
             className="rounded-2xl flex flex-col"
@@ -426,8 +721,8 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
                 className="text-xs font-bold rounded-full"
                 style={{
                   padding: '0.3rem 0.75rem',
-                  background: client.statusColor === 'emerald' ? 'rgba(16,185,129,0.15)' : 'rgba(168,85,247,0.15)',
-                  color: client.statusColor === 'emerald' ? '#34d399' : '#a855f7',
+                  background: client.statusColor === 'emerald' ? 'rgba(16,185,129,0.15)' : client.statusColor === 'amber' ? 'rgba(251,191,36,0.15)' : 'rgba(168,85,247,0.15)',
+                  color: client.statusColor === 'emerald' ? '#34d399' : client.statusColor === 'amber' ? '#fbbf24' : '#a855f7',
                 }}
               >
                 {client.status}
@@ -464,6 +759,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
       </div>
     </div>
   );
+
 
   /* ── Historial de Pagos section ── */
   const PAGOS_DATA = [
@@ -1235,6 +1531,12 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
           style={{ background: '#13151f', borderRight: '1px solid #1e293b' }}
         >
           <SidebarItem
+            icon="insights"
+            label="Pulso"
+            active={activeTab === 'pulso'}
+            onClick={() => setActiveTab('pulso')}
+          />
+          <SidebarItem
             icon="bolt"
             label="Acciones"
             badge={pendingCount}
@@ -1277,6 +1579,7 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         {/* ── Main Content ── */}
         <main className="flex-1 overflow-y-auto p-6 lg:p-12 pb-6 lg:pb-12">
           {/* Active section content */}
+          {activeTab === 'pulso' && pulsoContent}
           {activeTab === 'transferencias' && monitorEnVivoContent}
           {activeTab === 'monitor' && historialContent}
           {activeTab === 'resenas' && resenasContent}
@@ -1284,11 +1587,19 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
         </main>
       </div>
 
-      {/* ── Bottom Nav (mobile only) — Transferencias / Monitor ── */}
+      {/* ── Bottom Nav (mobile only) — Pulso / Transferencias / Monitor ── */}
       <div
-        className="shrink-0 w-full lg:hidden flex justify-around px-6 py-4 z-50"
+        className="shrink-0 w-full lg:hidden flex justify-around px-4 py-4 z-50"
         style={{ background: '#1a1c29', borderTop: '1px solid #1e293b' }}
       >
+        <button
+          type="button"
+          onClick={() => setActiveTab('pulso')}
+          className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer"
+        >
+          <span className="material-symbols-outlined" style={{ color: activeTab === 'pulso' ? '#13eca7' : '#64748b' }}>insights</span>
+          <span className="text-[10px] font-bold" style={{ color: activeTab === 'pulso' ? '#13eca7' : '#64748b' }}>Pulso</span>
+        </button>
         <button
           type="button"
           onClick={() => setActiveTab('transferencias')}
@@ -1611,6 +1922,153 @@ export default function CajeroLayout({ mesa6Status, setMesa6Status }) {
               >
                 <span className="material-symbols-outlined text-sm">campaign</span>
                 Descargar Imagen para Social (1:1)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: WhatsApp masivo a clientes dormidos ── */}
+      {waModal && (
+        <div
+          className="fixed inset-0 z-[95] flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.75)', padding: '1rem' }}
+          onClick={() => setWaModal(false)}
+        >
+          <div
+            className="rounded-3xl overflow-hidden w-full relative"
+            style={{
+              maxWidth: '32rem',
+              maxHeight: '90vh',
+              background: '#1a1c29',
+              border: '1px solid rgba(37,211,102,0.25)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div
+              className="flex items-center justify-between shrink-0"
+              style={{ padding: '1.5rem', borderBottom: '1px solid #1e293b', background: 'linear-gradient(135deg, rgba(37,211,102,0.08), transparent)' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center rounded-xl" style={{ width: '44px', height: '44px', background: 'rgba(37,211,102,0.2)' }}>
+                  <span className="material-symbols-outlined" style={{ color: '#25d366', fontSize: '22px' }}>chat</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-extrabold" style={{ fontSize: '1.05rem' }}>Voucher por WhatsApp</h3>
+                  <p className="text-xs" style={{ color: '#64748b', marginTop: '0.15rem' }}>{lapsedClients.length} clientes · editá el mensaje si querés</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="border-none bg-transparent cursor-pointer rounded-lg transition-colors hover:bg-white/10"
+                style={{ color: '#94a3b8', padding: '0.35rem' }}
+                onClick={() => setWaModal(false)}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>close</span>
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto" style={{ padding: '1.5rem' }}>
+              {/* Editor de mensaje */}
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#94a3b8', marginBottom: '0.5rem' }}>Mensaje pre-armado</p>
+              <textarea
+                value={wpMessage}
+                onChange={(e) => setWpMessage(e.target.value)}
+                rows={4}
+                className="w-full text-sm text-white placeholder-slate-500 border-none outline-none rounded-xl"
+                style={{
+                  background: '#13151f',
+                  border: '1px solid #1e293b',
+                  padding: '0.9rem 1rem',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  lineHeight: 1.5,
+                }}
+              />
+
+              {/* Preview WhatsApp */}
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#94a3b8', marginTop: '1.25rem', marginBottom: '0.5rem' }}>Vista previa</p>
+              <div
+                className="rounded-xl relative"
+                style={{
+                  background: '#0b141a',
+                  padding: '1rem',
+                  border: '1px solid #1e293b',
+                }}
+              >
+                <div
+                  className="rounded-2xl relative"
+                  style={{
+                    background: '#005c4b',
+                    padding: '0.6rem 0.85rem',
+                    maxWidth: '85%',
+                    marginLeft: 'auto',
+                  }}
+                >
+                  <p className="text-white" style={{ fontSize: '0.82rem', lineHeight: 1.45, whiteSpace: 'pre-wrap' }}>{wpMessage}</p>
+                  <p className="text-right" style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.625rem', marginTop: '0.25rem' }}>20:45 ✓✓</p>
+                </div>
+              </div>
+
+              {/* Destinatarios — chips */}
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#94a3b8', marginTop: '1.25rem', marginBottom: '0.5rem' }}>
+                Destinatarios ({lapsedClients.length})
+              </p>
+              <div className="flex flex-wrap" style={{ gap: '0.4rem' }}>
+                {lapsedClients.map((c) => (
+                  <span
+                    key={c.phone}
+                    className="text-xs rounded-full"
+                    style={{ background: '#13151f', color: '#cbd5e1', padding: '0.35rem 0.7rem', border: '1px solid #1e293b' }}
+                  >
+                    {c.phone}
+                  </span>
+                ))}
+              </div>
+
+              {/* Costo estimado */}
+              <div
+                className="rounded-xl flex items-center gap-3"
+                style={{ marginTop: '1.25rem', background: 'rgba(37,211,102,0.08)', border: '1px solid rgba(37,211,102,0.2)', padding: '0.85rem 1rem' }}
+              >
+                <span className="material-symbols-outlined" style={{ color: '#25d366', fontSize: '20px' }}>info</span>
+                <p className="text-xs" style={{ color: '#cbd5e1', lineHeight: 1.5 }}>
+                  <strong style={{ color: '#25d366' }}>Gratis.</strong> Abre un chat de WhatsApp por cliente con el mensaje pre-cargado. Vos tocás "Enviar" en cada uno.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-end shrink-0" style={{ gap: '0.75rem', padding: '1rem 1.5rem', borderTop: '1px solid #1e293b' }}>
+              <button
+                type="button"
+                className="text-sm font-bold rounded-xl border-none cursor-pointer transition-all hover:brightness-125"
+                style={{ background: 'transparent', color: '#94a3b8', padding: '0.7rem 1.25rem' }}
+                onClick={() => setWaModal(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className="flex items-center gap-2 text-sm font-black rounded-xl border-none cursor-pointer transition-all hover:brightness-110"
+                style={{ background: '#25d366', color: '#052e16', padding: '0.7rem 1.25rem', boxShadow: '0 4px 16px rgba(37,211,102,0.3)' }}
+                onClick={() => {
+                  // Abre un wa.me por cada cliente (cada tab con el msj pre-cargado)
+                  lapsedClients.forEach((c) => {
+                    const phone = c.phone.replace(/\D/g, '');
+                    const url = `https://wa.me/${phone}?text=${encodeURIComponent(wpMessage)}`;
+                    window.open(url, '_blank', 'noopener');
+                  });
+                  setWaModal(false);
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>send</span>
+                Abrir {lapsedClients.length} chats
               </button>
             </div>
           </div>
