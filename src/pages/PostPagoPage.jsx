@@ -19,6 +19,18 @@ export default function PostPagoPage() {
   const [feedback, setFeedback] = useState('');
   const [ratingSent, setRatingSent] = useState(false);
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [complaintTags, setComplaintTags] = useState([]);
+
+  const COMPLAINT_TAGS = [
+    { id: 'fria', label: '🧊 Comida Fría' },
+    { id: 'demora', label: '⏳ Demora' },
+    { id: 'atencion', label: '😠 Mala Atención' },
+    { id: 'precio', label: '💵 Precios' },
+  ];
+
+  function toggleTag(id) {
+    setComplaintTags((prev) => prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]);
+  }
 
   // Estado club
   const [clubState, setClubState] = useState(() => ({
@@ -216,11 +228,36 @@ export default function PostPagoPage() {
                 </p>
               ) : (
                 <>
-                  <p style={{ color: '#d1d5db', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                    ¡Lo sentimos! 😞 Contanos qué pasó (es privado):
+                  <p style={{ color: '#d1d5db', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem', fontWeight: 600 }}>
+                    ¿Qué pudo haber sido mejor? <span style={{ color: '#9ca3af', fontWeight: 500 }}>(opcional)</span>
                   </p>
+                  <div className="grid grid-cols-2" style={{ gap: '0.6rem', marginBottom: '1rem' }}>
+                    {COMPLAINT_TAGS.map((tag) => {
+                      const active = complaintTags.includes(tag.id);
+                      return (
+                        <button
+                          key={tag.id}
+                          type="button"
+                          onClick={() => toggleTag(tag.id)}
+                          style={{
+                            background: active ? 'rgba(239,68,68,0.2)' : '#2d2d2f',
+                            border: active ? '1px solid rgba(239,68,68,0.6)' : '1px solid #3f3f41',
+                            color: active ? '#fca5a5' : '#d1d5db',
+                            borderRadius: '0.75rem',
+                            padding: '0.85rem 0.6rem',
+                            fontSize: '0.85rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s',
+                          }}
+                        >
+                          {tag.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                   <textarea
-                    placeholder="Tu mensaje..."
+                    placeholder="Querés agregar algo más? (opcional)"
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                     rows={3}
@@ -241,18 +278,18 @@ export default function PostPagoPage() {
                   <button
                     className="w-full font-bold"
                     style={{
-                      background: feedback.trim() ? '#dc2626' : '#4b5563',
+                      background: '#dc2626',
                       color: '#fff',
                       padding: '0.875rem',
                       borderRadius: '0.75rem',
                       border: 'none',
-                      cursor: feedback.trim() ? 'pointer' : 'default',
-                      fontSize: '0.875rem',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
                       transition: 'background 0.2s',
                     }}
-                    onClick={() => { if (feedback.trim()) setFeedbackSent(true); }}
+                    onClick={() => setFeedbackSent(true)}
                   >
-                    Enviar feedback
+                    Enviar calificación
                   </button>
                 </>
               )}

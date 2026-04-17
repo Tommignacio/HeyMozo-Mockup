@@ -195,6 +195,18 @@ export default function ModoPagoLitePage() {
           {tab === 'full' && step === 'initial' && (
             <div style={{ paddingTop: '0.25rem' }}>
 
+              {/* Texto instructivo — aparece ANTES de tocar nada */}
+              <p style={{
+                fontSize: '0.78rem',
+                color: '#988ca0',
+                lineHeight: 1.55,
+                fontWeight: 500,
+                marginBottom: '1.25rem',
+                paddingLeft: '0.125rem',
+              }}>
+                El mozo te llevará el ticket a la mesa. Elegí cómo querés abonar:
+              </p>
+
               {/* Fila superior: Efectivo + Tarjeta (físicos, iguales) */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.625rem', marginBottom: '0.625rem' }}>
                 {[
@@ -208,9 +220,9 @@ export default function ModoPagoLitePage() {
                     style={{
                       background: '#1f1f21',
                       color: '#e4e4e7',
-                      padding: '1.25rem 0.5rem',
+                      padding: '1.625rem 0.5rem',
                       borderRadius: '1rem',
-                      border: '1px solid rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.07)',
                       cursor: 'pointer',
                       gap: '0.625rem',
                     }}
@@ -222,7 +234,7 @@ export default function ModoPagoLitePage() {
               </div>
 
               {/* Separador con etiqueta */}
-              <div className="flex items-center" style={{ gap: '0.75rem', margin: '0.875rem 0' }}>
+              <div className="flex items-center" style={{ gap: '0.75rem', margin: '1.125rem 0' }}>
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.07)' }} />
                 <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>
                   o pagá desde tu celu
@@ -235,11 +247,12 @@ export default function ModoPagoLitePage() {
                 onClick={() => pickMethod('digital')}
                 className="w-full flex items-center font-bold"
                 style={{
-                  background: '#1f1f21',
+                  background: '#1c2420',
                   color: '#e4e2e4',
-                  padding: '1.1rem 1.25rem',
+                  padding: '1.25rem 1.25rem',
                   borderRadius: '1rem',
-                  border: '1px solid rgba(0,165,114,0.3)',
+                  border: '1px solid rgba(0,165,114,0.35)',
+                  boxShadow: '0 0 0 1px rgba(134,239,172,0.05), 0 4px 16px rgba(0,165,114,0.06)',
                   cursor: 'pointer',
                   gap: '1rem',
                   transition: 'border-color 0.2s',
@@ -255,9 +268,6 @@ export default function ModoPagoLitePage() {
                 </svg>
               </button>
 
-              <p style={{ textAlign: 'center', fontSize: '0.67rem', color: '#6b7280', marginTop: '1.25rem', lineHeight: 1.5 }}>
-                El mozo te lleva el ticket. Elegí cómo querés abonar.
-              </p>
             </div>
           )}
 

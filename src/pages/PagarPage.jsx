@@ -676,6 +676,7 @@ export default function PagarPage() {
           </div>
         </div>
       )}
+
     </Phone>
   );
 }
